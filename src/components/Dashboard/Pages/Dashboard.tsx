@@ -1,12 +1,14 @@
 import DashboardCard from "../DashboardCard"
 import BarChart from "../../../chartjs/Dashboard/BarChart";
 import useIsMobile from "../../../hooks/useIsMobile"
+import type { UserInfo } from "../../../App";
 
 type changeTheme = {
     isDark: boolean;
+    user: UserInfo | null;
 }
 
-function Dashboard({isDark} : changeTheme) {
+function Dashboard({isDark, user} : changeTheme) {
 
     const isMobile = useIsMobile(); 
 
@@ -17,7 +19,7 @@ function Dashboard({isDark} : changeTheme) {
             <div className="h-full w-full flex flex-col items-start justify-start gap-[calc(0.4vw+0.6rem)]">
 
                 <span className="text-[calc(0.8vw+1.2rem)] font-semibold cursor-pointer hovered">Dashboard</span>
-                <span className="text-[calc(0.4vw+0.8rem)] cursor-pointer hovered">Welcome back, @Username!</span>
+                <span className="text-[calc(0.4vw+0.8rem)] cursor-pointer hovered">Welcome back, {user?.displayName}</span>
 
                 {!isMobile && <div className={`h-auto w-full flex flex-row items-center justify-center gap-[calc(0.4vw+0.6rem)]`}>
                     

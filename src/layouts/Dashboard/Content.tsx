@@ -3,14 +3,16 @@ import { SidenavCard } from "../../components/Dashboard/SidenavCard"
 import useIsMobile from "../../hooks/useIsMobile";
 import Dashboard from "../../components/Dashboard/Pages/Dashboard";
 import Vehicle from "../../components/Dashboard/Pages/Vehicle";
+import type { UserInfo } from "../../App";
 
 type contentProps = {
     isDark: boolean;
     activeIndex: number;
     setActiveIndex: React.Dispatch<SetStateAction<number>>
+    user: UserInfo | null;
 }
 
-function Content({isDark , activeIndex, setActiveIndex}: contentProps) {  
+function Content({isDark , activeIndex, setActiveIndex, user}: contentProps) {  
 
     const navItems = [
         { icon: "bx bx-dashboard bx-tada-hover hovered", title: "Dashboard" },
@@ -24,7 +26,7 @@ function Content({isDark , activeIndex, setActiveIndex}: contentProps) {
     ];
 
     const dashboardPages = [
-        <Dashboard isDark={isDark} />,
+        <Dashboard isDark={isDark} user={user}/>,
         <Vehicle isDark={isDark} />
     ]
 
@@ -50,7 +52,7 @@ function Content({isDark , activeIndex, setActiveIndex}: contentProps) {
                 ))}
             </section>}
             
-            {dashboardPages[activeIndex] ?? <Dashboard isDark={isDark} />}
+            {dashboardPages[activeIndex] ?? <Dashboard isDark={isDark} user={user}/>}
             
         </div>
     )

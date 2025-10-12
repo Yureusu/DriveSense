@@ -27,7 +27,7 @@ scrollbar-width: none;
 }
 
 .fade-in{
-    animation: fadein 1s linear;
+    animation: fadein 0.3s linear;
 }
 
 @keyframes fadein {

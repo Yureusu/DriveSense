@@ -3,23 +3,25 @@ import Theme from "../../components/Global/Theme";
 import DarkIcon from "../../assets/ui/dark-icon.png"
 import LightIcon from "../../assets/ui/light-icon.png"
 import useIsMobile from "../../hooks/useIsMobile";
+import GoogleLogin from "../../server/Firebase/GoogleSignin";
+import type { UserInfo } from "../../App";
 
 type headerProps = {
     isDark: boolean;
     setIsDark: React.Dispatch<SetStateAction<boolean>>;
     isLoggedIn: boolean;
     setIsLoggedIn: React.Dispatch<SetStateAction<boolean>>;
+    setUser: React.Dispatch<SetStateAction<UserInfo | null>>;
 }
 
-function Header({isDark, setIsDark, isLoggedIn, setIsLoggedIn}: headerProps) {
+function Header({isDark, setIsDark, isLoggedIn, setIsLoggedIn, setUser}: headerProps) {
 
     const isMobile = useIsMobile();
-
     const [isSidenavActive, setIsSidenavActive] = useState(false);
+    const [isFormVisible, setIsFormVisible] = useState(false);
 
     const handleSignIn = () => {
-        setIsLoggedIn((prev) => !prev);
-        console.log('loggedIn')
+        setIsFormVisible((prev) => !prev);
     }
 
     return (
@@ -47,6 +49,37 @@ function Header({isDark, setIsDark, isLoggedIn, setIsLoggedIn}: headerProps) {
                     onClick={() => handleSignIn()}>
                     Sign In
                 </span>
+
+                {isFormVisible && <div className="fade-in absolute top-0 left-0 h-screen w-screen flex flex-col items-center justify-center bg-[rgba(0,0,0,0.50)] filter">
+                    <div className="h-[420px] w-[420px] bg-[var(--light-color)] flex flex-col items-center justify-start relative rounded-xl rounded-tr-none">
+                        <i className='fa-solid fa-circle-xmark text-[calc(1vw+1.2rem)] text-[var(--blue-color)] hovered
+                            flex flex-row items-center justify-center absolute top-[-10px] right-[-14px] cursor-pointer'
+                            onClick={() => setIsFormVisible((prev) => !prev)}></i> 
+
+                        {/*Form*/}
+                        <div className="w-full flex flex-col items-center justify-start py-[calc(0.4vw+0.6rem)] px-[calc(2.4vw+2.6rem)] gap-[calc(0.4vw+0.6rem)] text-[var(--dark-color)]">
+                            <img src={LightIcon} className="h-[calc(1vw+1.4rem)] w-[calc(1vw+1.4rem)] cursor-pointer" alt="" />
+                            <span className="text-[calc(0.4vw+0.8rem)] font-semibold">Sign in to your account</span>
+
+                            <GoogleLogin isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setUser={setUser}/>
+
+                            <span className="text-[calc(0.4vw+0.5rem)]" >Or continue with</span>
+
+                            <input type="email" placeholder="Email" className="cursor-pointer outline-none border border-[var(--border-color)] rounded-xl focus:border-[var(--purple-color)]
+                                placeholder:text-[calc(0.4vw+0.5rem)] px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] text-[calc(0.4vw+0.5rem)] w-full" required/>
+                            <input type="password" placeholder="Password" className="cursor-pointer outline-none border border-[var(--border-color)] rounded-xl focus:border-[var(--purple-color)]
+                                placeholder:text-[calc(0.4vw+0.5rem)] px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] text-[calc(0.4vw+0.5rem)] w-full" required/>
+                            <span className="text-[calc(0.4vw+0.5rem)] text-[var(--light-color)] w-full px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] rounded-xl text-center cursor-pointer 
+                                bg-[var(--blue-color)] hover:bg-[var(--purple-color)] transition duration-300 ease-in-out">Continue</span>
+
+                            <span className="text-[calc(0.4vw+0.5rem)]">Don't have an account? 
+                                <span className="text-[calc(0.4vw+0.5rem)] text-[var(--blue-color)] hovered cursor-pointer"> Sign Up</span>
+                            </span>
+                        </div>
+                         
+                    </div>
+                </div>}
+                
                 <Theme isDark={isDark} setIsDark={setIsDark}/>
             </div>
 
