@@ -1,4 +1,4 @@
-import { useState, type SetStateAction } from "react";
+import { type SetStateAction } from "react";
 import { SidenavCard } from "../../components/Dashboard/SidenavCard"
 import useIsMobile from "../../hooks/useIsMobile";
 import Dashboard from "../../components/Dashboard/Pages/Dashboard";
@@ -10,9 +10,7 @@ type contentProps = {
     setActiveIndex: React.Dispatch<SetStateAction<number>>
 }
 
-function Content({isDark , activeIndex, setActiveIndex}: contentProps) {
-
-    
+function Content({isDark , activeIndex, setActiveIndex}: contentProps) {  
 
     const navItems = [
         { icon: "bx bx-dashboard bx-tada-hover hovered", title: "Dashboard" },
