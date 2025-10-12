@@ -5,18 +5,18 @@ import LightIcon from "../../assets/ui/light-icon.png"
 import useIsMobile from "../../hooks/useIsMobile";
 import { SidenavCard } from "../../components/Dashboard/SidenavCard"
 
-type changeTheme = {
+type headerProps = {
     isDark: boolean;
     setIsDark: React.Dispatch<SetStateAction<boolean>>;
+    activeIndex: number;
+    setActiveIndex: React.Dispatch<SetStateAction<number>>
 }
 
-function Header({isDark, setIsDark}: changeTheme) {
+function Header({isDark, setIsDark, activeIndex, setActiveIndex}: headerProps) {
 
     const isMobile = useIsMobile();
 
     const [isSidenavActive, setIsSidenavActive] = useState(false);
-
-    const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
     const navItems = [
         { icon: "bx bx-dashboard bx-tada-hover hovered", title: "Dashboard" },

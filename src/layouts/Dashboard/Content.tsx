@@ -1,16 +1,18 @@
-import { useState } from "react";
+import { useState, type SetStateAction } from "react";
 import { SidenavCard } from "../../components/Dashboard/SidenavCard"
 import useIsMobile from "../../hooks/useIsMobile";
 import Dashboard from "../../components/Dashboard/Pages/Dashboard";
 import Vehicle from "../../components/Dashboard/Pages/Vehicle";
 
-type changeTheme = {
+type contentProps = {
     isDark: boolean;
+    activeIndex: number;
+    setActiveIndex: React.Dispatch<SetStateAction<number>>
 }
 
-function Content({isDark}: changeTheme) {
+function Content({isDark , activeIndex, setActiveIndex}: contentProps) {
 
-    const [activeIndex, setActiveIndex] = useState<number>(0);
+    
 
     const navItems = [
         { icon: "bx bx-dashboard bx-tada-hover hovered", title: "Dashboard" },
