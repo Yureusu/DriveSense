@@ -2,6 +2,9 @@ import DashboardCard from "../DashboardCard"
 import BarChart from "../../../chartjs/Dashboard/BarChart";
 import useIsMobile from "../../../hooks/useIsMobile"
 import type { UserInfo } from "../../../App";
+import { useEffect, useState } from "react";
+import { db } from '../../../server/Firebase/Firebase'; 
+import { doc, getDoc, getDocs, collection } from 'firebase/firestore';
 
 type changeTheme = {
     isDark: boolean;
@@ -11,6 +14,52 @@ type changeTheme = {
 function Dashboard({isDark, user} : changeTheme) {
 
     const isMobile = useIsMobile(); 
+
+    const [totalVehicle, setTotalVehicle] = useState("0");
+    const [fuelCost, setFuelCost] = useState("0");
+    const [mileAge, setMileAge] = useState("0");
+    const [totalTrips, setTotalTrips] = useState("0");
+
+
+    useEffect(() => {
+        const userData = async ()  => {
+            try {
+                if(!user || !user.uid) {
+                    console.warn("User not available.");
+                    return;
+                }
+
+                const dashboardDataRef = collection(db, "users", user?.uid, "dashboard-data");
+                const snapshot = await getDocs(dashboardDataRef);
+
+                const count = snapshot.size;
+                console.log(`Total documents in dashboard-data: ${count}`);
+                
+                const docRef = doc(db, "users", user?.uid, "dashboard-data", "2026 Ford Mustang"); 
+                const docSnap = await getDoc(docRef);
+      
+                if(docSnap.exists()) {
+                    const data = docSnap.data(); 
+                    console.log("Dashboard data:", data);
+   
+                    setTotalVehicle(data.totalVehicle ?? count);
+                    setFuelCost(data.fuelCost ?? "0");
+                    setMileAge(data.mileAge ?? "0");
+                    setTotalTrips(data.totalTrips ?? "0");
+                } else {
+                    console.log("No such document!");
+                }
+
+                return count;
+                
+            } catch(err) {
+                console.error("Error fetching dashboard data:", err);
+            }
+        };
+
+        userData();
+
+    }, []);
 
     return (
         <section id="main" className={`${isMobile? "p-[calc(0.4vw+0.6rem)]" : "border-l px-[calc(0.4vw+0.6rem)]"}
@@ -23,21 +72,21 @@ function Dashboard({isDark, user} : changeTheme) {
 
                 {!isMobile && <div className={`h-auto w-full flex flex-row items-center justify-center gap-[calc(0.4vw+0.6rem)]`}>
                     
-                    <DashboardCard title={"Total Vehicles"} descrip={"23"} isDark={isDark}/>
-                    <DashboardCard title={"Monthly Fuel Cost"} descrip={"₱1200"} isDark={isDark}/>                 
-                    <DashboardCard title={"Mileage Efficiency"} descrip={"9.8 mpg"} isDark={isDark}/>  
-                    <DashboardCard title={"Total Trips"} descrip={"115"} isDark={isDark}/>  
+                    <DashboardCard title={"Total Vehicles"} descrip={totalVehicle} isDark={isDark}/>
+                    <DashboardCard title={"Monthly Fuel Cost"} descrip={fuelCost} isDark={isDark}/>                 
+                    <DashboardCard title={"Mileage Efficiency"} descrip={mileAge} isDark={isDark}/>  
+                    <DashboardCard title={"Total Trips"} descrip={totalTrips} isDark={isDark}/>  
                     
                 </div>}
                 {isMobile && <div className={`h-auto w-full flex flex-col items-center justify-center gap-[calc(0.4vw+0.6rem)]`}>
                     
                     <div className="h-auto w-full flex flex-row items-center jsutify-between gap-[calc(0.4vw+0.6rem)]">
-                        <DashboardCard title={"Total Vehicles"} descrip={"23"} isDark={isDark}/>
-                        <DashboardCard title={"Monthly Fuel Cost"} descrip={"₱1200"} isDark={isDark}/>  
+                        <DashboardCard title={"Total Vehicles"} descrip={totalVehicle} isDark={isDark}/>
+                        <DashboardCard title={"Monthly Fuel Cost"} descrip={fuelCost} isDark={isDark}/>  
                     </div> 
                     <div className="h-auto w-full flex flex-row items-center jsutify-between gap-[calc(0.4vw+0.6rem)]">             
-                        <DashboardCard title={"Mileage Efficiency"} descrip={"9.8 mpg"} isDark={isDark}/>  
-                        <DashboardCard title={"Total Trips"} descrip={"115"} isDark={isDark}/>  
+                        <DashboardCard title={"Mileage Efficiency"} descrip={mileAge} isDark={isDark}/>  
+                        <DashboardCard title={"Total Trips"} descrip={totalTrips} isDark={isDark}/>  
                     </div>
                     
                 </div>}

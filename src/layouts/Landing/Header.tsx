@@ -50,7 +50,7 @@ function Header({isDark, setIsDark, isLoggedIn, setIsLoggedIn, setUser}: headerP
                     Sign In
                 </span>
 
-                {isFormVisible && <div className="fade-in absolute top-0 left-0 h-screen w-screen flex flex-col items-center justify-center bg-[rgba(0,0,0,0.50)] filter">
+                {isFormVisible && <div className="fade-in absolute top-0 left-0 h-screen w-screen flex flex-col items-center justify-center bg-[rgba(0,0,0,0.50)]">
                     <div className="h-[420px] w-[420px] bg-[var(--light-color)] flex flex-col items-center justify-start relative rounded-xl rounded-tr-none">
                         <i className='fa-solid fa-circle-xmark text-[calc(1vw+1.2rem)] text-[var(--blue-color)] hovered
                             flex flex-row items-center justify-center absolute top-[-10px] right-[-14px] cursor-pointer'

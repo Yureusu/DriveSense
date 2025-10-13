@@ -22,6 +22,7 @@ const GoogleLogin = ({isLoggedIn, setIsLoggedIn, setUser}: GoogleSignInProps) =>
                 displayName: user.displayName,
                 email: user.email,
                 photoURL: user.photoURL,
+                uid: user.uid
             });
 
             const userRef = doc(db, 'users', user.uid);

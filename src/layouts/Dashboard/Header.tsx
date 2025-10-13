@@ -31,6 +31,8 @@ function Header({isDark, setIsDark, activeIndex, setActiveIndex, user}: HeaderPr
         { icon: "bx bx-cog bx-tada-hover hovered", title: "Settings" }
     ];
 
+    const firstName = user?.displayName?.split(" ")[0] ?? "Guest";
+
     return (
         <div className={`${isDark? "text-[var(--light-color)] bg-[var(--dark-color)]" : "text-[var(--dark-color)] bg-[var(--light-color)]"}
             fade-in sticky top-0 left-0 z-2 h-auto w-full flex flex-row items-center justify-between border-b border-[var(--border-color)] p-[12px]`}>
@@ -42,9 +44,14 @@ function Header({isDark, setIsDark, activeIndex, setActiveIndex, user}: HeaderPr
             </div>
                 
             <div className="flex flex-row items-center gap-[calc(0.4vw+0.6rem)]">
-                {user && <img src={user?.photoURL ?? ""} className="rounded-full h-[calc(1vw+1.4rem)]  w-[calc(1vw+1.4rem)] cursor-pointer" alt="" />}
+                {user && <img src={user?.photoURL ?? ""} className="rounded-full h-[calc(0.8vw+1.4rem)]  w-[calc(0.8vw+1.4rem)] cursor-pointer" alt="" />}
                 {!user && <i className='bx bx-user-circle bx-tada-hover hovered text-[calc(1vw+1.2rem)] cursor-pointer'></i> }
-                <span className="text-[calc(0.4vw+0.6rem)] cursor-pointer hovered">{user?.displayName ?? "Guest"}</span>
+
+                <span className={`${isMobile? "text-[calc(0.4vw+0.8rem)]" : "text-[calc(0.4vw+0.6rem)]"} 
+                    cursor-pointer hovered`}>
+                    {isMobile? firstName : user?.displayName ?? "Guest"}
+                </span>
+
                 <Theme isDark={isDark} setIsDark={setIsDark}/>
             </div>
 

@@ -3,6 +3,7 @@ import { SidenavCard } from "../../components/Dashboard/SidenavCard"
 import useIsMobile from "../../hooks/useIsMobile";
 import Dashboard from "../../components/Dashboard/Pages/Dashboard";
 import Vehicle from "../../components/Dashboard/Pages/Vehicle";
+import Driver from "../../components/Dashboard/Pages/Driver";
 import type { UserInfo } from "../../App";
 
 type contentProps = {
@@ -16,7 +17,8 @@ function Content({isDark , activeIndex, setActiveIndex, user}: contentProps) {
 
     const navItems = [
         { icon: "bx bx-dashboard bx-tada-hover hovered", title: "Dashboard" },
-        { icon: "bx bx-car bx-tada-hover hovered", title: "Vehicle" },
+        { icon: "bx bx-user bx-tada-hover hovered", title: "Drivers" },
+        { icon: "bx bx-car bx-tada-hover hovered", title: "Vehicles" },
         { icon: "bx bx-petrol-pump bx-tada-hover hovered", title: "Fuel" },
         { icon: "bx bx-map bx-tada-hover hovered", title: "Trip" },
         { icon: "bx bx-spanner bx-tada-hover hovered", title: "Maintenance" },
@@ -27,7 +29,8 @@ function Content({isDark , activeIndex, setActiveIndex, user}: contentProps) {
 
     const dashboardPages = [
         <Dashboard isDark={isDark} user={user}/>,
-        <Vehicle isDark={isDark} />
+        <Driver isDark={isDark} user={user}/>,
+        <Vehicle isDark={isDark} user={user}/>
     ]
 
     const isMobile = useIsMobile();
