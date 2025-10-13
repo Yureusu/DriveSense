@@ -1,7 +1,8 @@
-import { auth } from './Firebase'; 
+import { auth, db } from './Firebase'; 
 import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import type { SetStateAction } from 'react';
 import type { UserInfo } from '../../App';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 type GoogleSignInProps = {
     isLoggedIn: boolean;
@@ -22,6 +23,19 @@ const GoogleLogin = ({isLoggedIn, setIsLoggedIn, setUser}: GoogleSignInProps) =>
                 email: user.email,
                 photoURL: user.photoURL,
             });
+
+            const userRef = doc(db, 'users', user.uid);
+            const userSnap = await getDoc(userRef);
+
+            if (!userSnap.exists()) {
+                await setDoc(userRef, {
+                    uid: user.uid,
+                    name: user.displayName,
+                    email: user.email,
+                    photoURL: user.photoURL,
+                    createdAt: new Date().toISOString(),
+                });
+            }
 
             setIsLoggedIn((prev) => !prev)
             {isLoggedIn && console.log("Google Sign-In successful:", user);}            
