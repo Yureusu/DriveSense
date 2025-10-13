@@ -24,7 +24,7 @@ function AddVehicle({user}: AddVehicleProps) {
                     {/*Form*/}
                     <div className="h-full w-full flex flex-col items-center justify-start py-[calc(0.4vw+0.6rem)] px-[calc(2.4vw+2.6rem)] gap-[calc(0.4vw+0.6rem)] text-[var(--dark-color)]">
                         
-                        <div className="flex-2 w-full flex flex-col items-center justify-end">
+                        <div className={`${user? "" : ""} flex-2 w-full flex flex-col items-center justify-end`}>
                             <span className="text-[calc(0.4vw+0.8rem)] font-semibold">Add a new driver</span>
                         </div>
 
