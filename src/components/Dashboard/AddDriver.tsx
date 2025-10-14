@@ -1,6 +1,5 @@
 import { useState } from "react";
 import type { UserInfo, DriverInfo } from "../../App"
-import CarImg from "../../assets/imgs/car-img.png"
 import useIsMobile from "../../hooks/useIsMobile";
 import { db } from "../../server/Firebase/Firebase";
 import { collection, addDoc } from "firebase/firestore";
@@ -46,7 +45,9 @@ function AddVehicle({user, driverInfo, setDriverInfo}: AddVehicleProps) {
             };
             //inupdate ko ung driverInfo with the new addded name
             setDriverInfo(prev => [...prev, newDriver]);
-            
+
+            console.log(driverInfo)
+
             setIsFormVisible((prev) => !prev);
         } catch(err){
             console.error("Can't add the driver.", err);
