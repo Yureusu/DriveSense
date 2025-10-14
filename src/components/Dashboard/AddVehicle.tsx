@@ -5,13 +5,18 @@ import useIsMobile from "../../hooks/useIsMobile";
 
 type AddVehicleProps = {
     user: UserInfo | null;
+    driverNames: string[];
 }
 
-function AddVehicle({user}: AddVehicleProps) {
+function AddVehicle({user, driverNames}: AddVehicleProps) {
 
     const [isFormVisible, setIsFormVisible] = useState(false);
 
+    console.log("driverNames:", driverNames);
+
     const isMobile = useIsMobile();
+
+    const [selectedDriver, setSelectedDriver] = useState("");
 
     return (
         <>
@@ -36,6 +41,16 @@ function AddVehicle({user}: AddVehicleProps) {
                         <div className="flex-2 w-full flex flex-col items-center justify-center gap-[calc(0.4vw+0.6rem)]">
                             <input type="text" placeholder="Vehicle Name" className="cursor-pointer outline-none border border-[var(--border-color)] rounded-xl focus:border-[var(--purple-color)]
                                 placeholder:text-[calc(0.4vw+0.5rem)] px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] text-[calc(0.4vw+0.5rem)] w-full" required/>
+                            <select id="driver-names" value={selectedDriver}
+                                className="focus:border-[var(--purple-color)] custom-select cursor-pointer text-[calc(0.4vw+0.5rem)] w-full p-[calc(0.3vw+0.4rem)] outline-none border border-[var(--border-color)] rounded-xl"
+                                onChange={(e) => setSelectedDriver(e.target.value)}>
+                                <option value="" disabled>Select a driver</option>
+                                {driverNames.map((drivername, index) => (
+                                    <option key={index} value={drivername} className="cursor-pointer">
+                                        {drivername}
+                                    </option>
+                                ))}
+                            </select>
                             <span className="text-[calc(0.4vw+0.5rem)] text-[var(--light-color)] w-full px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] rounded-xl text-center cursor-pointer 
                                 bg-[var(--blue-color)] hover:bg-[var(--purple-color)] transition duration-300 ease-in-out">Continue</span>
                         </div>

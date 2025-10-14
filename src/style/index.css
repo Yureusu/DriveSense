@@ -42,4 +42,10 @@ scrollbar-width: none;
 .bordered{
     border: 1px solid #cfcdcd;
 }
+
+select.custom-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
   

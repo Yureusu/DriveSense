@@ -2,16 +2,41 @@ import { useState } from "react";
 import type { UserInfo } from "../../App"
 import CarImg from "../../assets/imgs/car-img.png"
 import useIsMobile from "../../hooks/useIsMobile";
+import type { SetStateAction } from "react";
+import { db } from "../../server/Firebase/Firebase";
+import { collection, addDoc } from "firebase/firestore";
 
 type AddVehicleProps = {
     user: UserInfo | null;
+    setDriverNames: React.Dispatch<SetStateAction<string[]>>;
 }
 
-function AddVehicle({user}: AddVehicleProps) {
+function AddVehicle({user, setDriverNames}: AddVehicleProps) {
 
     const [isFormVisible, setIsFormVisible] = useState(false);
 
     const isMobile = useIsMobile();
+
+    const [driverName, setDriverName] = useState("");
+
+
+    const handleSubmit = async () => {
+        try{
+            if (!user?.uid) return;
+
+            const name = driverName;
+            
+            const driversRef = collection(db, "users", user?.uid, "drivers");
+            const snapshot = await addDoc(driversRef, {
+                name,
+            });
+            console.log("Added the driver successfully: ", snapshot)
+            setDriverNames(prev => [...prev, driverName]);
+            setIsFormVisible((prev) => !prev);
+        } catch(err){
+            console.error("Can't add the driver.", err);
+        }
+    }
 
     return (
         <>
@@ -22,7 +47,7 @@ function AddVehicle({user}: AddVehicleProps) {
                         onClick={() => setIsFormVisible((prev) => !prev)}></i> 
 
                     {/*Form*/}
-                    <div className="h-full w-full flex flex-col items-center justify-start py-[calc(0.4vw+0.6rem)] px-[calc(2.4vw+2.6rem)] gap-[calc(0.4vw+0.6rem)] text-[var(--dark-color)]">
+                    <div className="h-full w-full flex flex-col items-center justify-start py-[calc(0.4vw+0.6rem)] px-[calc(1.4vw+1.6rem)] gap-[calc(0.4vw+0.6rem)] text-[var(--dark-color)]">
                         
                         <div className={`${user? "" : ""} flex-2 w-full flex flex-col items-center justify-end`}>
                             <span className="text-[calc(0.4vw+0.8rem)] font-semibold">Add a new driver</span>
@@ -35,9 +60,11 @@ function AddVehicle({user}: AddVehicleProps) {
 
                         <div className="flex-2 w-full flex flex-col items-center justify-center gap-[calc(0.4vw+0.6rem)]">
                             <input type="text" placeholder="Driver Name" className="cursor-pointer outline-none border border-[var(--border-color)] rounded-xl focus:border-[var(--purple-color)]
-                                placeholder:text-[calc(0.4vw+0.5rem)] px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] text-[calc(0.4vw+0.5rem)] w-full" required/>
+                                placeholder:text-[calc(0.4vw+0.5rem)] px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] text-[calc(0.4vw+0.5rem)] w-full"
+                                onChange={(e) => setDriverName(e.target.value)} required/>
                             <span className="text-[calc(0.4vw+0.5rem)] text-[var(--light-color)] w-full px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] rounded-xl text-center cursor-pointer 
-                                bg-[var(--blue-color)] hover:bg-[var(--purple-color)] transition duration-300 ease-in-out">Continue</span>
+                                bg-[var(--blue-color)] hover:bg-[var(--purple-color)] transition duration-300 ease-in-out"
+                                onClick={() => handleSubmit()}>Continue</span>
                         </div>
 
                     </div>

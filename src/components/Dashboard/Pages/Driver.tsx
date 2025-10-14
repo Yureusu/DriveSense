@@ -1,23 +1,30 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type SetStateAction } from "react";
 import useIsMobile from "../../../hooks/useIsMobile"
 import AddDriver from "../AddDriver";
 import type { UserInfo } from "../../../App";
 import { db } from "../../../server/Firebase/Firebase";
 import { doc, getDocs, getDoc, collection } from "firebase/firestore";
+import DeleteDriver from "../DeleteDriver";
 
-type changeTheme = {
+type driverProps = {
     isDark: boolean;
     user: UserInfo | null;
+    driverNames: string[];
+    setDriverNames: React.Dispatch<SetStateAction<string[]>>;
 }
 
-function Driver({isDark, user} : changeTheme) {
+function Driver({isDark, user, driverNames, setDriverNames}: driverProps) {
 
     const isMobile = useIsMobile(); 
 
     const [isVisible, setIsVisible] = useState(false);
 
+    const [isDelete, setIsDelete] = useState(false);
+
     const [driverArr, setDriverArr] = useState<string[]>([]);
-    const [driverNames, setDriverNames] = useState<string[]>([]);
+
+    const [selectedDriverId, setSelectedDriverId] = useState<string | null>(null);
+    const [selectedDriverIndex, setSelectedDriverIndex] = useState<number | null>(null);
 
     useEffect(() => {
         const fetchDrivers = async () => {
@@ -56,7 +63,6 @@ function Driver({isDark, user} : changeTheme) {
                             }   
                         }  
                         setDriverNames(fetchedDriverNames);
-                        console.log(driverNames);
                     } 
                 }
                 catch(err){
@@ -69,10 +75,12 @@ function Driver({isDark, user} : changeTheme) {
         fetchDrivers();
     }, []);
 
+    console.log(driverNames);
+
     return (
         <section id="main" className={`${isMobile? "p-[calc(0.4vw+0.6rem)] h-screen" : "border-l px-[calc(0.4vw+0.6rem)] h-full"}
-        ${isDark? "" : ""}
-        flex flex-col items-start justify-start w-full flex-5 border-[var(--border-color)] gap-[calc(0.4vw+0.6rem)]`}>
+            ${isDark? "" : ""}
+            flex flex-col items-start justify-start w-full flex-5 border-[var(--border-color)] gap-[calc(0.4vw+0.6rem)]`}>
 
             <div className="flex-1 w-full flex flex-col items-start justify-start gap-[calc(0.4vw+0.6rem)]">
                 <span className="text-[calc(0.8vw+1.2rem)] font-semibold cursor-pointer hovered">Driver Information</span>
@@ -81,21 +89,35 @@ function Driver({isDark, user} : changeTheme) {
                 onClick={() => setIsVisible((prev) => !prev)}>Add Driver</span>
             </div>
 
-            {isVisible && <AddDriver user={user} />}
+            {isVisible && <AddDriver user={user} setDriverNames={setDriverNames}/>}
 
             <div className="h-full w-full flex flex-col items-start justify-start gap-[calc(0.4vw+0.6rem)]">
                 
-                {driverNames.map((index) => (
-                    <div className="h-auto w-full p-[calc(0.4vw+0.6rem)] flex flex-row items-start justify-start rounded-xl bordered">
-                        <div className="h-full flex flex-row items-center justify-center">
-                            <span key={index} className="hovered cursor-pointer text-[calc(0.4vw+0.6rem)]">{index}</span>
+                {driverNames.map((driversName, index) => (
+                    <div key={index} className="h-auto w-full p-[calc(0.4vw+0.6rem)] flex flex-row items-start justify-start rounded-xl bordered">
+                        <div className="h-full flex flex-col items-start justify-center gap-[calc(0.6vw+1rem)]">
+                            <span className="hovered cursor-pointer text-[calc(0.4vw+0.6rem)]">Id: {driverArr[index]}</span>   
+                            <span className="hovered cursor-pointer text-[calc(0.4vw+0.6rem)]">Name: {driversName}</span>
                         </div>
-                        <div className="h-full flex flex-row items-center justify-center ml-auto">
-                            <i className='bx bx-edit bx-tada-hover hovered text-[calc(0.8vw+1rem)] gap-[calc(0.4vw+0.6rem)] cursor-pointer'></i> 
-                            <i className='bx bx-trash bx-tada-hover text-[calc(0.8vw+1rem)] hover:text-red-500 transition duration-300 ease-in-out gap-[calc(0.4vw+0.6rem)] cursor-pointer'></i> 
+                        <div className="h-full flex flex-row items-end justify-center gap-[calc(0.4vw+0.6rem)] ml-auto">
+                            <i className='bx bx-edit bx-tada-hover hovered text-[calc(0.8vw+1rem)] cursor-pointer'></i> 
+                            <i className='bx bx-trash bx-tada-hover text-[calc(0.8vw+1rem)] hover:text-red-500 transition duration-300 ease-in-out gap-[calc(0.4vw+0.6rem)] cursor-pointer'
+                                onClick={() => {
+                                    setIsDelete((prev) => !prev); 
+                                    setSelectedDriverId(driverArr[index]);
+                                    setSelectedDriverIndex(index);
+                                }}></i> 
                         </div>
                     </div>
                 ))}
+
+                {isDelete && selectedDriverId && 
+                <DeleteDriver user={user} 
+                    setDriverNames={setDriverNames} 
+                    setDriverId={setDriverNames} 
+                    driverId={selectedDriverId} 
+                    driverIndex={selectedDriverIndex}
+                />}
                 
                 
             </div>
