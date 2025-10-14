@@ -1,7 +1,7 @@
 import { useEffect, useState, type SetStateAction } from "react";
 import useIsMobile from "../../../hooks/useIsMobile"
 import AddDriver from "../AddDriver";
-import type { UserInfo } from "../../../App";
+import type { UserInfo, DriverInfo } from "../../../App";
 import { db } from "../../../server/Firebase/Firebase";
 import { doc, getDocs, getDoc, collection } from "firebase/firestore";
 import DeleteDriver from "../DeleteDriver";
@@ -9,73 +9,106 @@ import DeleteDriver from "../DeleteDriver";
 type driverProps = {
     isDark: boolean;
     user: UserInfo | null;
-    driverNames: string[];
-    setDriverNames: React.Dispatch<SetStateAction<string[]>>;
+    driverInfo:  DriverInfo[];
+    setDriverInfo: React.Dispatch<SetStateAction<DriverInfo[]>>;
 }
 
-function Driver({isDark, user, driverNames, setDriverNames}: driverProps) {
+function Driver({isDark, user, driverInfo, setDriverInfo}: driverProps) {
 
     const isMobile = useIsMobile(); 
 
     const [isVisible, setIsVisible] = useState(false);
-
     const [isDelete, setIsDelete] = useState(false);
-
-    const [driverArr, setDriverArr] = useState<string[]>([]);
+    const [driverId, setDriverId] = useState<string[]>([]);
 
     const [selectedDriverId, setSelectedDriverId] = useState<string | null>(null);
     const [selectedDriverIndex, setSelectedDriverIndex] = useState<number | null>(null);
 
-    useEffect(() => {
-        const fetchDrivers = async () => {
+
+    //dito ko sineperate ung laman ng DriverInfo
+
+    const [driverNames, setDriverNames] = useState<string[]>([]);
+    const [driverContacts, setDriverContacts] = useState<string[]>([]);
+    const [driverLicenses, setDriverLicenses] = useState<string[]>([]);
+
+    const fetchDrivers = async () => {
+        try{
+            if (!user?.uid) return;
+
+            //dito ko inistore ung documents inside drivers collection
+            const driversRef = collection(db, "users", user?.uid, "drivers");
+            const snapshot = await getDocs(driversRef);
+            
+            const fetchedDriversId: string[] = [];
+
+            snapshot.forEach((doc) => {
+                fetchedDriversId.push(doc.id);           
+                console.log("Driver name: ", doc.id)
+                console.log(fetchDrivers)
+            });
+
+            setDriverId(fetchedDriversId);
+
+            //dito ko finetch ung id, names, contact, license nilagay ko sa temporary arr 
+            // tas ipapass ko mmya sa state
+            const fetchedDriverInfo: DriverInfo[] = [];
+            const fetchedDriversName: string[] = [];
+            const fetchedDriversContact: string[] = [];
+            const fetchedDriversLicense: string[] = [];
+
             try{
-                if (!user?.uid) return;
+                if (fetchedDriversId.length > 0) {
+                    for (const driverId of fetchedDriversId) {
 
-                //dito ko inistore ung documents inside drivers collection
-                const driversRef = collection(db, "users", user?.uid, "drivers");
-                const snapshot = await getDocs(driversRef);
-                
-                const fetchedDrivers: string[] = [];
+                        const docRef = doc(db, "users", user?.uid!, "drivers", driverId);
+                        const docSnap = await getDoc(docRef);  
+                      
+                        if (docSnap.exists() && driverId) {
+                            
+                            const data = docSnap.data();
+                        
+                            //saving driver infos sa fetchDriverInfo
+                            const driverInfos: DriverInfo = {
+                                name: data.name ?? null, 
+                                contact: data.contact ?? null,
+                                license: data.license ?? null
+                            }
 
-                snapshot.forEach((doc) => {
-                    fetchedDrivers.push(doc.id);           
-                    console.log("Driver name: ", doc.id)
-                    console.log(fetchDrivers)
-                });
+                            fetchedDriversName.push(data.name); 
+                            fetchedDriversContact.push(data.contact); 
+                            fetchedDriversLicense.push(data.license); 
 
-                setDriverArr(fetchedDrivers);
-
-                //dito ko finetch ung names
-                const fetchedDriverNames: string[] = [];
-
-                try{
-                    if (fetchedDrivers.length > 0) {
-                        for (const driverId of fetchedDrivers) {
-
-                            const docRef = doc(db, "users", user?.uid!, "drivers", driverId);
-                            const docSnap = await getDoc(docRef);  
-                          
-                            if (docSnap.exists() && driverArr) {
-                                const data = docSnap.data();
-                                console.log(`Driver ID: ${driverId}, Name: ${data.name}`);
-                                fetchedDriverNames.push(data.name);   
-                                console.log(fetchedDriverNames); 
-                            }   
-                        }  
-                        setDriverNames(fetchedDriverNames);
-                    } 
-                }
-                catch(err){
-                    console.error("Bruh can't fetch the names :D", err);
-                }
-            } catch(err){
-                console.error("Can't fetch drivers :D" ,err)
+                            console.log(`
+                                Driver ID: ${driverId}, 
+                                Name: ${data.name}, 
+                                Contact: ${data.contact},
+                                License: ${data.license}`,
+                            );
+                            
+                            fetchedDriverInfo.push(driverInfos);   
+                            console.log(fetchedDriverInfo); 
+                        }   
+                        //saving sa seprate states nila
+                        setDriverNames(fetchedDriversName);
+                        setDriverContacts(fetchedDriversContact);
+                        setDriverLicenses(fetchedDriversLicense);
+                    }  
+                    setDriverInfo(fetchedDriverInfo);
+                } 
             }
+            catch(err){
+                console.error("Bruh can't fetch the names :D", err);
+            }
+        } catch(err){
+            console.error("Can't fetch drivers :D" ,err)
         }
+    }
+
+    useEffect(() => {
         fetchDrivers();
     }, []);
 
-    console.log(driverNames);
+    console.log(driverInfo);
 
     return (
         <section id="main" className={`${isMobile? "p-[calc(0.4vw+0.6rem)] h-screen" : "border-l px-[calc(0.4vw+0.6rem)] h-full"}
@@ -89,35 +122,50 @@ function Driver({isDark, user, driverNames, setDriverNames}: driverProps) {
                 onClick={() => setIsVisible((prev) => !prev)}>Add Driver</span>
             </div>
 
-            {isVisible && <AddDriver user={user} setDriverNames={setDriverNames}/>}
+            {isVisible && <AddDriver user={user} driverInfo={driverInfo} setDriverInfo={setDriverInfo}/>}
 
             <div className="h-full w-full flex flex-col items-start justify-start gap-[calc(0.4vw+0.6rem)]">
-                
-                {driverNames.map((driversName, index) => (
-                    <div key={index} className="h-auto w-full p-[calc(0.4vw+0.6rem)] flex flex-row items-start justify-start rounded-xl bordered">
-                        <div className="h-full flex flex-col items-start justify-center gap-[calc(0.6vw+1rem)]">
-                            <span className="hovered cursor-pointer text-[calc(0.4vw+0.6rem)]">Id: {driverArr[index]}</span>   
-                            <span className="hovered cursor-pointer text-[calc(0.4vw+0.6rem)]">Name: {driversName}</span>
+                <div className="h-auto w-full flex flex-col items-start justify-start bg-[var(--purple-color)] text-[var(--light-color)] p-[calc(0.4vw+0.6rem)]">
+                    <div className="h-auto w-full flex flex-row items-start justify-start gap-[calc(0.6vw+1rem)]">
+                        <span className="flex-1 cursor-pointer text-[calc(0.4vw+0.6rem)]">Id</span>  
+                        <span className="flex-1 cursor-pointer text-[calc(0.4vw+0.6rem)]">Name</span>   
+                        <span className="flex-1 cursor-pointer text-[calc(0.4vw+0.6rem)]">Contact</span>  
+                        <span className="flex-1 cursor-pointer text-[calc(0.4vw+0.6rem)]">License</span>  
+                        <div className="flex-1 flex flex-row itens-center justify-end cursor-pointer text-[calc(0.4vw+0.6rem)] gap-[calc(0.4vw+0.6rem)]">
+                            <i title="Refresh" className='bxr bx-refresh-cw bx-spin-hover hover:text-[var(--dark-color)] text-[calc(0.6vw+1rem)] transition duration-300 ease-in-out cursor-pointer'
+                                onClick={() => fetchDrivers()}></i> 
                         </div>
-                        <div className="h-full flex flex-row items-end justify-center gap-[calc(0.4vw+0.6rem)] ml-auto">
-                            <i className='bx bx-edit bx-tada-hover hovered text-[calc(0.8vw+1rem)] cursor-pointer'></i> 
-                            <i className='bx bx-trash bx-tada-hover text-[calc(0.8vw+1rem)] hover:text-red-500 transition duration-300 ease-in-out gap-[calc(0.4vw+0.6rem)] cursor-pointer'
-                                onClick={() => {
-                                    setIsDelete((prev) => !prev); 
-                                    setSelectedDriverId(driverArr[index]);
-                                    setSelectedDriverIndex(index);
-                                }}></i> 
-                        </div>
+                    </div>        
+                </div>
+                {driverId.map((id, index) => (
+                    <div key={id} className="h-auto w-full flex flex-col items-start justify-start p-[calc(0.4vw+0.6rem)] border-b border-[var(--border-color)]">
+                        <div className="h-auto w-full flex flex-row items-start justify-start gap-[calc(0.6vw+1rem)]">
+                            <span className="flex-1 hovered cursor-pointer text-[calc(0.4vw+0.6rem)]">{driverId[index] ?? "null"}</span>  
+                            <span className="flex-1 hovered cursor-pointer text-[calc(0.4vw+0.6rem)]">{driverNames[index] ?? "null"}</span>   
+                            <span className="flex-1 hovered cursor-pointer text-[calc(0.4vw+0.6rem)]">{driverContacts[index] ?? "null"}</span>  
+                            <span className="flex-1 hovered cursor-pointer text-[calc(0.4vw+0.6rem)]">{driverLicenses[index] ?? "null"}</span>  
+                            <div className="flex-1 flex flex-row itens-center justify-end cursor-pointer text-[calc(0.4vw+0.6rem)] gap-[calc(0.4vw+0.6rem)]">
+                                <i className='bx bx-edit bx-tada-hover hovered text-[calc(0.8vw+1rem)] cursor-pointer'></i> 
+                                <i className='bx bx-trash bx-tada-hover text-[calc(0.8vw+1rem)] hover:text-red-500 transition duration-300 ease-in-out gap-[calc(0.4vw+0.6rem)] cursor-pointer'
+                                    onClick={() => {
+                                        setIsDelete((prev) => !prev); 
+                                        setSelectedDriverId(driverId[index]);
+                                        setSelectedDriverIndex(index);
+                                    }}>
+                                </i> 
+                            </div>
+                        </div>        
                     </div>
                 ))}
 
                 {isDelete && selectedDriverId && 
-                <DeleteDriver user={user} 
-                    setDriverNames={setDriverNames} 
-                    setDriverId={setDriverNames} 
-                    driverId={selectedDriverId} 
-                    driverIndex={selectedDriverIndex}
-                />}
+                    <DeleteDriver user={user} 
+                        driverInfo={driverInfo} 
+                        setDriverInfo={setDriverInfo} 
+                        driverId={selectedDriverId} 
+                        driverIndex={selectedDriverIndex}
+                    />
+                }
                 
                 
             </div>

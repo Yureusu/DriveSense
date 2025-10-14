@@ -4,21 +4,18 @@ import useIsMobile from "../../hooks/useIsMobile";
 import Dashboard from "../../components/Dashboard/Pages/Dashboard";
 import Vehicle from "../../components/Dashboard/Pages/Vehicle";
 import Driver from "../../components/Dashboard/Pages/Driver";
-import type { UserInfo } from "../../App";
-import { useState } from "react";
+import type { UserInfo, DriverInfo } from "../../App";
 
 type contentProps = {
     isDark: boolean;
     activeIndex: number;
     setActiveIndex: React.Dispatch<SetStateAction<number>>
     user: UserInfo | null;
-    driverNames: string[];
-    setDriverNames: React.Dispatch<SetStateAction<string[]>>;
+    driverInfo:  DriverInfo[];
+    setDriverInfo: React.Dispatch<SetStateAction<DriverInfo[]>>;
 }
 
-function Content({isDark , activeIndex, setActiveIndex, user}: contentProps) {  
-
-    const [driverNames, setDriverNames] = useState<string[]>([]);
+function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, setDriverInfo}: contentProps) {  
 
     const navItems = [
         { icon: "bx bx-dashboard bx-tada-hover hovered", title: "Dashboard" },
@@ -34,8 +31,8 @@ function Content({isDark , activeIndex, setActiveIndex, user}: contentProps) {
 
     const dashboardPages = [
         <Dashboard isDark={isDark} user={user}/>,
-        <Driver isDark={isDark} user={user} driverNames={driverNames} setDriverNames={setDriverNames}/>,
-        <Vehicle isDark={isDark} user={user} driverNames={driverNames}/>
+        <Driver isDark={isDark} user={user} driverInfo={driverInfo} setDriverInfo={setDriverInfo}/>,
+        <Vehicle isDark={isDark} user={user} />
     ]
 
     const isMobile = useIsMobile();

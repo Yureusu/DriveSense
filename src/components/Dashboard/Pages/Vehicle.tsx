@@ -6,10 +6,9 @@ import type { UserInfo } from "../../../App";
 type changeTheme = {
     isDark: boolean;
     user: UserInfo | null;
-    driverNames: string[];
 }
 
-function Vehicle({isDark, user, driverNames} : changeTheme) {
+function Vehicle({isDark, user} : changeTheme) {
 
     const isMobile = useIsMobile(); 
 
@@ -27,7 +26,7 @@ function Vehicle({isDark, user, driverNames} : changeTheme) {
                 onClick={() => setIsVisible((prev) => !prev)}>Add Vehicle</span>
             </div>
 
-            {isVisible && <AddVehicle user={user} driverNames={driverNames}/>}
+            {isVisible && <AddVehicle user={user} />}
 
             <div className="h-full w-full flex flex-col items-start justify-start gap-[calc(0.4vw+0.6rem)] rounded-xl bordered">
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { UserInfo } from "../../App"
+import type { UserInfo, DriverInfo } from "../../App"
 import useIsMobile from "../../hooks/useIsMobile";
 import type { SetStateAction } from "react";
 import { db } from "../../server/Firebase/Firebase";
@@ -7,21 +7,17 @@ import { doc, deleteDoc } from "firebase/firestore";
 
 type AddVehicleProps = {
     user: UserInfo | null;
-    setDriverNames: React.Dispatch<SetStateAction<string[]>>;
+    driverInfo:  DriverInfo[];
+    setDriverInfo: React.Dispatch<SetStateAction<DriverInfo[]>>;
     driverId: string;
     driverIndex: number | null;
-    setDriverId: React.Dispatch<SetStateAction<string[]>>;
 }
 
-function AddVehicle({user, setDriverNames, driverId, driverIndex, setDriverId}: AddVehicleProps) {
+function AddVehicle({user, driverId, driverIndex, driverInfo, setDriverInfo}: AddVehicleProps) {
 
     const [isFormVisible, setIsFormVisible] = useState(false);
 
     const isMobile = useIsMobile();
-
-    const handleNo = () => {
-        setIsFormVisible((prev) => !prev);
-    }
     
     const handleYes = async () => {
         try{
@@ -30,15 +26,14 @@ function AddVehicle({user, setDriverNames, driverId, driverIndex, setDriverId}: 
             const deleteRef = doc(db, "users", user?.uid, "drivers", driverId);
             await deleteDoc(deleteRef);
 
-            setDriverNames(prev => prev.filter((_, i) => i !== driverIndex));
-            setDriverId(prev => prev.filter(id => id !== driverId));
+            setDriverInfo(prev => prev.filter((_, i) => i !== driverIndex));
 
         } catch(err){
             console.error("Cant delete the driver.", err)
         }
 
         setIsFormVisible((prev) => !prev);
-        console.log("Updated driver ids: ", driverId);
+        console.log("Updated driver info: ", driverInfo);
     }
 
     return (
@@ -60,7 +55,7 @@ function AddVehicle({user, setDriverNames, driverId, driverIndex, setDriverId}: 
                             flex-2 w-full flex flex-row items-center justify-center gap-[calc(0.4vw+0.6rem)]`}>
                             <span className="text-[calc(0.4vw+0.5rem)] text-[var(--light-color)] w-full px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] rounded-xl text-center cursor-pointer 
                                 bg-[var(--blue-color)] hover:bg-red-500 transition duration-300 ease-in-out"
-                                onClick={() => handleNo()}>No</span>
+                                onClick={() => setIsFormVisible(false)}>No</span>
                             <span className="text-[calc(0.4vw+0.5rem)] text-[var(--light-color)] w-full px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] rounded-xl text-center cursor-pointer 
                                 bg-[var(--blue-color)] hover:bg-green-500 transition duration-300 ease-in-out"
                                 onClick={() => handleYes()}>Yes</span>

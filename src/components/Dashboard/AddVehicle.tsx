@@ -5,14 +5,13 @@ import useIsMobile from "../../hooks/useIsMobile";
 
 type AddVehicleProps = {
     user: UserInfo | null;
-    driverNames: string[];
 }
 
-function AddVehicle({user, driverNames}: AddVehicleProps) {
+function AddVehicle({user}: AddVehicleProps) {
 
     const [isFormVisible, setIsFormVisible] = useState(false);
 
-    console.log("driverNames:", driverNames);
+    console.log("driverNames:");
 
     const isMobile = useIsMobile();
 
@@ -45,11 +44,11 @@ function AddVehicle({user, driverNames}: AddVehicleProps) {
                                 className="focus:border-[var(--purple-color)] custom-select cursor-pointer text-[calc(0.4vw+0.5rem)] w-full p-[calc(0.3vw+0.4rem)] outline-none border border-[var(--border-color)] rounded-xl"
                                 onChange={(e) => setSelectedDriver(e.target.value)}>
                                 <option value="" disabled>Select a driver</option>
-                                {driverNames.map((drivername, index) => (
+                                {/* {driverNames.map((drivername, index) => (
                                     <option key={index} value={drivername} className="cursor-pointer">
                                         {drivername}
                                     </option>
-                                ))}
+                                ))} */}
                             </select>
                             <span className="text-[calc(0.4vw+0.5rem)] text-[var(--light-color)] w-full px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] rounded-xl text-center cursor-pointer 
                                 bg-[var(--blue-color)] hover:bg-[var(--purple-color)] transition duration-300 ease-in-out">Continue</span>
