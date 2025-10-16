@@ -12,7 +12,7 @@ type changeTheme = {
     vehicleInfo: VehicleInfo[];
 }
 
-function Dashboard({isDark, user, vehicleInfo} : changeTheme) {
+function Dashboard({isDark, user} : changeTheme) {
 
     const isMobile = useIsMobile(); 
 
