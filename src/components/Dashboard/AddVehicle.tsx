@@ -11,7 +11,7 @@ type AddVehicleProps = {
     vehicleInfo: VehicleInfo[];
 }
 
-function AddVehicle({user, driverInfo, isDark, vehicleInfo}: AddVehicleProps) {
+function AddVehicle({user, driverInfo, isDark}: AddVehicleProps) {
 
     const [isFormVisible, setIsFormVisible] = useState(false);
 
