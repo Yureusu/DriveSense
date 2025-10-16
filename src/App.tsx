@@ -15,6 +15,13 @@ export type DriverInfo = {
   license: string | null;
 }
 
+export type VehicleInfo = {
+  plateNumber: string | null;
+  model: string | null;
+  driver: string | null;
+  createdAt: string | null;
+}
+
 function App() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -23,11 +30,13 @@ function App() {
 
   const [driverInfo, setDriverInfo] = useState<DriverInfo[]>([]);
 
+  const [vehicleInfo, setVehicleInfo] = useState<VehicleInfo[]>([]);
+
   return (
     <div>
       {!isLoggedIn && <Landing isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setUser={setUser}/>}
       {isLoggedIn && <Dashboard user={user}
-        driverInfo={driverInfo} setDriverInfo={setDriverInfo}/>}
+        driverInfo={driverInfo} setDriverInfo={setDriverInfo} vehicleInfo={vehicleInfo} setVehicleInfo={setVehicleInfo}/>}
     </div>
   )
 }

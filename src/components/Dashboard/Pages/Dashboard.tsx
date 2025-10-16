@@ -1,7 +1,7 @@
 import DashboardCard from "../DashboardCard"
 import BarChart from "../../../chartjs/Dashboard/BarChart";
 import useIsMobile from "../../../hooks/useIsMobile"
-import type { UserInfo } from "../../../App";
+import type { UserInfo, VehicleInfo } from "../../../App";
 import { useEffect, useState } from "react";
 import { db } from '../../../server/Firebase/Firebase'; 
 import { doc, getDoc, getDocs, collection } from 'firebase/firestore';
@@ -9,9 +9,10 @@ import { doc, getDoc, getDocs, collection } from 'firebase/firestore';
 type changeTheme = {
     isDark: boolean;
     user: UserInfo | null;
+    vehicleInfo: VehicleInfo[];
 }
 
-function Dashboard({isDark, user} : changeTheme) {
+function Dashboard({isDark, user, vehicleInfo} : changeTheme) {
 
     const isMobile = useIsMobile(); 
 
@@ -105,26 +106,10 @@ function Dashboard({isDark, user} : changeTheme) {
                     <span className="text-[calc(0.6vw+0.8rem)] p-[calc(0.4vw+0.6rem)] pl-0 cursor-pointer">Recent Activity</span>
                     <div className="h-full w-full flex flex-row items-start justify-around py-[calc(0.4vw+0.6rem)]">
 
-                        <div className="h-full flex-1 flex flex-col items-start justify-start gap-[calc(0.4vw+0.6rem)]  text-[calc(0.4vw+0.6rem)]">
-                            <span className="hovered w-full p-[calc(0.3vw+0.4rem)] border-b border-[var(--border-color)] cursor-pointer pl-0">Activity</span>
-                            <span className="cursor-pointer hovered">Refuel</span>
-                            <span className="cursor-pointer hovered">Trip</span>
-                            <span className="cursor-pointer hovered">Maintenance</span>    
-                            <span className="cursor-pointer hovered">Refuel</span>             
-                        </div>
-                        <div className="h-full flex-1 flex flex-col items-start justify-start gap-[calc(0.4vw+0.6rem)]  text-[calc(0.4vw+0.6rem)]">
-                            <span className=" hovered w-full p-[calc(0.3vw+0.4rem)] border-b border-[var(--border-color)] cursor-pointer pl-0">Date</span>
-                            <span className="cursor-pointer hovered">Sep 23, 2025</span>
-                            <span className="cursor-pointer hovered">Sep 23, 2025</span>
-                            <span className="cursor-pointer hovered">Oct 04, 2025</span>    
-                            <span className="cursor-pointer hovered">Oct 18, 2025</span>             
-                        </div>
-                        <div className="h-full flex-1 flex flex-col items-start justify-start gap-[calc(0.4vw+0.6rem)]  text-[calc(0.4vw+0.6rem)]">
-                            <span className="hovered w-full p-[calc(0.3vw+0.4rem)] border-b border-[var(--border-color)] cursor-pointer pl-0">Time</span>
-                            <span className="cursor-pointer hovered">9:15 AM</span>
-                            <span className="cursor-pointer hovered">1:20 PM</span>
-                            <span className="cursor-pointer hovered">4:32 PM</span>    
-                            <span className="cursor-pointer hovered">8:44 PM</span>             
+                        <div className="w-full flex flex-row items-center justify-start">
+                            <span className="flex-1 text-[calc(0.4vw+0.6rem)] cursor-pointer hovered">Activity</span>
+                            <span className="flex-1 text-[calc(0.4vw+0.6rem)] cursor-pointer hovered">Date</span>
+                            <span className="flex-1 text-[calc(0.4vw+0.6rem)] cursor-pointer hovered">Time</span>
                         </div>
         
                     </div>

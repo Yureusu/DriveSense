@@ -49,12 +49,8 @@ function Driver({isDark, user, driverInfo, setDriverInfo}: driverProps) {
 
             setDriverId(fetchedDriversId);
 
-            //dito ko finetch ung id, names, contact, license nilagay ko sa temporary arr 
-            // tas ipapass ko mmya sa state
+            //dito ko inistore ung driversInfo data
             const fetchedDriverInfo: DriverInfo[] = [];
-            const fetchedDriversName: string[] = [];
-            const fetchedDriversContact: string[] = [];
-            const fetchedDriversLicense: string[] = [];
 
             try{
                 if (fetchedDriversId.length > 0) {
@@ -73,26 +69,12 @@ function Driver({isDark, user, driverInfo, setDriverInfo}: driverProps) {
                                 contact: data.contact ?? null,
                                 license: data.license ?? null
                             }
-
-                            fetchedDriversName.push(data.name); 
-                            fetchedDriversContact.push(data.contact); 
-                            fetchedDriversLicense.push(data.license); 
-
-                            console.log(`
-                                Driver ID: ${driverId}, 
-                                Name: ${data.name}, 
-                                Contact: ${data.contact},
-                                License: ${data.license}`,
-                            );
                             
                             fetchedDriverInfo.push(driverInfos);   
                             console.log(fetchedDriverInfo); 
                         }   
-                        //saving sa seprate states nila
-                        setDriverNames(fetchedDriversName);
-                        setDriverContacts(fetchedDriversContact);
-                        setDriverLicenses(fetchedDriversLicense);
                     }  
+                    //updating DriverInfo
                     setDriverInfo(fetchedDriverInfo);
                 } 
             }
@@ -108,6 +90,20 @@ function Driver({isDark, user, driverInfo, setDriverInfo}: driverProps) {
         fetchDrivers();
     }, []);
 
+    useEffect(() => {
+        const names = driverInfo.map(driver => driver.name ?? "null");
+        setDriverNames(names);
+        console.log("List of driver names: ", driverNames);
+
+        const contact = driverInfo.map(driver => driver.contact ?? "null");
+        setDriverContacts(contact);
+        console.log("List of driver contacts: ", driverContacts);
+
+        const license = driverInfo.map(driver => driver.license ?? "null");
+        setDriverLicenses(license);
+        console.log("List of driver licenses: ", driverLicenses);
+      }, [driverInfo]);
+
     console.log(driverInfo);
 
     return (
@@ -115,11 +111,14 @@ function Driver({isDark, user, driverInfo, setDriverInfo}: driverProps) {
             ${isDark? "" : ""}
             flex flex-col items-start justify-start w-full flex-5 border-[var(--border-color)] gap-[calc(0.4vw+0.6rem)]`}>
 
-            <div className="flex-1 w-full flex flex-col items-start justify-start gap-[calc(0.4vw+0.6rem)]">
-                <span className="text-[calc(0.8vw+1.2rem)] font-semibold cursor-pointer hovered">Driver Information</span>
-                <span className="text-[calc(0.4vw+0.5rem)] text-[var(--light-color)] bg-[var(--purple-color)] 
-                px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] rounded-lg cursor-pointer"
-                onClick={() => setIsVisible((prev) => !prev)}>Add Driver</span>
+            <div className="flex-1 w-full flex flex-row items-center justify-between gap-[calc(0.4vw+0.6rem)]">
+                <span className="text-[calc(0.6vw+1rem)] font-semibold cursor-pointer hovered">Driver Information</span>
+                <div className="flex flex-row items-center jsutify-center rounded-lg cursor-pointer text-[calc(0.4vw+0.5rem)] 
+                    text-[var(--light-color)] bg-[var(--purple-color)] px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] gap-[calc(0.2vw+0.3rem)]"
+                    onClick={() => setIsVisible((prev) => !prev)}>
+                    <i className='bx bx-plus bx-tada-hover'></i> 
+                    <span className="">Add Driver</span>
+                </div>
             </div>
 
             {isVisible && <AddDriver user={user} driverInfo={driverInfo} setDriverInfo={setDriverInfo}/>}
@@ -127,7 +126,7 @@ function Driver({isDark, user, driverInfo, setDriverInfo}: driverProps) {
             <div className="h-full w-full flex flex-col items-start justify-start gap-[calc(0.4vw+0.6rem)]">
                 <div className="h-auto w-full flex flex-col items-start justify-start bg-[var(--purple-color)] text-[var(--light-color)] p-[calc(0.4vw+0.6rem)]">
                     <div className="h-auto w-full flex flex-row items-start justify-start gap-[calc(0.6vw+1rem)]">
-                        <span className="flex-1 cursor-pointer text-[calc(0.4vw+0.6rem)]">Id</span>  
+                        <span className="flex-2 cursor-pointer text-[calc(0.4vw+0.6rem)]">Id</span>  
                         <span className="flex-1 cursor-pointer text-[calc(0.4vw+0.6rem)]">Name</span>   
                         <span className="flex-1 cursor-pointer text-[calc(0.4vw+0.6rem)]">Contact</span>  
                         <span className="flex-1 cursor-pointer text-[calc(0.4vw+0.6rem)]">License</span>  
@@ -140,7 +139,7 @@ function Driver({isDark, user, driverInfo, setDriverInfo}: driverProps) {
                 {driverId.map((id, index) => (
                     <div key={id} className="h-auto w-full flex flex-col items-start justify-start p-[calc(0.4vw+0.6rem)] border-b border-[var(--border-color)]">
                         <div className="h-auto w-full flex flex-row items-start justify-start gap-[calc(0.6vw+1rem)]">
-                            <span className="flex-1 hovered cursor-pointer text-[calc(0.4vw+0.6rem)]">{driverId[index] ?? "null"}</span>  
+                            <span className="flex-2 hovered cursor-pointer text-[calc(0.4vw+0.6rem)]">{driverId[index] ?? "null"}</span>  
                             <span className="flex-1 hovered cursor-pointer text-[calc(0.4vw+0.6rem)]">{driverNames[index] ?? "null"}</span>   
                             <span className="flex-1 hovered cursor-pointer text-[calc(0.4vw+0.6rem)]">{driverContacts[index] ?? "null"}</span>  
                             <span className="flex-1 hovered cursor-pointer text-[calc(0.4vw+0.6rem)]">{driverLicenses[index] ?? "null"}</span>  

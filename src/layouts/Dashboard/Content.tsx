@@ -4,7 +4,7 @@ import useIsMobile from "../../hooks/useIsMobile";
 import Dashboard from "../../components/Dashboard/Pages/Dashboard";
 import Vehicle from "../../components/Dashboard/Pages/Vehicle";
 import Driver from "../../components/Dashboard/Pages/Driver";
-import type { UserInfo, DriverInfo } from "../../App";
+import type { UserInfo, DriverInfo, VehicleInfo } from "../../App";
 
 type contentProps = {
     isDark: boolean;
@@ -13,9 +13,11 @@ type contentProps = {
     user: UserInfo | null;
     driverInfo:  DriverInfo[];
     setDriverInfo: React.Dispatch<SetStateAction<DriverInfo[]>>;
+    vehicleInfo: VehicleInfo[];
+    setVehicleInfo: React.Dispatch<SetStateAction<VehicleInfo[]>>;
 }
 
-function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, setDriverInfo}: contentProps) {  
+function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, setDriverInfo, vehicleInfo, setVehicleInfo}: contentProps) {  
 
     const navItems = [
         { icon: "bx bx-dashboard bx-tada-hover hovered", title: "Dashboard" },
@@ -30,9 +32,9 @@ function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, setDri
     ];
 
     const dashboardPages = [
-        <Dashboard isDark={isDark} user={user}/>,
+        <Dashboard isDark={isDark} user={user} vehicleInfo={vehicleInfo}/>,
         <Driver isDark={isDark} user={user} driverInfo={driverInfo} setDriverInfo={setDriverInfo}/>,
-        <Vehicle isDark={isDark} user={user} />
+        <Vehicle isDark={isDark} user={user} driverInfo={driverInfo} vehicleInfo={vehicleInfo} setVehicleInfo={setVehicleInfo}/>
     ]
 
     const isMobile = useIsMobile();
@@ -57,7 +59,7 @@ function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, setDri
                 ))}
             </section>}
             
-            {dashboardPages[activeIndex] ?? <Dashboard isDark={isDark} user={user}/>}
+            {dashboardPages[activeIndex] ?? <Dashboard isDark={isDark} user={user} vehicleInfo={vehicleInfo} />}
             
         </div>
     )

@@ -56,7 +56,7 @@ function AddVehicle({user, driverInfo, setDriverInfo}: AddVehicleProps) {
 
     return (
         <>
-            {!isFormVisible && <div className="fade-in absolute top-0 left-0 z-2 h-screen w-full flex flex-col items-center justify-center bg-[rgba(0,0,0,0.50)]">
+            {!isFormVisible && <div className="fade-in absolute top-0 left-0 z-2 h-screen w-full flex flex-col items-center justify-center bg-[rgba(0,0,0,0.80)]">
                 <div className="h-auto w-[420px] bg-[var(--light-color)] flex flex-col items-center justify-center relative rounded-xl rounded-tr-none">
                     <i className='fa-solid fa-circle-xmark text-[calc(1vw+1.2rem)] text-[var(--blue-color)] hovered
                         flex flex-row items-center justify-center absolute top-[-10px] right-[-14px] cursor-pointer'
@@ -64,7 +64,7 @@ function AddVehicle({user, driverInfo, setDriverInfo}: AddVehicleProps) {
 
                     {/*Form*/}
                     <div className={`${isMobile? "" : ""}
-                        h-full w-full flex flex-col items-center justify-start py-[calc(0.4vw+0.6rem)] px-[calc(1.4vw+1.6rem)] gap-[calc(0.4vw+0.6rem)] text-[var(--dark-color)]`}>
+                        h-full w-full flex flex-col items-center justify-start p-[calc(0.4vw+0.6rem)] gap-[calc(0.4vw+0.6rem)] text-[var(--dark-color)]`}>
                         
                         <div className={`${user? "" : ""} flex-2 w-full flex flex-col items-center justify-end`}>
                             <span className="text-[calc(0.4vw+0.8rem)] font-semibold">Add a new driver</span>
