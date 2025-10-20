@@ -2,7 +2,7 @@ import { useEffect, useState, type SetStateAction } from "react";
 import type { UserInfo, DriverInfo, VehicleInfo } from "../../App"
 import useIsMobile from "../../hooks/useIsMobile";
 import { db } from "../../server/Firebase/Firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 
 type AddVehicleProps = {
     user: UserInfo | null;
@@ -44,10 +44,10 @@ function AddVehicle({user, driverInfo, isDark, vehicleInfo, setVehicleInfo}: Add
 
         const dateTime = new Date();
         const formatted = `${dateTime.toLocaleDateString()} ${dateTime.toLocaleTimeString()}`;
-        const customId = vehicleInfo.length + 1;
+        const customId = (vehicleInfo.length + 1).toString();
 
-        const vehicleRef = collection(db, "users", user?.uid, "vehicles");
-        const vehicleSnap = await addDoc(vehicleRef, {
+        const vehicleRef = doc(db, "users", user?.uid, "vehicles", customId);
+        const vehicleSnap = await setDoc(vehicleRef, {
             id: customId,
             plateNumber: plateNumber,
             model: model,

@@ -32,7 +32,7 @@ function Dashboard({isDark, user} : changeTheme) {
             const snapshot = await getDocs(dashboardDataRef);
 
             const count = snapshot.size;
-            console.log(`Total documents in dashboard-data: ${count}`);
+            // console.log(`Total documents in dashboard-data: ${count}`);
             
             setTotalVehicle(String(count) ?? "0");
             setFuelCost("0");

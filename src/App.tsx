@@ -10,18 +10,27 @@ export type UserInfo = {
 }
 
 export type DriverInfo = {
-  id: number | null,
+  id: string | null,
   name: string | null;
   contact: string | null;
   license: string | null;
 }
 
 export type VehicleInfo = {
-  id: number | null;
+  id: string | null;
   plateNumber: string | null;
   model: string | null;
   driver: string | null;
   createdAt: string | null;
+}
+
+export type FuelInfo = {
+  id: number | null;
+  vehicle: string | null;
+  volume: number | null;
+  cost: number | null;
+  addedBy: string | null;
+  logDate: string | null;
 }
 
 function App() {
@@ -31,14 +40,17 @@ function App() {
   const [user, setUser] = useState<UserInfo | null>(null);
 
   const [driverInfo, setDriverInfo] = useState<DriverInfo[]>([]);
-
   const [vehicleInfo, setVehicleInfo] = useState<VehicleInfo[]>([]);
+  const [fuelInfo, setFuelInfo] = useState<FuelInfo[]>([]);
 
   return (
     <div>
       {!isLoggedIn && <Landing isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setUser={setUser}/>}
       {isLoggedIn && <Dashboard user={user} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}
-        driverInfo={driverInfo} setDriverInfo={setDriverInfo} vehicleInfo={vehicleInfo} setVehicleInfo={setVehicleInfo}/>}
+        driverInfo={driverInfo} setDriverInfo={setDriverInfo} 
+        vehicleInfo={vehicleInfo} setVehicleInfo={setVehicleInfo}
+        fuelInfo={fuelInfo} setFuelInfo={setFuelInfo}
+        />}
     </div>
 
   )

@@ -25,7 +25,7 @@ function AddVehicle({user, driverInfo, setDriverInfo}: AddVehicleProps) {
         try{
             if (!user?.uid) return;
 
-            const customId = (driverInfo.length + 1).toString();;
+            const customId = (driverInfo.length + 1).toString();
             const name = driverName;
             const contact = driverContact;
             const license = driverLicense;
@@ -41,10 +41,8 @@ function AddVehicle({user, driverInfo, setDriverInfo}: AddVehicleProps) {
             //to make sure na na add ung driver
             console.log("Added the driver successfully: ", snapshot);
 
-            const newCustomId = driverInfo.length + 1;
-
             const newDriver: DriverInfo = {
-                id: newCustomId, 
+                id: customId, 
                 name,
                 contact,
                 license
