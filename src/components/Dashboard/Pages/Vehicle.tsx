@@ -21,6 +21,7 @@ function Vehicle({isDark, user, driverInfo, vehicleInfo, setVehicleInfo} : chang
 
     const [vehiclesId, setVehiclesId] = useState<string[]>([]);
 
+    const [vehicleId, setVehicleId] = useState<string[]>([]);
     const [vehiclePlateNumber, setVehiclePlateNumber] = useState<string[]>([]);
     const [vehicleModel, setVehicleModel] = useState<string[]>([]);
     const [vehicleDriver, setVehicleDriver] = useState<string[]>([]);
@@ -62,6 +63,7 @@ function Vehicle({isDark, user, driverInfo, vehicleInfo, setVehicleInfo} : chang
                             const data = docSnap.data();
 
                             const driverInfos: VehicleInfo = {
+                                id: data.id ?? null,
                                 plateNumber: data.plateNumber ?? null,
                                 model: data.model ?? null,
                                 driver: data.driver ?? null,
@@ -71,6 +73,7 @@ function Vehicle({isDark, user, driverInfo, vehicleInfo, setVehicleInfo} : chang
                             fetchedVehicleInfos.push(driverInfos);
                             
                             //checking kung na lolog ung fields
+                            console.log("id: ", data.id);
                             console.log("platenumber: ", data.plateNumber);
                             console.log("model: ", data.model);
                             console.log("driver: ", data.driver);
@@ -95,6 +98,10 @@ function Vehicle({isDark, user, driverInfo, vehicleInfo, setVehicleInfo} : chang
     }, [fetchVehicles]);
 
     useEffect(() => {
+        const id = vehicleInfo.map(vehicle => String(vehicle.id ?? "null"));
+        setVehicleId(id);
+        console.log("List of driver names: ", id);
+
         const plateNumber = vehicleInfo.map(vehicle => vehicle.plateNumber ?? "null");
         setVehiclePlateNumber(plateNumber);
         console.log("List of driver names: ", vehiclePlateNumber);
@@ -128,12 +135,12 @@ function Vehicle({isDark, user, driverInfo, vehicleInfo, setVehicleInfo} : chang
                 </div>
             </div>
 
-            {isVisible && <AddVehicle user={user} driverInfo={driverInfo} isDark={isDark} vehicleInfo={vehicleInfo}/>}
+            {isVisible && <AddVehicle user={user} driverInfo={driverInfo} isDark={isDark} vehicleInfo={vehicleInfo} setVehicleInfo={setVehicleInfo}/>}
 
             <div className="h-full w-full flex flex-col items-start justify-start gap-[calc(0.4vw+0.6rem)]">
                 <div className="h-auto w-full flex flex-col items-start justify-start bg-[var(--purple-color)] text-[var(--light-color)] p-[calc(0.4vw+0.6rem)]">
-                    <div className="h-auto w-full flex flex-row items-start justify-start gap-[calc(0.6vw+1rem)]">
-                        <span className="flex-2 cursor-pointer text-[calc(0.4vw+0.6rem)]">Id</span>  
+                    <div className="h-auto w-full flex flex-row items-start justify-start">
+                        <span className="flex-1 cursor-pointer text-[calc(0.4vw+0.6rem)]">Id</span>  
                         <span className="flex-1 cursor-pointer text-[calc(0.4vw+0.6rem)]">Driver</span>   
                         <span className="flex-1 cursor-pointer text-[calc(0.4vw+0.6rem)]">Plate no.</span>  
                         <span className="flex-1 cursor-pointer text-[calc(0.4vw+0.6rem)]">Model</span>  
@@ -146,8 +153,8 @@ function Vehicle({isDark, user, driverInfo, vehicleInfo, setVehicleInfo} : chang
                 </div>
                 {vehiclesId?.map((id, index) => (
                     <div key={id} className="h-auto w-full flex flex-col items-start justify-start p-[calc(0.4vw+0.6rem)] border-b border-[var(--border-color)]">
-                        <div className="h-auto w-full flex flex-row items-start justify-start gap-[calc(0.6vw+1rem)]">
-                            <span className="flex-2 hovered cursor-pointer text-[calc(0.4vw+0.6rem)]">{vehiclesId[index] ?? "null"}</span>  
+                        <div className="h-auto w-full flex flex-row items-start justify-start ">
+                            <span className="flex-1 hovered cursor-pointer text-[calc(0.4vw+0.6rem)]">{vehicleId[index] ?? "null"}</span>  
                             <span className="flex-1 hovered cursor-pointer text-[calc(0.4vw+0.6rem)]">{vehicleDriver[index] ?? "null"}</span>  
                             <span className="flex-1 hovered cursor-pointer text-[calc(0.4vw+0.6rem)]">{vehiclePlateNumber[index] ?? "null"}</span>   
                             <span className="flex-1 hovered cursor-pointer text-[calc(0.4vw+0.6rem)]">{vehicleModel[index] ?? "null"}</span>  

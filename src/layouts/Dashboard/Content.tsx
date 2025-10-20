@@ -4,6 +4,12 @@ import useIsMobile from "../../hooks/useIsMobile";
 import Dashboard from "../../components/Dashboard/Pages/Dashboard";
 import Vehicle from "../../components/Dashboard/Pages/Vehicle";
 import Driver from "../../components/Dashboard/Pages/Driver";
+import Fuel from "../../components/Dashboard/Pages/Fuel";
+import Maintenance from "../../components/Dashboard/Pages/Maintenance";
+import Reports from "../../components/Dashboard/Pages/Reports";
+import Users from "../../components/Dashboard/Pages/Users";
+import Settings
+ from "../../components/Dashboard/Pages/Settings";
 import type { UserInfo, DriverInfo, VehicleInfo } from "../../App";
 
 type contentProps = {
@@ -24,7 +30,6 @@ function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, setDri
         { icon: "bx bx-user bx-tada-hover hovered", title: "Drivers" },
         { icon: "bx bx-car bx-tada-hover hovered", title: "Vehicles" },
         { icon: "bx bx-petrol-pump bx-tada-hover hovered", title: "Fuel" },
-        { icon: "bx bx-map bx-tada-hover hovered", title: "Trip" },
         { icon: "bx bx-spanner bx-tada-hover hovered", title: "Maintenance" },
         { icon: "bx bx-report bx-tada-hover hovered", title: "Reports" },
         { icon: "bx bx-user bx-tada-hover hovered", title: "Users" },
@@ -34,7 +39,12 @@ function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, setDri
     const dashboardPages = [
         <Dashboard isDark={isDark} user={user} vehicleInfo={vehicleInfo}/>,
         <Driver isDark={isDark} user={user} driverInfo={driverInfo} setDriverInfo={setDriverInfo}/>,
-        <Vehicle isDark={isDark} user={user} driverInfo={driverInfo} vehicleInfo={vehicleInfo} setVehicleInfo={setVehicleInfo}/>
+        <Vehicle isDark={isDark} user={user} driverInfo={driverInfo} vehicleInfo={vehicleInfo} setVehicleInfo={setVehicleInfo}/>,
+        <Fuel isDark={isDark} />,
+        <Maintenance isDark={isDark} />,
+        <Reports isDark={isDark} />,
+        <Users isDark={isDark} />,
+        <Settings isDark={isDark} />
     ]
 
     const isMobile = useIsMobile();

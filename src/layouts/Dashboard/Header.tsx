@@ -10,11 +10,13 @@ type HeaderProps = {
     isDark: boolean;
     setIsDark: React.Dispatch<SetStateAction<boolean>>;
     activeIndex: number;
-    setActiveIndex: React.Dispatch<SetStateAction<number>>
+    setActiveIndex: React.Dispatch<SetStateAction<number>>;
     user: UserInfo | null;
+    isLoggedIn: boolean;
+    setIsLoggedIn: React.Dispatch<SetStateAction<boolean>>;
 }
 
-function Header({isDark, setIsDark, activeIndex, setActiveIndex, user}: HeaderProps) {
+function Header({isDark, setIsDark, activeIndex, setActiveIndex, user, isLoggedIn, setIsLoggedIn}: HeaderProps) {
 
     const isMobile = useIsMobile();
 
@@ -24,7 +26,6 @@ function Header({isDark, setIsDark, activeIndex, setActiveIndex, user}: HeaderPr
         { icon: "bx bx-dashboard bx-tada-hover hovered", title: "Dashboard" },
         { icon: "bx bx-car bx-tada-hover hovered", title: "Vehicle" },
         { icon: "bx bx-petrol-pump bx-tada-hover hovered", title: "Fuel" },
-        { icon: "bx bx-map bx-tada-hover hovered", title: "Trip" },
         { icon: "bx bx-spanner bx-tada-hover hovered", title: "Maintenance" },
         { icon: "bx bx-report bx-tada-hover hovered", title: "Reports" },
         { icon: "bx bx-user bx-tada-hover hovered", title: "Users" },
@@ -53,6 +54,9 @@ function Header({isDark, setIsDark, activeIndex, setActiveIndex, user}: HeaderPr
                 </span>
 
                 <Theme isDark={isDark} setIsDark={setIsDark}/>
+
+                {isLoggedIn && <i className='bx bx-arrow-out-right-square-half bx-tada-hover text-[calc(0.4vw+1rem)] hover:text-red-500 transition duration-300 ease-in-out cursor-pointer'
+                    onClick={() => setIsLoggedIn((prev) => !prev)}></i> }
             </div>
 
             {isMobile && isSidenavActive && <div className="h-screen w-screen bg-[rgba(0,0,0,0.50)] absolute top-0 left-0">

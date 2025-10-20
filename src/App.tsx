@@ -10,12 +10,14 @@ export type UserInfo = {
 }
 
 export type DriverInfo = {
+  id: number | null,
   name: string | null;
   contact: string | null;
   license: string | null;
 }
 
 export type VehicleInfo = {
+  id: number | null;
   plateNumber: string | null;
   model: string | null;
   driver: string | null;
@@ -35,9 +37,10 @@ function App() {
   return (
     <div>
       {!isLoggedIn && <Landing isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setUser={setUser}/>}
-      {isLoggedIn && <Dashboard user={user}
+      {isLoggedIn && <Dashboard user={user} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}
         driverInfo={driverInfo} setDriverInfo={setDriverInfo} vehicleInfo={vehicleInfo} setVehicleInfo={setVehicleInfo}/>}
     </div>
+
   )
 }
 

@@ -2,7 +2,7 @@ import { useState } from "react";
 import type { UserInfo, DriverInfo } from "../../App"
 import useIsMobile from "../../hooks/useIsMobile";
 import { db } from "../../server/Firebase/Firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import type { SetStateAction } from "react";
 
 type AddVehicleProps = {
@@ -25,12 +25,15 @@ function AddVehicle({user, driverInfo, setDriverInfo}: AddVehicleProps) {
         try{
             if (!user?.uid) return;
 
+            const customId = (driverInfo.length + 1).toString();;
             const name = driverName;
             const contact = driverContact;
             const license = driverLicense;
+
             
-            const driversRef = collection(db, "users", user?.uid, "drivers");
-            const snapshot = await addDoc(driversRef, {
+            const driversRef = doc(db, "users", user?.uid, "drivers", customId);
+            const snapshot = await setDoc(driversRef, {
+                customId,
                 name,
                 contact,
                 license
@@ -38,10 +41,13 @@ function AddVehicle({user, driverInfo, setDriverInfo}: AddVehicleProps) {
             //to make sure na na add ung driver
             console.log("Added the driver successfully: ", snapshot);
 
+            const newCustomId = driverInfo.length + 1;
+
             const newDriver: DriverInfo = {
+                id: newCustomId, 
                 name,
-                contact: null,
-                license: null
+                contact,
+                license
             };
             //inupdate ko ung driverInfo with the new addded name
             setDriverInfo(prev => [...prev, newDriver]);

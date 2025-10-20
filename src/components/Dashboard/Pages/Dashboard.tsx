@@ -4,7 +4,7 @@ import useIsMobile from "../../../hooks/useIsMobile"
 import type { UserInfo, VehicleInfo } from "../../../App";
 import { useEffect, useState } from "react";
 import { db } from '../../../server/Firebase/Firebase'; 
-import { doc, getDoc, getDocs, collection } from 'firebase/firestore';
+import { getDocs, collection } from 'firebase/firestore';
 
 type changeTheme = {
     isDark: boolean;
@@ -21,46 +21,34 @@ function Dashboard({isDark, user} : changeTheme) {
     const [mileAge, setMileAge] = useState("0");
     const [totalTrips, setTotalTrips] = useState("0");
 
-
-    useEffect(() => {
-        const userData = async ()  => {
-            try {
-                if(!user || !user.uid) {
-                    console.warn("User not available.");
-                    return;
-                }
-
-                const dashboardDataRef = collection(db, "users", user?.uid, "dashboard-data");
-                const snapshot = await getDocs(dashboardDataRef);
-
-                const count = snapshot.size;
-                console.log(`Total documents in dashboard-data: ${count}`);
-                
-                const docRef = doc(db, "users", user?.uid, "dashboard-data", "2026 Ford Mustang"); 
-                const docSnap = await getDoc(docRef);
-      
-                if(docSnap.exists()) {
-                    const data = docSnap.data(); 
-                    console.log("Dashboard data:", data);
-   
-                    setTotalVehicle(data.totalVehicle ?? count);
-                    setFuelCost(data.fuelCost ?? "0");
-                    setMileAge(data.mileAge ?? "0");
-                    setTotalTrips(data.totalTrips ?? "0");
-                } else {
-                    console.log("No such document!");
-                }
-
-                return count;
-                
-            } catch(err) {
-                console.error("Error fetching dashboard data:", err);
+    const userData = async ()  => {
+        try {
+            if(!user || !user.uid) {
+                console.warn("User not available.");
+                return;
             }
-        };
 
+            const dashboardDataRef = collection(db, "users", user?.uid, "vehicles");
+            const snapshot = await getDocs(dashboardDataRef);
+
+            const count = snapshot.size;
+            console.log(`Total documents in dashboard-data: ${count}`);
+            
+            setTotalVehicle(String(count) ?? "0");
+            setFuelCost("0");
+            setMileAge("0");
+            setTotalTrips("0");
+
+            return count;
+            
+        } catch(err) {
+            console.error("Error fetching dashboard data:", err);
+        }
+    };
+
+    useEffect(() => {    
         userData();
-
-    }, []);
+    }, [userData]);
 
     return (
         <section id="main" className={`${isMobile? "p-[calc(0.4vw+0.6rem)]" : "border-l px-[calc(0.4vw+0.6rem)]"}

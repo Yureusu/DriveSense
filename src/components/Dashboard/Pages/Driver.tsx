@@ -65,6 +65,7 @@ function Driver({isDark, user, driverInfo, setDriverInfo}: driverProps) {
                         
                             //saving driver infos sa fetchDriverInfo
                             const driverInfos: DriverInfo = {
+                                id: data.id ?? null,
                                 name: data.name ?? null, 
                                 contact: data.contact ?? null,
                                 license: data.license ?? null
@@ -88,7 +89,7 @@ function Driver({isDark, user, driverInfo, setDriverInfo}: driverProps) {
 
     useEffect(() => {
         fetchDrivers();
-    }, []);
+    }, [fetchDrivers]);
 
     useEffect(() => {
         const names = driverInfo.map(driver => driver.name ?? "null");
@@ -126,7 +127,7 @@ function Driver({isDark, user, driverInfo, setDriverInfo}: driverProps) {
             <div className="h-full w-full flex flex-col items-start justify-start gap-[calc(0.4vw+0.6rem)]">
                 <div className="h-auto w-full flex flex-col items-start justify-start bg-[var(--purple-color)] text-[var(--light-color)] p-[calc(0.4vw+0.6rem)]">
                     <div className="h-auto w-full flex flex-row items-start justify-start gap-[calc(0.6vw+1rem)]">
-                        <span className="flex-2 cursor-pointer text-[calc(0.4vw+0.6rem)]">Id</span>  
+                        <span className="flex-1 cursor-pointer text-[calc(0.4vw+0.6rem)]">Id</span>  
                         <span className="flex-1 cursor-pointer text-[calc(0.4vw+0.6rem)]">Name</span>   
                         <span className="flex-1 cursor-pointer text-[calc(0.4vw+0.6rem)]">Contact</span>  
                         <span className="flex-1 cursor-pointer text-[calc(0.4vw+0.6rem)]">License</span>  
@@ -139,7 +140,7 @@ function Driver({isDark, user, driverInfo, setDriverInfo}: driverProps) {
                 {driverId.map((id, index) => (
                     <div key={id} className="h-auto w-full flex flex-col items-start justify-start p-[calc(0.4vw+0.6rem)] border-b border-[var(--border-color)]">
                         <div className="h-auto w-full flex flex-row items-start justify-start gap-[calc(0.6vw+1rem)]">
-                            <span className="flex-2 hovered cursor-pointer text-[calc(0.4vw+0.6rem)]">{driverId[index] ?? "null"}</span>  
+                            <span className="flex-1 hovered cursor-pointer text-[calc(0.4vw+0.6rem)]">{driverId[index] ?? "null"}</span>  
                             <span className="flex-1 hovered cursor-pointer text-[calc(0.4vw+0.6rem)]">{driverNames[index] ?? "null"}</span>   
                             <span className="flex-1 hovered cursor-pointer text-[calc(0.4vw+0.6rem)]">{driverContacts[index] ?? "null"}</span>  
                             <span className="flex-1 hovered cursor-pointer text-[calc(0.4vw+0.6rem)]">{driverLicenses[index] ?? "null"}</span>  

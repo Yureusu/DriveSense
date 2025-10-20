@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type SetStateAction } from "react";
 import type { UserInfo, DriverInfo, VehicleInfo } from "../../App"
 import useIsMobile from "../../hooks/useIsMobile";
 import { db } from "../../server/Firebase/Firebase";
@@ -9,9 +9,10 @@ type AddVehicleProps = {
     driverInfo:  DriverInfo[];
     isDark: boolean;
     vehicleInfo: VehicleInfo[];
+    setVehicleInfo: React.Dispatch<SetStateAction<VehicleInfo[]>>;
 }
 
-function AddVehicle({user, driverInfo, isDark}: AddVehicleProps) {
+function AddVehicle({user, driverInfo, isDark, vehicleInfo, setVehicleInfo}: AddVehicleProps) {
 
     const [isFormVisible, setIsFormVisible] = useState(false);
 
@@ -41,18 +42,34 @@ function AddVehicle({user, driverInfo, isDark}: AddVehicleProps) {
     const handleSubmit = async () => {
         if(!user?.uid) return;
 
+        const dateTime = new Date();
+        const formatted = `${dateTime.toLocaleDateString()} ${dateTime.toLocaleTimeString()}`;
+        const customId = vehicleInfo.length + 1;
+
         const vehicleRef = collection(db, "users", user?.uid, "vehicles");
         const vehicleSnap = await addDoc(vehicleRef, {
+            id: customId,
             plateNumber: plateNumber,
             model: model,
             driver: driver,
-            createdAt: new Date().toISOString()
+            createdAt: formatted
         });
 
+        const newVehicle: VehicleInfo = {
+            id: customId, 
+            plateNumber: plateNumber,
+            model: model,
+            driver: driver,
+            createdAt: formatted
+        };
+        //inupdate ko ung driverInfo with the new addded vehicle
+        setVehicleInfo(prev => [...prev, newVehicle]);
+        console.log(vehicleInfo);
+
         console.log("Added the vehicle successfully: ", vehicleSnap);
+        setIsFormVisible((prev) => !prev);
     }
     
-
     return (
         <>
             {!isFormVisible && <div className={`fade-in absolute top-0 left-0 z-2 h-screen w-full flex flex-col items-center justify-center bg-[rgba(0,0,0,0.80)]`}>
