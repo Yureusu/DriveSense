@@ -46,6 +46,14 @@ function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, setDri
     const [vehicleDriver, setVehicleDriver] = useState<string[]>([]);
     const [vehicleCreatedAt, setVehicleCreatedAt] = useState<string[]>([]);
 
+    if(driverId && driverNames && driverContacts && driverLicenses){
+        // console.log("Fetched all drivers.");
+    }
+
+    if(vehicleId && vehiclePlateNumber && vehicleModel && vehicleDriver && vehicleCreatedAt){
+        // console.log("Fetched all vehicles.");
+    }
+
     //fetch all drivers
     const fetchDrivers = async () => {
         try{
@@ -59,8 +67,6 @@ function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, setDri
 
             snapshot.forEach((doc) => {
                 fetchedDriversId.push(doc.id);           
-                // console.log("Driver name: ", doc.id)
-                // console.log(fetchDrivers)
             });
 
             setDriverId(fetchedDriversId);
@@ -88,7 +94,6 @@ function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, setDri
                             }
                             
                             fetchedDriverInfo.push(driverInfos);   
-                            // console.log(fetchedDriverInfo); 
                         }   
                     }  
                     //updating DriverInfo
@@ -110,7 +115,7 @@ function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, setDri
     useEffect(() => {
         const ids = driverInfo.map(driver =>  driver.id ? driver.id.toLocaleString() : "null");
         setDriverId(ids);
-        console.log("Driver ids: ", ids);
+        // console.log("Driver ids: ", ids);
 
         const names = driverInfo.map(driver => driver.name ?? "null");
         setDriverNames(names);

@@ -22,7 +22,7 @@ function Driver({isDark, user, driverInfo, setDriverInfo, fetchDrivers}: driverP
     const [selectedDriverId, setSelectedDriverId] = useState<string | null>(null);
     const [selectedDriverIndex, setSelectedDriverIndex] = useState<number | null>(null);
 
-    console.log("DriverInfo: ", driverInfo);
+    // console.log("DriverInfo: ", driverInfo);
 
     return (
         <section id="main" className={`${isMobile? "p-[calc(0.4vw+0.6rem)] h-screen" : "border-l px-[calc(0.4vw+0.6rem)] h-full"}
