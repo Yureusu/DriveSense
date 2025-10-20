@@ -1,6 +1,4 @@
 import useIsMobile from "../../../hooks/useIsMobile"
-import { db } from "../../../server/Firebase/Firebase";
-import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import type { UserInfo, DriverInfo, VehicleInfo, FuelInfo } from "../../../App";
 import type { SetStateAction } from "react";
@@ -14,7 +12,7 @@ type FuelProps = {
     setFuelInfo: React.Dispatch<SetStateAction<FuelInfo[]>>;
 }
 
-function Fuel({isDark, user, driverInfo, vehicleInfo, fuelInfo, setFuelInfo}: FuelProps) {
+function Fuel({isDark, driverInfo, vehicleInfo }: FuelProps) {
 
     const isMobile = useIsMobile();
 
@@ -29,6 +27,16 @@ function Fuel({isDark, user, driverInfo, vehicleInfo, fuelInfo, setFuelInfo}: Fu
     const [fuelCost, setFuelCost] = useState<string[]>([]);
     const [fuelAddedBy, setFuelAddedBy] = useState<string[]>([]);
     const [fuelLoggedDate, setFuelLoggedDate] = useState<string[]>([]);
+
+    if(passedDriverNames && passedVehicleNames  ){
+        setFuelId
+        setFuelsId
+        setFuelVehicle
+        setFuelVolume
+        setFuelCost
+        setFuelAddedBy
+        setFuelLoggedDate
+    }
 
     useEffect(() => {
         if (driverInfo && Array.isArray(driverInfo)) {
