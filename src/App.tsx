@@ -50,6 +50,7 @@ function App() {
   const [driverInfo, setDriverInfo] = useState<DriverInfo[]>([]);
   const [vehicleInfo, setVehicleInfo] = useState<VehicleInfo[]>([]);
   const [fuelInfo, setFuelInfo] = useState<FuelInfo[]>([]);
+  const [maintenanceInfo, setMaintenanceInfo] = useState<MaintenanceInfo[]>([]);
 
   return (
     <div>
@@ -58,6 +59,7 @@ function App() {
         driverInfo={driverInfo} setDriverInfo={setDriverInfo} 
         vehicleInfo={vehicleInfo} setVehicleInfo={setVehicleInfo}
         fuelInfo={fuelInfo} setFuelInfo={setFuelInfo}
+        maintenanceInfo={maintenanceInfo} setMaintenanceInfo={setMaintenanceInfo}
         />}
     </div>
 

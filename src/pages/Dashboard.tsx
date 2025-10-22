@@ -1,7 +1,7 @@
 import { useState, type SetStateAction } from "react";
 import Header from "../layouts/Dashboard/Header"
 import Content from "../layouts/Dashboard/Content";
-import type { UserInfo, DriverInfo, VehicleInfo, FuelInfo } from "../App";
+import type { UserInfo, DriverInfo, VehicleInfo, FuelInfo, MaintenanceInfo } from "../App";
 
 type DashboardProps ={
     user: UserInfo | null;
@@ -13,10 +13,12 @@ type DashboardProps ={
     setFuelInfo: React.Dispatch<SetStateAction<FuelInfo[]>>;
     isLoggedIn: boolean;
     setIsLoggedIn: React.Dispatch<SetStateAction<boolean>>;
+    maintenanceInfo: MaintenanceInfo[];
+    setMaintenanceInfo: React.Dispatch<SetStateAction<MaintenanceInfo[]>>;
 }
 
 function Dashboard({user, driverInfo, setDriverInfo, vehicleInfo, setVehicleInfo, 
-    fuelInfo, setFuelInfo, isLoggedIn,setIsLoggedIn}: DashboardProps) {
+    maintenanceInfo, isLoggedIn, setIsLoggedIn}: DashboardProps) {
 
     const [isDark, setIsDark] = useState(true);
     const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -25,10 +27,9 @@ function Dashboard({user, driverInfo, setDriverInfo, vehicleInfo, setVehicleInfo
         <div>
             <Header isDark={isDark} setIsDark={setIsDark} activeIndex={activeIndex} setActiveIndex={setActiveIndex} user={user} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
             <Content isDark={isDark} activeIndex={activeIndex} setActiveIndex={setActiveIndex} user={user}
-                driverInfo={driverInfo} setDriverInfo={setDriverInfo} 
-                vehicleInfo={vehicleInfo} setVehicleInfo={setVehicleInfo}   
-                fuelInfo={fuelInfo} setFuelInfo={setFuelInfo}
-                />
+            driverInfo={driverInfo} setDriverInfo={setDriverInfo}
+            vehicleInfo={vehicleInfo} setVehicleInfo={setVehicleInfo} 
+            maintenanceInfo={maintenanceInfo}/>
         </div>
     )
 }
