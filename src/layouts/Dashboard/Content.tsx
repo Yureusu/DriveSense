@@ -10,7 +10,7 @@ import Reports from "../../components/Dashboard/Pages/Reports";
 import Users from "../../components/Dashboard/Pages/Users";
 import Settings
  from "../../components/Dashboard/Pages/Settings";
-import type { UserInfo, DriverInfo, VehicleInfo, FuelInfo } from "../../App";
+import type { UserInfo, DriverInfo, VehicleInfo, MaintenanceInfo } from "../../App";
 import { useEffect, useState } from "react";
 import { db } from "../../server/Firebase/Firebase";
 import { collection, getDocs, doc, getDoc } from "firebase/firestore";
@@ -24,12 +24,11 @@ type contentProps = {
     setDriverInfo: React.Dispatch<SetStateAction<DriverInfo[]>>;
     vehicleInfo: VehicleInfo[];
     setVehicleInfo: React.Dispatch<SetStateAction<VehicleInfo[]>>;
-    fuelInfo: FuelInfo[];
-    setFuelInfo: React.Dispatch<SetStateAction<FuelInfo[]>>;
+    maintenanceInfo: MaintenanceInfo[];
 }
 
 function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, setDriverInfo, 
-    fuelInfo, setFuelInfo, vehicleInfo, setVehicleInfo}: contentProps) {  
+    vehicleInfo, setVehicleInfo}: contentProps) {  
     
     const [passedDriverNames, setPassedDriverNames] = useState<string[] | null>(null);
     const [passedVehicleNames, setPassedVehicleNames] = useState<string[] | null>(null);
@@ -39,19 +38,8 @@ function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, setDri
     const [driverContacts, setDriverContacts] = useState<string[]>([]);
     const [driverLicenses, setDriverLicenses] = useState<string[]>([]);
 
-    const [vehiclesId, setVehiclesId] = useState<string[]>([]);
-    const [vehicleId, setVehicleId] = useState<string[]>([]);
-    const [vehiclePlateNumber, setVehiclePlateNumber] = useState<string[]>([]);
-    const [vehicleModel, setVehicleModel] = useState<string[]>([]);
-    const [vehicleDriver, setVehicleDriver] = useState<string[]>([]);
-    const [vehicleCreatedAt, setVehicleCreatedAt] = useState<string[]>([]);
-
     if(driverId && driverNames && driverContacts && driverLicenses){
         // console.log("Fetched all drivers.");
-    }
-
-    if(vehicleId && vehiclePlateNumber && vehicleModel && vehicleDriver && vehicleCreatedAt){
-        // console.log("Fetched all vehicles.");
     }
 
     //fetch all drivers
@@ -130,6 +118,19 @@ function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, setDri
         // console.log("List of driver licenses: ", license);
       }, [driverInfo]);
 
+    //vehicles
+    const [vehiclesId, setVehiclesId] = useState<string[]>([]);
+    const [vehicleId, setVehicleId] = useState<string[]>([]);
+    const [vehiclePlateNumber, setVehiclePlateNumber] = useState<string[]>([]);
+    const [vehicleModel, setVehicleModel] = useState<string[]>([]);
+    const [vehicleDriver, setVehicleDriver] = useState<string[]>([]);
+    const [vehicleCreatedAt, setVehicleCreatedAt] = useState<string[]>([]);
+
+    
+    if(vehicleId && vehiclePlateNumber && vehicleModel && vehicleDriver && vehicleCreatedAt){
+        // console.log("Fetched all vehicles.");
+    }
+
     //fetch all vehicles
     const fetchVehicles = async () => {
         if(!user?.uid) return;
@@ -199,10 +200,10 @@ function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, setDri
         setVehicleCreatedAt(createdAt);
 
     }, [vehicleInfo]);
-    
+
     //driver
     useEffect(() => {
-        // console.log("🔥 driverInfo received:", driverInfo, "Length:", driverInfo?.length);
+        // console.log("DriverInfo received:", driverInfo, "Length:", driverInfo?.length);
         if (driverInfo && Array.isArray(driverInfo)) {
             const names = driverInfo.map(driver => driver.name ?? "null");
             setPassedDriverNames(names);
@@ -216,7 +217,7 @@ function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, setDri
 
     //vehicle
     useEffect(() => {
-        // console.log("🔥 vehicleInfo received:", vehicleInfo, "Length:", vehicleInfo?.length);
+        // console.log("VehicleInfo received:", vehicleInfo, "Length:", vehicleInfo?.length);
         if (vehicleInfo && Array.isArray(vehicleInfo)) {
             const names = vehicleInfo.map(vehicle => vehicle.model ?? "null");
             setPassedVehicleNames(names);
@@ -241,10 +242,10 @@ function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, setDri
 
     const dashboardPages = [
         <Dashboard isDark={isDark} user={user} vehicleInfo={vehicleInfo}/>,
-        <Driver isDark={isDark} user={user} driverInfo={driverInfo} setDriverInfo={setDriverInfo} fetchDrivers={fetchDrivers}/>,
-        <Vehicle isDark={isDark} user={user} driverInfo={driverInfo} vehicleInfo={vehicleInfo} setVehicleInfo={setVehicleInfo} fetchVehicles={fetchVehicles}/>,
-        <Fuel isDark={isDark} user={user} driverInfo={driverInfo} vehicleInfo={vehicleInfo} fuelInfo={fuelInfo} setFuelInfo={setFuelInfo} />,
-        <Maintenance isDark={isDark} />,
+        <Driver isDark={isDark} user={user} />,
+        <Vehicle isDark={isDark} user={user} driverInfo={driverInfo} />,
+        <Fuel isDark={isDark} user={user} driverInfo={driverInfo} vehicleInfo={vehicleInfo} />,
+        <Maintenance isDark={isDark} user={user} vehicleInfo={vehicleInfo}/>,
         <Reports isDark={isDark} />,
         <Users isDark={isDark} />,
         <Settings isDark={isDark} />
@@ -255,7 +256,7 @@ function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, setDri
     return (
         <div className={`${isDark? "text-[var(--light-color)] bg-[var(--dark-color)]" : "text-[var(--dark-color)] bg-[var(--light-color)]"}
             ${isMobile? "h-auto" : "h-screen"}
-            fade-in w-full flex flex-row items-center justify-center p-[calc(0.4vw+0.6rem)]`}>
+            fade-in w-full flex flex-row items-start justify-center p-[calc(0.4vw+0.6rem)]`}>
             
             {!isMobile && <section id="side-nav" className="h-full w-full flex-1">
                 {navItems.map((item, index) => (

@@ -25,12 +25,20 @@ export type VehicleInfo = {
 }
 
 export type FuelInfo = {
-  id: number | null;
+  id: string | null;
   vehicle: string | null;
   volume: number | null;
   cost: number | null;
   addedBy: string | null;
   logDate: string | null;
+}
+
+export type MaintenanceInfo = {
+  id: string | null;
+  vehicle: string | null;
+  desrcription: string | null;
+  cost: number | null;
+  createdAt: string | null;
 }
 
 function App() {

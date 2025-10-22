@@ -10,9 +10,10 @@ type AddVehicleProps = {
     isDark: boolean;
     vehicleInfo: VehicleInfo[];
     setVehicleInfo: React.Dispatch<SetStateAction<VehicleInfo[]>>;
+    setIsVisible: (value: boolean) => void
 }
 
-function AddVehicle({user, driverInfo, isDark, vehicleInfo, setVehicleInfo}: AddVehicleProps) {
+function AddVehicle({user, driverInfo, isDark, vehicleInfo, setVehicleInfo, setIsVisible}: AddVehicleProps) {
 
     const [isFormVisible, setIsFormVisible] = useState(false);
 
@@ -68,6 +69,7 @@ function AddVehicle({user, driverInfo, isDark, vehicleInfo, setVehicleInfo}: Add
 
         console.log("Added the vehicle successfully: ", vehicleSnap);
         setIsFormVisible((prev) => !prev);
+        setIsVisible(false);
     }
     
     return (
@@ -89,10 +91,10 @@ function AddVehicle({user, driverInfo, isDark, vehicleInfo, setVehicleInfo}: Add
 
                         <div className="flex-2 w-full flex flex-col items-center justify-center gap-[calc(0.4vw+0.6rem)]">
                             <input type="text" placeholder="Plate Number" className="cursor-pointer outline-none border border-[var(--border-color)] rounded-lg focus:border-[var(--purple-color)]
-                                placeholder:text-[calc(0.4vw+0.5rem)] px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] text-[calc(0.4vw+0.5rem)] w-full"
+                                placeholder:text-[calc(0.4vw+0.5rem)] placeholder-gray-500 px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] text-[calc(0.4vw+0.5rem)] w-full"
                                 onChange={(e) => setPlateNumber(e.target.value)} required/>
                             <input type="text" placeholder="Model" className="cursor-pointer outline-none border border-[var(--border-color)] rounded-lg focus:border-[var(--purple-color)]
-                                placeholder:text-[calc(0.4vw+0.5rem)] px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] text-[calc(0.4vw+0.5rem)] w-full" 
+                                placeholder:text-[calc(0.4vw+0.5rem)] placeholder-gray-500 px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] text-[calc(0.4vw+0.5rem)] w-full" 
                                 onChange={(e) => setModel(e.target.value)} required/>
                                 
                             <select id="driver-names" value={driver ?? ""}

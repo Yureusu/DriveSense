@@ -5,6 +5,7 @@ import LightIcon from "../../assets/ui/light-icon.png"
 import useIsMobile from "../../hooks/useIsMobile";
 import { SidenavCard } from "../../components/Dashboard/SidenavCard"
 import type { UserInfo } from "../../App";
+import { getAuth, signOut } from "firebase/auth";
 
 type HeaderProps = {
     isDark: boolean;
@@ -34,6 +35,16 @@ function Header({isDark, setIsDark, activeIndex, setActiveIndex, user, isLoggedI
 
     const firstName = user?.displayName?.split(" ")[0] ?? "Guest";
 
+    const handleLogout = () => {
+        const auth = getAuth();
+        signOut(auth).then(() => {
+            console.log("Signed out successfully!");   
+            setIsLoggedIn((prev) => !prev);
+        }).catch((err) => {
+            console.error(err);
+        });
+    }
+
     return (
         <div className={`${isDark? "text-[var(--light-color)] bg-[var(--dark-color)]" : "text-[var(--dark-color)] bg-[var(--light-color)]"}
             fade-in sticky top-0 left-0 z-2 h-auto w-full flex flex-row items-center justify-between border-b border-[var(--border-color)] p-[12px]`}>
@@ -56,7 +67,7 @@ function Header({isDark, setIsDark, activeIndex, setActiveIndex, user, isLoggedI
                 <Theme isDark={isDark} setIsDark={setIsDark}/>
 
                 {isLoggedIn && <i className='bx bx-arrow-out-right-square-half bx-tada-hover text-[calc(0.4vw+1rem)] hover:text-red-500 transition duration-300 ease-in-out cursor-pointer'
-                    onClick={() => setIsLoggedIn((prev) => !prev)}></i> }
+                    onClick={() => handleLogout()}></i> }
             </div>
 
             {isMobile && isSidenavActive && <div className="h-screen w-screen bg-[rgba(0,0,0,0.50)] absolute top-0 left-0">
