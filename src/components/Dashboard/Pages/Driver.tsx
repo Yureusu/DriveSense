@@ -3,7 +3,7 @@ import useIsMobile from "../../../hooks/useIsMobile";
 import AddDriver from "../AddDriver";
 import DeleteDriver from "../DeleteDriver";
 import type { UserInfo, DriverInfo } from "../../../App";
-import { useFetchVDriver } from "../../../hooks/Fetch/useFetchDriver";
+import { useFetchDriver } from "../../../hooks/Fetch/useFetchDriver";
 
 type DriverProps = {
     isDark: boolean;
@@ -19,7 +19,7 @@ function Driver({ isDark, user}: DriverProps) {
     const [selectedDriverId, setSelectedDriverId] = useState<string | null>(null);
     const [selectedDriverIndex, setSelectedDriverIndex] = useState<number | null>(null);
 
-    const { driverInfo, loading, error, refetch } = useFetchVDriver(user);
+    const { driverInfo, loading, error, refetch } = useFetchDriver(user);
 
     if (loading) return <p className="w-full text-center text-gray-500">Loading drivers...</p>;
     if (error) return <p className="w-full text-center text-red-500">Error: {error.message}</p>;

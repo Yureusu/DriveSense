@@ -10,10 +10,7 @@ import Reports from "../../components/Dashboard/Pages/Reports";
 import Users from "../../components/Dashboard/Pages/Users";
 import Settings
  from "../../components/Dashboard/Pages/Settings";
-import type { UserInfo, DriverInfo, VehicleInfo, MaintenanceInfo } from "../../App";
-import { useEffect, useState } from "react";
-import { db } from "../../server/Firebase/Firebase";
-import { collection, getDocs, doc, getDoc } from "firebase/firestore";
+import type { UserInfo, DriverInfo, VehicleInfo, MaintenanceInfo, FuelInfo } from "../../App";
 
 type contentProps = {
     isDark: boolean;
@@ -25,209 +22,10 @@ type contentProps = {
     vehicleInfo: VehicleInfo[];
     setVehicleInfo: React.Dispatch<SetStateAction<VehicleInfo[]>>;
     maintenanceInfo: MaintenanceInfo[];
+    fuelInfo: FuelInfo[];
 }
 
-function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, setDriverInfo, 
-    vehicleInfo, setVehicleInfo}: contentProps) {  
-    
-    const [passedDriverNames, setPassedDriverNames] = useState<string[] | null>(null);
-    const [passedVehicleNames, setPassedVehicleNames] = useState<string[] | null>(null);
-
-    const [driverId, setDriverId] = useState<string[]>([]);
-    const [driverNames, setDriverNames] = useState<string[]>([]);
-    const [driverContacts, setDriverContacts] = useState<string[]>([]);
-    const [driverLicenses, setDriverLicenses] = useState<string[]>([]);
-
-    if(driverId && driverNames && driverContacts && driverLicenses){
-        // console.log("Fetched all drivers.");
-    }
-
-    //fetch all drivers
-    const fetchDrivers = async () => {
-        try{
-            if (!user?.uid) return;
-
-            //dito ko inistore ung documents inside drivers collection
-            const driversRef = collection(db, "users", user?.uid, "drivers");
-            const snapshot = await getDocs(driversRef);
-            
-            const fetchedDriversId: string[] = [];
-
-            snapshot.forEach((doc) => {
-                fetchedDriversId.push(doc.id);           
-            });
-
-            setDriverId(fetchedDriversId);
-
-            //dito ko inistore ung driversInfo data
-            const fetchedDriverInfo: DriverInfo[] = [];
-
-            try{
-                if (fetchedDriversId.length > 0) {
-                    for (const driverId of fetchedDriversId) {
-
-                        const docRef = doc(db, "users", user?.uid!, "drivers", driverId);
-                        const docSnap = await getDoc(docRef);  
-                      
-                        if (docSnap.exists() && driverId) {
-                            
-                            const data = docSnap.data();
-                        
-                            //saving driver infos sa fetchDriverInfo
-                            const driverInfos: DriverInfo = {
-                                id: docSnap.id ?? null,
-                                name: data.name ?? null, 
-                                contact: data.contact ?? null,
-                                license: data.license ?? null
-                            }
-                            
-                            fetchedDriverInfo.push(driverInfos);   
-                        }   
-                    }  
-                    //updating DriverInfo
-                    setDriverInfo(fetchedDriverInfo);
-                } 
-            }
-            catch(err){
-                console.error("Bruh can't fetch the names :D", err);
-            }
-        } catch(err){
-            console.error("Can't fetch drivers :D" ,err)
-        }
-    }
-
-    useEffect(() => {
-        fetchDrivers();
-    }, [fetchDrivers]);
-
-    useEffect(() => {
-        const ids = driverInfo.map(driver =>  driver.id ? driver.id.toLocaleString() : "null");
-        setDriverId(ids);
-        // console.log("Driver ids: ", ids);
-
-        const names = driverInfo.map(driver => driver.name ?? "null");
-        setDriverNames(names);
-        // console.log("List of driver names: ", names);
-
-        const contact = driverInfo.map(driver => driver.contact ?? "null");
-        setDriverContacts(contact);
-        // console.log("List of driver contacts: ", contacts);
-
-        const license = driverInfo.map(driver => driver.license ?? "null");
-        setDriverLicenses(license);
-        // console.log("List of driver licenses: ", license);
-      }, [driverInfo]);
-
-    //vehicles
-    const [vehiclesId, setVehiclesId] = useState<string[]>([]);
-    const [vehicleId, setVehicleId] = useState<string[]>([]);
-    const [vehiclePlateNumber, setVehiclePlateNumber] = useState<string[]>([]);
-    const [vehicleModel, setVehicleModel] = useState<string[]>([]);
-    const [vehicleDriver, setVehicleDriver] = useState<string[]>([]);
-    const [vehicleCreatedAt, setVehicleCreatedAt] = useState<string[]>([]);
-
-    
-    if(vehicleId && vehiclePlateNumber && vehicleModel && vehicleDriver && vehicleCreatedAt){
-        // console.log("Fetched all vehicles.");
-    }
-
-    //fetch all vehicles
-    const fetchVehicles = async () => {
-        if(!user?.uid) return;
-        
-        try{
-            //dito kinuha ung vehicle id
-            const vehicleRef = collection(db, "users", user?.uid, "vehicles");
-            const vehicleSnap = await getDocs(vehicleRef);
-
-            //dito ko iistore mga vehicles
-            const fetchedVehiclesId: string[] = [];
-
-            vehicleSnap.forEach((doc) => {
-                fetchedVehiclesId.push(doc.id)
-            });
-
-            //saving sa vehiclesId
-            setVehiclesId(fetchedVehiclesId);
-
-            //dito kinuha ung fields
-            const fetchedVehicleInfos: VehicleInfo[] = [];
-
-            try{
-                if(vehiclesId.length > 0){
-                    for(const vehicleId of fetchedVehiclesId){
-                        const docRef = doc(db, "users", user?.uid, "vehicles", vehicleId);
-                        const docSnap = await getDoc(docRef);
-
-                        if(docSnap.exists() && vehicleId){
-
-                            const data = docSnap.data();
-
-                            const driverInfos: VehicleInfo = {
-                                id: docSnap.id ?? null,
-                                plateNumber: data.plateNumber ?? null,
-                                model: data.model ?? null,
-                                driver: data.driver ?? null,
-                                createdAt: data.createdAt ?? null                  
-                            }
-                            fetchedVehicleInfos.push(driverInfos);
-                        }
-                    }
-                    setVehicleInfo(fetchedVehicleInfos);
-                }
-            } catch(err){
-                console.error("Cant fetch vehicle fields", err);
-            }
-        } catch(err){
-            console.error("Can't fetech the vehicles :(", err);
-        }
-    }
-
-    useEffect(() => {
-        fetchVehicles();
-    }, [fetchVehicles]);
-
-    useEffect(() => {
-        const id = vehicleInfo.map(vehicle => String(vehicle.id ?? "null"));
-        setVehicleId(id);
-        const plateNumber = vehicleInfo.map(vehicle => vehicle.plateNumber ?? "null");
-        setVehiclePlateNumber(plateNumber);
-        const model = vehicleInfo.map(vehicle => vehicle.model ?? "null");
-        setVehicleModel(model);
-        const driver = vehicleInfo.map(vehicle => vehicle.driver ?? "null");
-        setVehicleDriver(driver);
-        const createdAt = vehicleInfo.map(vehicle => vehicle.createdAt ?? "null");
-        setVehicleCreatedAt(createdAt);
-
-    }, [vehicleInfo]);
-
-    //driver
-    useEffect(() => {
-        // console.log("DriverInfo received:", driverInfo, "Length:", driverInfo?.length);
-        if (driverInfo && Array.isArray(driverInfo)) {
-            const names = driverInfo.map(driver => driver.name ?? "null");
-            setPassedDriverNames(names);
-        }
-    }, [driverInfo]);
-    
-    //para ma check ko if napapass ba sa state ung names ng dirvers
-    useEffect(() => {
-        // console.log("Driver Names: ", passedDriverNames);
-    }, [passedDriverNames]);
-
-    //vehicle
-    useEffect(() => {
-        // console.log("VehicleInfo received:", vehicleInfo, "Length:", vehicleInfo?.length);
-        if (vehicleInfo && Array.isArray(vehicleInfo)) {
-            const names = vehicleInfo.map(vehicle => vehicle.model ?? "null");
-            setPassedVehicleNames(names);
-        }
-    }, [vehicleInfo]);
-    
-    //para ma check ko if napapass ba sa state ung names ng dirvers
-    useEffect(() => {
-        // console.log("Vehicle Names: ", passedVehicleNames);
-    }, [passedVehicleNames]);
+function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, vehicleInfo}: contentProps) {  
     
     const navItems = [
         { icon: "bx bx-dashboard bx-tada-hover hovered", title: "Dashboard" },
@@ -241,7 +39,7 @@ function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, setDri
     ];
 
     const dashboardPages = [
-        <Dashboard isDark={isDark} user={user} vehicleInfo={vehicleInfo}/>,
+        <Dashboard isDark={isDark} user={user} />,
         <Driver isDark={isDark} user={user} />,
         <Vehicle isDark={isDark} user={user} driverInfo={driverInfo} />,
         <Fuel isDark={isDark} user={user} driverInfo={driverInfo} vehicleInfo={vehicleInfo} />,
@@ -273,7 +71,7 @@ function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, setDri
                 ))}
             </section>}
             
-            {dashboardPages[activeIndex] ?? <Dashboard isDark={isDark} user={user} vehicleInfo={vehicleInfo} />}
+            {dashboardPages[activeIndex] ?? <Dashboard isDark={isDark} user={user} />}
             
         </div>
     )

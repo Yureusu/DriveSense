@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,6 +10,8 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import type { ChartOptions } from 'chart.js';
+import { useFetchFuels } from '../../hooks/Fetch/useFetchFuel';
+import type { UserInfo } from '../../App';
 
 ChartJS.register(
   CategoryScale,
@@ -22,26 +24,43 @@ ChartJS.register(
 
 interface BarChartProps {
   isDark: boolean;
+  user: UserInfo | null;
 }
 
-const BarChart: React.FC<BarChartProps> = ({ isDark }) => {
+const BarChart: React.FC<BarChartProps> = ({ isDark, user }) => {
+
+  const { fuelInfo } = useFetchFuels(user);
+
+  const [fuelCosts, setFuelCosts] = useState<number[]>([]);
+  const [fuelLogDates, setFuelLogDates] = useState<string[]>([]);
+
+  useEffect(() => {
+
+    const fetchFuelCosts = fuelInfo.map((fuel) => Number(fuel.cost));
+    setFuelCosts(fetchFuelCosts);
+
+    const fetchLogDates = fuelInfo
+      .map(f => {
+        if (!f.logDate) return null;
+        const date = new Date(f.logDate);
+        return date.toISOString().split('T')[0];
+      })
+      .filter((d): d is string => !!d);
+
+    setFuelLogDates(fetchLogDates);
+
+  }, [fuelInfo]);
+
+  console.log(fuelLogDates);
+
   const data = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
-    ],
+    labels: fuelLogDates,
     datasets: [
       {
         label: 'Fuel Consumption',
-        data: [20, 42, 98, 66, 32, 52, 44, 80, 74],
+        data: fuelCosts,
         backgroundColor: [
-          'rgba(101, 119, 255, 1)',
-          'rgba(101, 119, 255, 1)',
-          'rgba(101, 119, 255, 1)',
-          'rgba(101, 119, 255, 1)',
-          'rgba(101, 119, 255, 1)',
-          'rgba(101, 119, 255, 1)',
-          'rgba(101, 119, 255, 1)',
-          'rgba(101, 119, 255, 1)',
-          'rgba(101, 119, 255, 1)',
+          'rgba(101, 119, 255, 1)'
         ],
         borderWidth: 1,
       },

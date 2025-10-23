@@ -79,7 +79,7 @@ function Content({isDark}: changeTheme) {
                     <Card 
                         icon={
                             <i className='bx bx-lock-keyhole bx-tada-hover text-[calc(1.6vw+2.2rem)] text-[var(--purple-color)] font-semibold cursor-pointer' ></i> 
-                        } title={"Secure Access"} info={"Role: based login for admin, driver and owner."} isDark={isDark} />
+                        } title={"Secure Access"} info={"Role: based login for drivers and owners."} isDark={isDark} />
                 </div>
                 {/* animate the div fadein and to center of section */}
 

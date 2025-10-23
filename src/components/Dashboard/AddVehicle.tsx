@@ -3,6 +3,7 @@ import type { UserInfo, DriverInfo, VehicleInfo } from "../../App"
 import useIsMobile from "../../hooks/useIsMobile";
 import { db } from "../../server/Firebase/Firebase";
 import { doc, setDoc } from "firebase/firestore";
+import { useFetchDriver } from "../../hooks/Fetch/useFetchDriver";
 
 type AddVehicleProps = {
     user: UserInfo | null;
@@ -13,7 +14,9 @@ type AddVehicleProps = {
     setIsVisible: (value: boolean) => void
 }
 
-function AddVehicle({user, driverInfo, isDark, vehicleInfo, setVehicleInfo, setIsVisible}: AddVehicleProps) {
+function AddVehicle({user, isDark, vehicleInfo, setVehicleInfo, setIsVisible}: AddVehicleProps) {
+
+    const { driverInfo } = useFetchDriver(user);
 
     const [isFormVisible, setIsFormVisible] = useState(false);
 

@@ -1,25 +1,30 @@
 import { useEffect, useState, type SetStateAction } from "react";
-import type { UserInfo, FuelInfo, VehicleInfo, DriverInfo } from "../../App"
+import type { UserInfo, FuelInfo } from "../../App"
 import { db } from "../../server/Firebase/Firebase";
 import { doc, setDoc } from "firebase/firestore";
+import { useFetchVehicle } from "../../hooks/Fetch/useFetchVehicle";
+import { useFetchDriver } from "../../hooks/Fetch/useFetchDriver";
 
 type AddFuelProps = {
     isDark: boolean;
     user: UserInfo | null;
     fuelInfo: FuelInfo[];
-    vehicleInfo: VehicleInfo[];
-    driverInfo: DriverInfo[];
     refetch: () => void;
     setIsAddFuel: React.Dispatch<SetStateAction<boolean>>;
 }
 
-function AddFuel({ isDark, user, fuelInfo, vehicleInfo, driverInfo, refetch, setIsAddFuel }: AddFuelProps) {
+function AddFuel({ isDark, user, fuelInfo, refetch, setIsAddFuel }: AddFuelProps) {
 
-    const [vehcileModel, setVehicleModel] = useState<string[] | null>([]);
-    const [driverNames, setDriverNames] = useState<string[] | null>([]);
+    const { vehicleInfo } = useFetchVehicle(user);
+    const { driverInfo } = useFetchDriver(user);
+
+    const [vehicleModel, setVehicleModel] = useState<string[]>([]);
+    const [driverNames, setDriverNames] = useState<string[]>([]);
     const [fuelLogs, setFuelLogs] = useState<string[]>([]);
 
     useEffect(() => {
+
+        if (!vehicleInfo || !driverInfo || !fuelInfo) return;
 
         const models = vehicleInfo.map((vehicle) => vehicle.model ?? "null");
         setVehicleModel(models);
@@ -28,10 +33,15 @@ function AddFuel({ isDark, user, fuelInfo, vehicleInfo, driverInfo, refetch, set
         const fuelLogs = fuelInfo.map((fuels) => fuels.id ?? "null");
         setFuelLogs(fuelLogs);
 
-    }, [vehicleInfo]);
+    }, [vehicleInfo, driverInfo, fuelInfo]);
+
+    useEffect(() => {
+        console.log("Updated vehicleModel:", vehicleModel);
+      }, [vehicleModel]);
+      
 
     const [isFormVisible, setIsFormVisible] = useState(true);
-
+    
     const [fuelVehicle, setFuelVehicle] = useState<string | null>(null);
     const [fuelVolume, setFuelVolume] = useState<string | null>(null);
     const [fuelCost, setFuelCost] = useState<string | null>(null);
@@ -83,12 +93,13 @@ function AddFuel({ isDark, user, fuelInfo, vehicleInfo, driverInfo, refetch, set
                         <div className="flex-2 w-full flex flex-col items-center justify-center gap-[calc(0.4vw+0.6rem)]">
                             
                             <select className="focus:border-[var(--purple-color)] custom-select cursor-pointer text-[calc(0.4vw+0.5rem)] w-full p-[calc(0.3vw+0.4rem)] outline-none border border-[var(--border-color)] rounded-lg"
+                                value={fuelVehicle ?? ""}
                                 onChange={(e) => setFuelVehicle(e.target.value)}>
-                                <option value="Select a vehicle" disabled>Select a vehicle</option>
+                                <option value="" disabled>Select a vehicle</option>
 
-                                {vehcileModel?.map((vehiclename, index) => (
-                                    <option key={index} value={vehiclename} className={`text-[var(--dark-color)] cursor-pointer`}>
-                                        {vehiclename}
+                                {vehicleModel?.map((vehicle, index) => (
+                                    <option key={index} value={vehicle} className={`text-[var(--dark-color)] cursor-pointer`}>
+                                        {vehicle}
                                     </option>
                                 ))}
 
@@ -101,7 +112,8 @@ function AddFuel({ isDark, user, fuelInfo, vehicleInfo, driverInfo, refetch, set
                                 placeholder:text-[calc(0.4vw+0.5rem)] placeholder-gray-500 px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] text-[calc(0.4vw+0.5rem)] w-full" 
                                 onChange={(e) => setFuelCost(e.target.value)} required/>
 
-                            <select value="Select a driver" className="focus:border-[var(--purple-color)] custom-select cursor-pointer text-[calc(0.4vw+0.5rem)] w-full p-[calc(0.3vw+0.4rem)] outline-none border border-[var(--border-color)] rounded-lg"
+                            <select className="focus:border-[var(--purple-color)] custom-select cursor-pointer text-[calc(0.4vw+0.5rem)] w-full p-[calc(0.3vw+0.4rem)] outline-none border border-[var(--border-color)] rounded-lg"
+                                value={fuelAddedBy ?? ""}
                                 onChange={(e) => setFuelAddedBy(e.target.value)}>
                                 <option value="" disabled>Select a driver</option>
 

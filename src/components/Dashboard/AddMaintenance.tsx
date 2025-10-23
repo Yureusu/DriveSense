@@ -2,6 +2,7 @@ import { useState, useEffect, type SetStateAction } from "react";
 import type { UserInfo, MaintenanceInfo, VehicleInfo } from "../../App"
 import { db } from "../../server/Firebase/Firebase";
 import { doc, setDoc } from "firebase/firestore";
+import { useFetchVehicle } from "../../hooks/Fetch/useFetchVehicle";
 
 type AddMaintenanceProps = {
     isDark: boolean;
@@ -12,8 +13,10 @@ type AddMaintenanceProps = {
     setIsAddMaintenance: React.Dispatch<SetStateAction<boolean>>;
 }
 
-function AddMaintenance({ isDark, user, maintenanceInfo, vehicleInfo, refetch, setIsAddMaintenance }: AddMaintenanceProps) {
+function AddMaintenance({ isDark, user, maintenanceInfo, refetch, setIsAddMaintenance }: AddMaintenanceProps) {
 
+    const { vehicleInfo } = useFetchVehicle(user);
+    
     const [isFormVisible, setIsFormVisible] = useState(true);
 
     const [vehcileModel, setVehicleModel] = useState<string[]>([]);

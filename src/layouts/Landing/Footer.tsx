@@ -54,7 +54,10 @@ function Footer({isDark}: changeTheme) {
                                 <span className="text-[calc(0.6vw+0.8rem)] font-semibold cursor-pointer hovered">Social</span>
                                 <span className="text-[calc(0.4vw+0.6rem)] cursor-pointer hovered">Facebook</span>
                                 <span className="text-[calc(0.4vw+0.6rem)] cursor-pointer hovered">Instagram</span>
-                                <span className="text-[calc(0.4vw+0.6rem)] cursor-pointer hovered">Github</span>
+                                <span className="text-[calc(0.4vw+0.6rem)] cursor-pointer hovered"
+                                onClick={() => {
+                                    window.open("https://github.com/Yureusu/DriveSense/actions");
+                                }}>Github</span>
                             </div>
 
                         </div>

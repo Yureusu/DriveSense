@@ -18,9 +18,9 @@ type DashboardProps ={
 }
 
 function Dashboard({user, driverInfo, setDriverInfo, vehicleInfo, setVehicleInfo, 
-    maintenanceInfo, isLoggedIn, setIsLoggedIn}: DashboardProps) {
+    maintenanceInfo, isLoggedIn, setIsLoggedIn, fuelInfo}: DashboardProps) {
 
-    const [isDark, setIsDark] = useState(true);
+    const [isDark, setIsDark] = useState(false);
     const [activeIndex, setActiveIndex] = useState<number>(0);
 
     return (
@@ -28,8 +28,8 @@ function Dashboard({user, driverInfo, setDriverInfo, vehicleInfo, setVehicleInfo
             <Header isDark={isDark} setIsDark={setIsDark} activeIndex={activeIndex} setActiveIndex={setActiveIndex} user={user} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
             <Content isDark={isDark} activeIndex={activeIndex} setActiveIndex={setActiveIndex} user={user}
             driverInfo={driverInfo} setDriverInfo={setDriverInfo}
-            vehicleInfo={vehicleInfo} setVehicleInfo={setVehicleInfo} 
-            maintenanceInfo={maintenanceInfo}/>
+            vehicleInfo={vehicleInfo} setVehicleInfo={setVehicleInfo}
+            maintenanceInfo={maintenanceInfo} fuelInfo={fuelInfo}/>
         </div>
     )
 }

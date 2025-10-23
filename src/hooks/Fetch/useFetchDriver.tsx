@@ -3,7 +3,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../server/Firebase/Firebase";
 import type { UserInfo, DriverInfo } from "../../App";
 
-export function useFetchVDriver(user: UserInfo | null) {
+export function useFetchDriver(user: UserInfo | null) {
     const [driverInfo, setDriverInfo] = useState<DriverInfo[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);

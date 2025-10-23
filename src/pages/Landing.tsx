@@ -12,7 +12,7 @@ type landingProps = {
 
 function Landing({isLoggedIn, setIsLoggedIn, setUser}: landingProps) {
 
-    const [isDark, setIsDark] = useState(true);
+    const [isDark, setIsDark] = useState(false);
 
     return (
         <div className={`${isDark? "text-[var(--light-color)] bg-[var(--dark-color)]" : "text-[var(--dark-color)] bg-[var(--light-color)]"}

@@ -38,7 +38,10 @@ function Header({isDark, setIsDark, isLoggedIn, setIsLoggedIn, setUser}: headerP
             {!isMobile && <div className="flex flex-row items-center gap-[calc(0.4vw+0.6rem)]">
                 <span className="text-[calc(0.4vw+0.6rem)] cursor-pointer hovered">Home</span>
                 <span className="text-[calc(0.4vw+0.6rem)] cursor-pointer hovered">Features</span>
-                <span className="text-[calc(0.4vw+0.6rem)] cursor-pointer hovered">Github</span>
+                <span className="text-[calc(0.4vw+0.6rem)] cursor-pointer hovered" 
+                onClick={() => {
+                    window.open("https://github.com/Yureusu/DriveSense/actions");
+                }}>Github</span>
             </div>}
                 
             <div className="flex flex-row items-center gap-[calc(0.4vw+0.6rem)]">
@@ -66,9 +69,9 @@ function Header({isDark, setIsDark, isLoggedIn, setIsLoggedIn, setUser}: headerP
                             <span className="text-[calc(0.4vw+0.5rem)]" >Or continue with</span>
 
                             <input type="email" placeholder="Email" className="cursor-pointer outline-none border border-[var(--border-color)] rounded-xl focus:border-[var(--purple-color)]
-                                placeholder:text-[calc(0.4vw+0.5rem)] px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] text-[calc(0.4vw+0.5rem)] w-full" required/>
+                                placeholder:text-[calc(0.4vw+0.5rem)] placeholder-gray-500 px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] text-[calc(0.4vw+0.5rem)] w-full" required/>
                             <input type="password" placeholder="Password" className="cursor-pointer outline-none border border-[var(--border-color)] rounded-xl focus:border-[var(--purple-color)]
-                                placeholder:text-[calc(0.4vw+0.5rem)] px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] text-[calc(0.4vw+0.5rem)] w-full" required/>
+                                placeholder:text-[calc(0.4vw+0.5rem)] placeholder-gray-500 px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] text-[calc(0.4vw+0.5rem)] w-full" required/>
                             <span className="text-[calc(0.4vw+0.5rem)] text-[var(--light-color)] w-full px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] rounded-xl text-center cursor-pointer 
                                 bg-[var(--blue-color)] hover:bg-[var(--purple-color)] transition duration-300 ease-in-out">Continue</span>
 
