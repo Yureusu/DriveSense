@@ -62,9 +62,7 @@ function Fuel({ isDark, user, driverInfo, vehicleInfo }: FuelProps) {
             </div>
 
             {isAddFuel && <AddFuel isDark={isDark} user={user} 
-                fuelInfo={fuelInfo} 
-                vehicleInfo={vehicleInfo} 
-                driverInfo={driverInfo}
+                fuelInfo={fuelInfo}       
                 refetch={refetch}
                 setIsAddFuel={setIsAddFuel}
             />}
