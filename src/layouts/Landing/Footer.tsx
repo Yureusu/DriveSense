@@ -1,5 +1,5 @@
-import darkIcon from "../../assets/ui/dark-icon.png"
-import lightIcon from "../../assets/ui/light-icon.png"
+import darkIcon from "../../assets/ui/app-icon.png"
+import lightIcon from "../../assets/ui/app-icon.png"
 import useIsMobile from "../../hooks/useIsMobile"
 
 type changeTheme = {

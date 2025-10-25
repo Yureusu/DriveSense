@@ -1,7 +1,7 @@
 import { useState, type SetStateAction } from "react";
 import Theme from "../../components/Global/Theme";
-import DarkIcon from "../../assets/ui/dark-icon.png"
-import LightIcon from "../../assets/ui/light-icon.png"
+import DarkIcon from "../../assets/ui/app-icon.png"
+import LightIcon from "../../assets/ui/app-icon.png"
 import useIsMobile from "../../hooks/useIsMobile";
 import { SidenavCard } from "../../components/Dashboard/SidenavCard"
 import type { UserInfo } from "../../App";
@@ -51,7 +51,7 @@ function Header({isDark, setIsDark, activeIndex, setActiveIndex, user, isLoggedI
             <div className="flex flex-row items-center gap-[calc(0.4vw+0.6rem)]">
                 {isMobile && <i className="bx bx-menu bx-bounce-hover text-[calc(0.8vw+1.2rem)] cursor-pointer" 
                     onClick={() => setIsSidenavActive((prev) => !prev)}></i>}
-                <img src={isDark? DarkIcon : LightIcon} className="h-[calc(1vw+1.4rem)] w-[calc(1vw+1.4rem)] cursor-pointer hovered"/>
+                <img src={isDark? DarkIcon : LightIcon} className="h-[calc(1.2vw+1.8rem)] w-[calc(1.2vw+1.8rem)] cursor-pointer hovered"/>
                 <span className="text-[calc(0.6vw+0.8rem)] cursor-pointer font-semibold hovered">DriveSense</span>
             </div>
                 
