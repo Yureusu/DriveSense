@@ -5,6 +5,8 @@ import LightIcon from "../../assets/ui/app-icon.png"
 import useIsMobile from "../../hooks/useIsMobile";
 import GoogleLogin from "../../server/Firebase/GoogleSignin";
 import type { UserInfo } from "../../App";
+import Signup from "../../server/Firebase/Signup";
+import Signin from "../../server/Firebase/Signin";
 
 type headerProps = {
     isDark: boolean;
@@ -19,10 +21,13 @@ function Header({isDark, setIsDark, isLoggedIn, setIsLoggedIn, setUser}: headerP
     const isMobile = useIsMobile();
     const [isSidenavActive, setIsSidenavActive] = useState(false);
     const [isFormVisible, setIsFormVisible] = useState(false);
+    const [isSignupVisible, setIsSignupVisible] = useState(false);
 
     const handleSignIn = () => {
         setIsFormVisible((prev) => !prev);
     }
+
+    //emailandpass
 
     return (
         <div className={`${isLoggedIn? "" : ""}
@@ -36,7 +41,10 @@ function Header({isDark, setIsDark, isLoggedIn, setIsLoggedIn, setUser}: headerP
             </div>
 
             {!isMobile && <div className="flex flex-row items-center gap-[calc(0.4vw+0.6rem)]">
-                <span className="text-[calc(0.4vw+0.6rem)] cursor-pointer hovered">Home</span>
+                <span className="text-[calc(0.4vw+0.6rem)] cursor-pointer hovered"
+                onClick={() => {
+                    location.reload();
+                }}>Home</span>
                 <span className="text-[calc(0.4vw+0.6rem)] cursor-pointer hovered">Features</span>
                 <span className="text-[calc(0.4vw+0.6rem)] cursor-pointer hovered" 
                 onClick={() => {
@@ -62,22 +70,36 @@ function Header({isDark, setIsDark, isLoggedIn, setIsLoggedIn, setUser}: headerP
                         {/*Form*/}
                         <div className="w-full flex flex-col items-center justify-start py-[calc(0.4vw+0.6rem)] px-[calc(2.4vw+2.6rem)] gap-[calc(0.4vw+0.6rem)] text-[var(--dark-color)]">
                             <img src={LightIcon} className="h-[calc(1.2vw+1.8rem)] w-[calc(1.2vw+1.8rem)] cursor-pointer" alt="" />
-                            <span className="text-[calc(0.4vw+0.8rem)] font-semibold">Sign in to your account</span>
+                            {!isSignupVisible && 
+                            <>
+                                <span className="text-[calc(0.4vw+0.8rem)] font-semibold">Sign in to your account</span>
+                                    <GoogleLogin isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setUser={setUser}/>
 
-                            <GoogleLogin isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setUser={setUser}/>
+                                    <span className="text-[calc(0.4vw+0.5rem)]" >Or continue with</span>
 
-                            <span className="text-[calc(0.4vw+0.5rem)]" >Or continue with</span>
+                                    <Signin isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
 
-                            <input type="email" placeholder="Email" className="cursor-pointer outline-none border border-[var(--border-color)] rounded-xl focus:border-[var(--purple-color)]
-                                placeholder:text-[calc(0.4vw+0.5rem)] placeholder-gray-500 px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] text-[calc(0.4vw+0.5rem)] w-full" required/>
-                            <input type="password" placeholder="Password" className="cursor-pointer outline-none border border-[var(--border-color)] rounded-xl focus:border-[var(--purple-color)]
-                                placeholder:text-[calc(0.4vw+0.5rem)] placeholder-gray-500 px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] text-[calc(0.4vw+0.5rem)] w-full" required/>
-                            <span className="text-[calc(0.4vw+0.5rem)] text-[var(--light-color)] w-full px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] rounded-xl text-center cursor-pointer 
-                                bg-[var(--blue-color)] hover:bg-[var(--purple-color)] transition duration-300 ease-in-out">Continue</span>
+                                    <span className="text-[calc(0.4vw+0.5rem)]">Don't have an account? 
+                                        <span className="text-[calc(0.4vw+0.5rem)] text-[var(--blue-color)] hovered cursor-pointer"
+                                        onClick={() => setIsSignupVisible((prev) => !prev)}> Sign Up</span>
+                                </span>
+                            </>
+                            }
+                            {isSignupVisible && 
+                            <>
+                                <span className="text-[calc(0.4vw+0.8rem)] font-semibold">Sign up an account</span>
 
-                            <span className="text-[calc(0.4vw+0.5rem)]">Don't have an account? 
-                                <span className="text-[calc(0.4vw+0.5rem)] text-[var(--blue-color)] hovered cursor-pointer"> Sign Up</span>
-                            </span>
+                                    <Signup isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
+
+                                    <span className="text-[calc(0.4vw+0.5rem)]" >Or continue with</span>
+
+                                    <GoogleLogin isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setUser={setUser}/>
+
+                                    <span className="text-[calc(0.4vw+0.5rem)]">Already have an account? 
+                                        <span className="text-[calc(0.4vw+0.5rem)] text-[var(--blue-color)] hovered cursor-pointer"
+                                        onClick={() => setIsSignupVisible((prev) => !prev)}> Sign In</span>
+                                </span>
+                            </>}
                         </div>
                          
                     </div>
