@@ -35,14 +35,20 @@ const BarChart: React.FC<BarChartProps> = ({ isDark, user }) => {
   const [fuelLogDates, setFuelLogDates] = useState<string[]>([]);
 
   useEffect(() => {
+    if (!fuelInfo || fuelInfo.length === 0) {
+      setFuelCosts([]);
+      setFuelLogDates([]);
+      return; //exit early if nothing to process
+    }
 
-    const fetchFuelCosts = fuelInfo.map((fuel) => Number(fuel.cost));
+    const fetchFuelCosts = fuelInfo.map((fuel) => Number(fuel.cost) || 0);
     setFuelCosts(fetchFuelCosts);
 
     const fetchLogDates = fuelInfo
       .map(f => {
         if (!f.logDate) return null;
         const date = new Date(f.logDate);
+        if (isNaN(date.getTime())) return null; //skip invalid ones
         return date.toISOString().split('T')[0];
       })
       .filter((d): d is string => !!d);

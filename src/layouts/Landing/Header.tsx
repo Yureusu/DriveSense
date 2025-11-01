@@ -77,7 +77,7 @@ function Header({isDark, setIsDark, isLoggedIn, setIsLoggedIn, setUser}: headerP
 
                                     <span className="text-[calc(0.4vw+0.5rem)]" >Or continue with</span>
 
-                                    <Signin isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
+                                    <Signin isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsFormVisible={setIsFormVisible}/>
 
                                     <span className="text-[calc(0.4vw+0.5rem)]">Don't have an account? 
                                         <span className="text-[calc(0.4vw+0.5rem)] text-[var(--blue-color)] hovered cursor-pointer"
@@ -89,7 +89,7 @@ function Header({isDark, setIsDark, isLoggedIn, setIsLoggedIn, setUser}: headerP
                             <>
                                 <span className="text-[calc(0.4vw+0.8rem)] font-semibold">Sign up an account</span>
 
-                                    <Signup isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn}/>
+                                    <Signup isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setUser={setUser} setIsFormVisible={setIsFormVisible}/>
 
                                     <span className="text-[calc(0.4vw+0.5rem)]" >Or continue with</span>
 

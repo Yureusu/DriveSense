@@ -44,7 +44,7 @@ function Dashboard({isDark, user} : changeTheme) {
         const fetchMaintenanceCount = maintenanceInfo.length;
         setMaintenanceCount((fetchMaintenanceCount).toString());
 
-    }, [fuelInfo]);
+    }, [fuelInfo, driverInfo, vehicleInfo, maintenanceInfo]);
     
     useEffect(() => {
         if (fuelCost.length > 0 && vehicleCount > 0) {

@@ -2,14 +2,20 @@ import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import type { SetStateAction } from "react";
 import { Popup } from "../../components/Global/Popup";
+import { db } from "./Firebase";
+import { doc, setDoc } from "firebase/firestore";
+import type { UserInfo } from "../../App";
 
-type EmailPassProps = {
+type SignupProps = {
     isLoggedIn: boolean;
     setIsLoggedIn: React.Dispatch<SetStateAction<boolean>>;
+    setUser: React.Dispatch<SetStateAction<UserInfo | null>>;
+    setIsFormVisible: React.Dispatch<SetStateAction<boolean>>;
 }
 
-function EmailPass({ isLoggedIn, setIsLoggedIn}: EmailPassProps) {
+function EmailPass({ isLoggedIn, setIsLoggedIn, setUser, setIsFormVisible}: SignupProps) {
 
+    console.log("Sign up form is visible");
     const [isPopupVisible, setIsPopupVisible] = useState(false);
 
     const [email, setEmail] = useState<string>("");
@@ -18,26 +24,39 @@ function EmailPass({ isLoggedIn, setIsLoggedIn}: EmailPassProps) {
     const auth = getAuth();
 
     const handleSignUp = async () => {
-        try{
-            await createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                // Signed up 
-                const user = userCredential.user;
-                console.log("Signed up sukses!", user);
-                setIsLoggedIn(true);
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                setIsPopupVisible(true);
-                console.log(errorCode, errorMessage);
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+    
+            //Store user in React state
+            setUser({
+                displayName: user.displayName,
+                email: user.email,
+                photoURL: user.photoURL,
+                uid: user.uid
             });
-        } catch(error){
-            setIsPopupVisible(true);
-            console.log("Can't sign up!", error);
-        }
-    }  
+    
+            const userRef = doc(db, "users", user.uid);
+    
+            await setDoc(userRef, {
+                uid: user.uid,
+                email: user.email,
+                name: null,
+                photoURL: null,
+                createdAt: new Date().toISOString(),
+            });
 
+            console.log("User document created");
+    
+            setIsFormVisible(false);
+            setIsLoggedIn(true);
+            console.log("Signed up successfully!", user);
+        } catch (error: any) {
+            setIsPopupVisible(true);
+            console.error("Error signing up:", error.message);
+        }
+    };    
+      
     return (
         <>
             {!isLoggedIn && <>

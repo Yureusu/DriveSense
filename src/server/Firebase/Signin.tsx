@@ -3,13 +3,15 @@ import { useState } from "react";
 import type { SetStateAction } from "react";
 import { Popup } from "../../components/Global/Popup";
 
-type EmailPassProps = {
+type SigninProps = {
     isLoggedIn: boolean;
     setIsLoggedIn: React.Dispatch<SetStateAction<boolean>>;
+    setIsFormVisible: React.Dispatch<SetStateAction<boolean>>;
 }
 
-function EmailPass({ isLoggedIn, setIsLoggedIn}: EmailPassProps) {
+function EmailPass({ isLoggedIn, setIsLoggedIn, setIsFormVisible}: SigninProps) {
 
+    console.log("Sign in form is visible");
     const [isPopupVisible, setIsPopupVisible] = useState(false);
 
     const [email, setEmail] = useState<string>("");
@@ -17,13 +19,16 @@ function EmailPass({ isLoggedIn, setIsLoggedIn}: EmailPassProps) {
 
     const auth = getAuth();
 
-    const handleSignUp = async () => {
+    const handleSignIn = async () => {
         try{
             await signInWithEmailAndPassword (auth, email, password)
             .then((userCredential) => {
                 // Signed up 
                 const user = userCredential.user;
+
                 console.log("Signed in sukses!", user);
+
+                setIsFormVisible(false);
                 setIsLoggedIn(true);
             })
             .catch((error) => {
@@ -49,7 +54,7 @@ function EmailPass({ isLoggedIn, setIsLoggedIn}: EmailPassProps) {
                     onChange={(e) => setPassword(e.target.value)}/>
                 <span className="text-[calc(0.4vw+0.5rem)] text-[var(--light-color)] w-full px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] rounded-xl text-center cursor-pointer 
                     bg-[var(--blue-color)] hover:bg-[var(--purple-color)] transition duration-300 ease-in-out"
-                    onClick={() => handleSignUp()}>Continue</span>
+                    onClick={() => handleSignIn()}>Continue</span>
 
                 {isPopupVisible && <Popup closePopup={() => setIsPopupVisible(false)} children={
                     <p className="text-[calc(0.4vw+0.5rem)]">The email address you've entered doesn't match any account.</p>
