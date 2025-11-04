@@ -67,7 +67,6 @@ function App() {
         setUser(mappedUser);
         setIsLoggedIn(true);
       } else {
-        // user is signed out
         console.log("No user signed in bruh");
         setUser(null);
         setIsLoggedIn(false);

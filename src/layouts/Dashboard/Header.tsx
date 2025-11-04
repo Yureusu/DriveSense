@@ -38,7 +38,7 @@ function Header({isDark, setIsDark, activeIndex, setActiveIndex, user, isLoggedI
         const auth = getAuth();
         signOut(auth).then(() => {
             console.log("Signed out successfully!");   
-            setIsLoggedIn((prev) => !prev);
+            setIsLoggedIn(false);
         }).catch((err) => {
             console.error(err);
         });
