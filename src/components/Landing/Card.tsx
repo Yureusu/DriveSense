@@ -18,8 +18,8 @@ const Card = ({icon, title, info, isDark}: CardProps) => {
             flex flex-col items-center justify-center gap-[calc(0.4vw+0.6rem)] 
             p-[calc(0.4vw+0.6rem)] rounded-lg border border-[var(--border-color)]`}>
             {icon} 
-            <span className={`${isMobile? "text-[calc(0.4vw+0.8rem)]" : "text-[calc(0.4vw+0.6rem)]"} font-semibold text-center`}>{title}</span>
-            <span className={`${isMobile? "text-[calc(0.4vw+0.8rem)]" : "text-[calc(0.4vw+0.6rem)]"} text-center`}>{info}.</span>
+            <span className={`${isMobile? "text-[calc(0.4vw+0.7rem)]" : "text-[calc(0.4vw+0.6rem)]"} font-semibold text-center`}>{title}</span>
+            <span className={`${isMobile? "text-[calc(0.4vw+0.7rem)]" : "text-[calc(0.4vw+0.6rem)]"} text-center`}>{info}</span>
         </div>
     )
 }

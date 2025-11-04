@@ -24,6 +24,7 @@ function Header({isDark, setIsDark, activeIndex, setActiveIndex, user, isLoggedI
 
     const navItems = [
         { icon: "bx bx-dashboard bx-tada-hover hovered", title: "Dashboard" },
+        { icon: "bx bx-user bx-tada-hover hovered", title: "Drivers" },
         { icon: "bx bx-car bx-tada-hover hovered", title: "Vehicle" },
         { icon: "bx bx-petrol-pump bx-tada-hover hovered", title: "Fuel" },
         { icon: "bx bx-spanner bx-tada-hover hovered", title: "Maintenance" },
@@ -58,7 +59,7 @@ function Header({isDark, setIsDark, activeIndex, setActiveIndex, user, isLoggedI
                 {user && <img src={user?.photoURL ?? Icon} className="rounded-full h-[calc(0.8vw+1.4rem)]  w-[calc(0.8vw+1.4rem)] cursor-pointer" alt="" />}
                 {!user && <i className='bx bx-user-circle bx-tada-hover hovered text-[calc(1vw+1.2rem)] cursor-pointer'></i> }
 
-                <span className={`${isMobile? "text-[calc(0.4vw+0.8rem)]" : "text-[calc(0.4vw+0.6rem)]"} 
+                <span className={`${isMobile? "text-[calc(0.4vw+0.7rem)]" : "text-[calc(0.4vw+0.6rem)]"} 
                     cursor-pointer hovered`}>
                     {isMobile? firstName : user?.displayName ?? "Guest"}
                 </span>
@@ -71,17 +72,17 @@ function Header({isDark, setIsDark, activeIndex, setActiveIndex, user, isLoggedI
 
             {isMobile && isSidenavActive && <div className="h-screen w-screen bg-[rgba(0,0,0,0.50)] absolute top-0 left-0">
                 <div className={`${isDark? "text-[var(--light-color)] bg-[var(--dark-color)]" : "text-[var(--dark-color)] bg-[var(--light-color)]"}
-                    h-screen w-[50vw] absolute top-0 left-0 flex flex-col items-start justify-start gap-[calc(0.4vw+1rem)] p-[calc(0.4vw+0.7rem)]`}>
-                    <i className="bx bx-x bx-rotate-hover text-[calc(0.6vw+1rem)] cursor-pointer mt-[calc(0.2vw+0.2rem)]"
+                    h-screen w-[50vw] absolute top-0 left-0 flex flex-col items-start justify-start p-[calc(0.4vw+0.7rem)]`}>
+                    <i className="bx bx-x bx-rotate-hover text-[calc(0.6vw+1rem)] cursor-pointer mt-[calc(0.2vw+0.2rem)] mb-[calc(0.4vw+0.6rem)]"
                         onClick={() => setIsSidenavActive((prev) => !prev)}></i>
                     
                     {navItems.map((item, index) => (
                         <div
                             key={index}
                             className={`${
-                            activeIndex === index ? "bg-[var(--border-color)]" : ""
-                            } flex flex-row items-center justify-start gap-[calc(0.4vw+0.6rem)] 
-                            cursor-pointer transition duration-300 ease-in-out`}
+                            activeIndex === index ? "bg-[var(--border-color)] text-[var(--dark-color)]" : ""
+                            } flex flex-row items-center justify-start
+                            cursor-pointer w-full transition duration-300 ease-in-out`}
                             onClick={() => setActiveIndex(index)}
                         >
                             <SidenavCard icon={item.icon} title={item.title} />

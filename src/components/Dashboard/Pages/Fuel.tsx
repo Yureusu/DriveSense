@@ -38,8 +38,10 @@ function Fuel({ isDark, user, driverInfo, vehicleInfo }: FuelProps) {
         }
     }, [vehicleInfo]);
 
-    if (loading) return <p className="w-full text-center text-gray-500">Loading fuel logs...</p>;
-    if (error) return <p className="w-full text-center text-red-500">Error: {error.message}</p>;
+    if (loading) return <p className={`"text-[calc(0.4vw+0.8rem)] flex flex-col items-center justify-center h-screen w-screen 
+        text-center text-gray-500`}>Loading fuel logs...</p>;
+    if (error) return <p className={`"text-[calc(0.4vw+0.8rem)] flex flex-col items-center justify-center h-screen w-screen 
+        text-center text-red-500`}>Error: {error.message}</p>;
 
     // console.log(passedDriverNames);
     // console.log(passedVehicleNames);

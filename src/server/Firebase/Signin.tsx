@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { SetStateAction } from "react";
 import { Popup } from "../../components/Global/Popup";
 import type { UserInfo } from "../../App";
+import useIsMobile from "../../hooks/useIsMobile";
 
 type SigninProps = {
     isLoggedIn: boolean;
@@ -12,6 +13,8 @@ type SigninProps = {
 }
 
 function SignIn({ isLoggedIn, setIsLoggedIn, setIsFormVisible, setUser}: SigninProps) {
+
+    const isMobile = useIsMobile();
 
     console.log("Sign in form is visible");
     const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -58,14 +61,17 @@ function SignIn({ isLoggedIn, setIsLoggedIn, setIsFormVisible, setUser}: SigninP
     return (
         <>
             {!isLoggedIn && <>
-                <input type="email" placeholder="Email" className="cursor-pointer outline-none border border-[var(--border-color)] rounded-xl focus:border-[var(--purple-color)]
-                    placeholder:text-[calc(0.4vw+0.5rem)] placeholder-gray-500 px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] text-[calc(0.4vw+0.5rem)] w-full" required
+                <input type="email" placeholder="Email" className={`${isMobile? "placeholder:text-[calc(0.4vw+0.6rem)] text-[calc(0.4vw+0.6rem)]" : "placeholder:text-[calc(0.4vw+0.5rem)] text-[calc(0.4vw+0.5rem)]"} 
+                    cursor-pointer outline-none border border-[var(--border-color)] rounded-xl focus:border-[var(--purple-color)]
+                    placeholder-gray-500 px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] w-full`} required
                     onChange={(e) => setEmail(e.target.value)}/>
-                <input type="password" placeholder="Password" className="cursor-pointer outline-none border border-[var(--border-color)] rounded-xl focus:border-[var(--purple-color)]
-                    placeholder:text-[calc(0.4vw+0.5rem)] placeholder-gray-500 px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] text-[calc(0.4vw+0.5rem)] w-full" required
+                <input type="password" placeholder="Password" className={`${isMobile? "placeholder:text-[calc(0.4vw+0.6rem)] text-[calc(0.4vw+0.6rem)]" : "placeholder:text-[calc(0.4vw+0.5rem)] text-[calc(0.4vw+0.5rem)]"}
+                    cursor-pointer outline-none border border-[var(--border-color)] rounded-xl focus:border-[var(--purple-color)]
+                    placeholder-gray-500 px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] w-full`} required
                     onChange={(e) => setPassword(e.target.value)}/>
-                <span className="text-[calc(0.4vw+0.5rem)] text-[var(--light-color)] w-full px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] rounded-xl text-center cursor-pointer 
-                    bg-[var(--blue-color)] hover:bg-[var(--purple-color)] transition duration-300 ease-in-out"
+                <span className={`${isMobile? "text-[calc(0.4vw+0.6rem)]" : "text-[calc(0.4vw+0.5rem)]"}
+                    text-[var(--light-color)] w-full px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] rounded-xl text-center cursor-pointer 
+                    bg-[var(--blue-color)] hover:bg-[var(--purple-color)] transition duration-300 ease-in-out`}
                     onClick={() => handleSignIn()}>Continue</span>
 
                 {isPopupVisible && <Popup closePopup={() => setIsPopupVisible(false)} children={

@@ -21,8 +21,10 @@ function Driver({ isDark, user}: DriverProps) {
 
     const { driverInfo, loading, error, refetch } = useFetchDriver(user);
 
-    if (loading) return <p className="w-full text-center text-gray-500">Loading drivers...</p>;
-    if (error) return <p className="w-full text-center text-red-500">Error: {error.message}</p>;
+    if (loading) return <p className={`"text-[calc(0.4vw+0.8rem)] flex flex-col items-center justify-center h-screen w-screen 
+        text-center text-gray-500`}>Loading drivers...</p>;
+    if (error) return <p className={`"text-[calc(0.4vw+0.8rem)] flex flex-col items-center justify-center h-screen w-screen 
+        text-center text-red-500`}>Error: {error.message}</p>;
 
     return (
         <section id="main" className={`${isMobile ? "p-[calc(0.4vw+0.6rem)] h-screen" : "border-l px-[calc(0.4vw+0.6rem)] h-auto"}

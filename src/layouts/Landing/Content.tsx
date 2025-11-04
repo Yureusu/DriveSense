@@ -23,15 +23,12 @@ function Content({isDark}: changeTheme) {
 
                 <div className="h-auto w-full flex-1 flex flex-row items-center justify-center p-[calc(0.4vw+0.6rem)]">
                     <div className="flex flex-col items-start justify-center gap-[calc(0.4vw+0.6rem)]">
-                        <span className="text-[calc(1.6vw+1.4rem)] font-bold cursor-pointer hovered">Fuel Consumption and Vehicle Usage Monitoring System</span>
+                        <span className={`${isMobile? "text-center" : ""} text-[calc(1.6vw+1.4rem)] font-bold cursor-pointer hovered`}>Fuel Consumption and Vehicle Usage Monitoring System</span>
                         {!isMobile && <span className="text-[calc(0.4vw+0.6rem)] font-bold cursor-pointer hovered">Enhancing Vehicle Efficiency Through Digital Monitoring</span>}
                         {!isMobile && <div className="flex flex-row items-center justify-center gap-[calc(0.4vw+0.6rem)]">
                             <span className={`${isDark? "text-[var(--light-color)] bg-[var(--blue-color)]" : "text-[var(--light-color)] bg-[var(--blue-color)]"}
                                 text-[calc(0.4vw+0.6rem)] p-[calc(0.4vw+0.6rem)] rounded-md cursor-pointer
                                 hover:bg-[var(--purple-color)] transition duration-300 ease-in-out hover:text-[var(--dark-color)] font-semibold`}>Get Started</span>
-                            <span className={`${isDark? "text-[var(--dark-color)] bg-[var(--light-color)]" : "text-[var(--light-color)] bg-[var(--dark-color)]"}
-                                text-[calc(0.4vw+0.6rem)] p-[calc(0.4vw+0.6rem)] rounded-md cursor-pointer font-semibold
-                                hover:bg-[var(--purple-color)] transition duration-300 ease-in-out hover:text-[var(--light-color)]`}>Sign In</span>
                         </div>}
                     </div>       
                 </div>  
@@ -43,12 +40,10 @@ function Content({isDark}: changeTheme) {
                 
                 {isMobile && <div className="h-auto w-full flex-1 flex flex-row items-center justify-center p-[calc(0.4vw+0.6rem)]">
                     <div className="w-full flex flex-col items-start justify-center gap-[calc(0.4vw+0.6rem)]">
-                        <span className="text-[calc(0.4vw+0.6rem)] font-bold cursor-pointer hovered">Enhancing Vehicle Efficiency Through Digital Monitoring</span>
-                        <div className="flex flex-row items-center justify-center gap-[calc(0.4vw+0.6rem)]">
+                        <span className="text-[calc(0.4vw+0.8rem)] text-center font-bold cursor-pointer hovered">Enhancing Vehicle Efficiency Through Digital Monitoring</span>
+                        <div className="w-full flex flex-row items-center justify-center gap-[calc(0.4vw+0.6rem)]">
                             <span className={`${isDark? "text-[var(--light-color)] bg-[var(--blue-color)]" : "text-[var(--light-color)] bg-[var(--blue-color)]"}
-                                text-[calc(0.4vw+0.6rem)] p-[calc(0.4vw+0.6rem)] rounded-md hovered cursor-pointer`}>Get Started</span>
-                            <span className={`${isDark? "text-[var(--dark-color)] bg-[var(--light-color)]" : "text-[var(--light-color)] bg-[var(--dark-color)]"}
-                                text-[calc(0.4vw+0.6rem)] p-[calc(0.4vw+0.6rem)] rounded-md hovered cursor-pointer font-semibold`}>Sign In</span>
+                                text-[calc(0.4vw+0.6rem)] p-[calc(0.4vw+0.8rem)] rounded-md hovered cursor-pointer font-semibold`}>Get Started</span>
                         </div>
                     </div>
                 </div>}
@@ -94,7 +89,7 @@ function Content({isDark}: changeTheme) {
                         <LineChart isDark={isDark}/>
                     </div>
                     <div className={`${isMobile? "h-[300px] w-full" : "h-[300px] flex-1"} cursor-pointer
-                        p-[calc(0.4vw+0.6rem)] rounded-md border border-[var(--border-color)] flex flex-col items-center justify-center`}>
+                        p-[calc(0.4vw+1rem)] rounded-md border border-[var(--border-color)] flex flex-col items-center justify-center`}>
                         <DoughnutChart isDark={isDark}/>
                     </div>
                 </div>
