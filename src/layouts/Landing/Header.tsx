@@ -61,7 +61,7 @@ function Header({isDark, setIsDark, isLoggedIn, setIsLoggedIn, setUser}: headerP
                 </span>
 
                 {isFormVisible && <div className="fade-in absolute top-0 left-0 h-screen w-screen flex flex-col items-center justify-center bg-[rgba(0,0,0,0.50)]">
-                    <div className={`${isMobile? "h-auto w-[264px]" : "h-[420px] w-[420px]"}
+                    <div className={`${isMobile? "h-auto w-[90%] p-[12px]" : "h-[420px] w-[420px]"}
                         bg-[var(--light-color)] flex flex-col items-center justify-start relative rounded-xl rounded-tr-none`}>
                         <i className={`${isMobile? "text-[calc(1vw+1.6rem)] top-[-8px] right-[-12px]" : "text-[calc(1vw+1.2rem)] top-[-10px] right-[-14px]"}
                             fa-solid fa-circle-xmark text-[var(--blue-color)] hovered
