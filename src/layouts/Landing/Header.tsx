@@ -27,8 +27,6 @@ function Header({isDark, setIsDark, isLoggedIn, setIsLoggedIn, setUser}: headerP
         setIsFormVisible((prev) => !prev);
     }
 
-    //emailandpass
-
     return (
         <div className={`${isLoggedIn? "" : ""}
             ${isDark? "text-[var(--light-color)] bg-[var(--dark-color)]" : "text-[var(--dark-color)] bg-[var(--light-color)]"}
@@ -77,7 +75,7 @@ function Header({isDark, setIsDark, isLoggedIn, setIsLoggedIn, setUser}: headerP
 
                                     <span className="text-[calc(0.4vw+0.5rem)]" >Or continue with</span>
 
-                                    <Signin isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsFormVisible={setIsFormVisible}/>
+                                    <Signin isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setUser={setUser} setIsFormVisible={setIsFormVisible}/>
 
                                     <span className="text-[calc(0.4vw+0.5rem)]">Don't have an account? 
                                         <span className="text-[calc(0.4vw+0.5rem)] text-[var(--blue-color)] hovered cursor-pointer"

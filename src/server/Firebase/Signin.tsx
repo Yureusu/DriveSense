@@ -2,14 +2,16 @@ import { getAuth, signInWithEmailAndPassword  } from "firebase/auth";
 import { useState } from "react";
 import type { SetStateAction } from "react";
 import { Popup } from "../../components/Global/Popup";
+import type { UserInfo } from "../../App";
 
 type SigninProps = {
     isLoggedIn: boolean;
     setIsLoggedIn: React.Dispatch<SetStateAction<boolean>>;
     setIsFormVisible: React.Dispatch<SetStateAction<boolean>>;
+    setUser: React.Dispatch<SetStateAction<UserInfo | null>>;
 }
 
-function EmailPass({ isLoggedIn, setIsLoggedIn, setIsFormVisible}: SigninProps) {
+function SignIn({ isLoggedIn, setIsLoggedIn, setIsFormVisible, setUser}: SigninProps) {
 
     console.log("Sign in form is visible");
     const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -27,9 +29,19 @@ function EmailPass({ isLoggedIn, setIsLoggedIn, setIsFormVisible}: SigninProps) 
                 const user = userCredential.user;
 
                 console.log("Signed in sukses!", user);
+                console.log("Uid: ", user.uid);
+
+                setUser({
+                    displayName: null,
+                    email: user.email,
+                    photoURL: null,
+                    uid: user.uid
+                });
 
                 setIsFormVisible(false);
-                setIsLoggedIn(true);
+                setTimeout(() => {
+                    setIsLoggedIn(true);
+                }, 3000);
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -64,4 +76,4 @@ function EmailPass({ isLoggedIn, setIsLoggedIn, setIsFormVisible}: SigninProps) 
     )
 }
 
-export default EmailPass
+export default SignIn

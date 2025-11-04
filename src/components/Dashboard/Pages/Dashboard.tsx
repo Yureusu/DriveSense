@@ -15,47 +15,44 @@ type changeTheme = {
 
 function Dashboard({isDark, user} : changeTheme) {
 
+    console.log(user);
+
     const { fuelInfo } = useFetchFuels(user);
     const { vehicleInfo } = useFetchVehicle(user);
     const { driverInfo } = useFetchDriver(user);
     const { maintenanceInfo } = useFetchMaintenance(user);
+    
+    console.log("vehicleInfo", vehicleInfo)
+    console.log("fuelInfo", fuelInfo)
+    console.log("driverInfo", driverInfo)
+    console.log("maintenanceInfo", maintenanceInfo)
 
     const isMobile = useIsMobile(); 
 
     const [vehicleCount, setVehicleCount] = useState<number>(0);
-    const [fuelCost, setFuelCost] = useState<number[]>([]);
     const [driverCount, setDriverCount] = useState<string>("0");
     const [maintenanceCount, setMaintenanceCount] = useState<string>("0");
 
     const [totalFuelCost, setTotalFuelCost] = useState<number>(0);
 
     useEffect(() => {
-        //fetch fuel costs
-        const fetchFuelCosts = fuelInfo.map((fuel) => Number(fuel.cost));
-        setFuelCost(fetchFuelCosts);
-        console.log("Fuel cost arr: ", fuelCost);
-        //fetch vehicle count
-        const fetchVehicleCount = vehicleInfo.length;
-        setVehicleCount(fetchVehicleCount);
-        //fetch drivers count
-        const fetchDriverCount = driverInfo.length;
-        setDriverCount((fetchDriverCount).toString());
-        //fetch maintenance logs
-        const fetchMaintenanceCount = maintenanceInfo.length;
-        setMaintenanceCount((fetchMaintenanceCount).toString());
-
-    }, [fuelInfo, driverInfo, vehicleInfo, maintenanceInfo]);
-    
-    useEffect(() => {
-        if (fuelCost.length > 0 && vehicleCount > 0) {
-
-            const totalCost = fuelCost?.reduce((acc, val) => acc + val, 0)
-
-            setTotalFuelCost(totalCost);
-        } else {
-            setTotalFuelCost(0);
-        }
-    }, [fuelCost]);
+        if (!fuelInfo || !vehicleInfo || !driverInfo || !maintenanceInfo) return;
+      
+        const totalFuel = fuelInfo.reduce((acc, fuel) => acc + Number(fuel.cost || 0), 0);
+      
+        setVehicleCount(vehicleInfo.length);
+        setDriverCount(driverInfo.length.toString());
+        setMaintenanceCount(maintenanceInfo.length.toString());
+        setTotalFuelCost(totalFuel);
+      
+        console.log({
+          totalFuel,
+          vehicleCount: vehicleInfo.length,
+          driverCount: driverInfo.length,
+          maintenanceCount: maintenanceInfo.length,
+        });
+      
+      }, [fuelInfo, vehicleInfo, driverInfo, maintenanceInfo]);      
 
     return (
         <section id="main" className={`${isMobile? "p-[calc(0.4vw+0.6rem)]" : "border-l px-[calc(0.4vw+0.6rem)]"}

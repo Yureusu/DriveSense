@@ -39,7 +39,9 @@ export function useFetchDriver(user: UserInfo | null) {
     }, [user]);
 
     useEffect(() => {
-        fetchDrivers();
+        if(user?.uid){
+            fetchDrivers();
+        }
     }, [fetchDrivers]);
 
     return { driverInfo, loading, error, refetch: fetchDrivers };

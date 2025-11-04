@@ -13,7 +13,7 @@ type SignupProps = {
     setIsFormVisible: React.Dispatch<SetStateAction<boolean>>;
 }
 
-function EmailPass({ isLoggedIn, setIsLoggedIn, setUser, setIsFormVisible}: SignupProps) {
+function SignUp({ isLoggedIn, setIsLoggedIn, setUser, setIsFormVisible}: SignupProps) {
 
     console.log("Sign up form is visible");
     const [isPopupVisible, setIsPopupVisible] = useState(false);
@@ -28,11 +28,10 @@ function EmailPass({ isLoggedIn, setIsLoggedIn, setUser, setIsFormVisible}: Sign
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
     
-            //Store user in React state
             setUser({
-                displayName: user.displayName,
+                displayName: null,
                 email: user.email,
-                photoURL: user.photoURL,
+                photoURL: null,
                 uid: user.uid
             });
     
@@ -48,9 +47,12 @@ function EmailPass({ isLoggedIn, setIsLoggedIn, setUser, setIsFormVisible}: Sign
 
             console.log("User document created");
     
+            console.log("Signed up successfully!", user);
+            console.log("Uid: ", user.uid);
+
             setIsFormVisible(false);
             setIsLoggedIn(true);
-            console.log("Signed up successfully!", user);
+
         } catch (error: any) {
             setIsPopupVisible(true);
             console.error("Error signing up:", error.message);
@@ -78,4 +80,4 @@ function EmailPass({ isLoggedIn, setIsLoggedIn, setUser, setIsFormVisible}: Sign
     )
 }
 
-export default EmailPass
+export default SignUp
