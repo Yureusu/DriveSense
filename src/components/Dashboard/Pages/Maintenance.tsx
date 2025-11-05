@@ -78,7 +78,7 @@ function Maintenance({ user, isDark, vehicleInfo }: MaintenanceProps) {
 
                 {!isMobile && maintenanceInfo.map((maintenance, index) => (
                     <div key={maintenance.id ?? index} className="w-full border-b border-[var(--border-color)] p-[calc(0.4vw+0.6rem)]">
-                        <div className="flex flex-row items-start justify-start">
+                        <div className="flex flex-row items-start justify-start gap-[calc(0.4vw+0.6rem)]">
                             <span className="text-[calc(0.4vw+0.6rem)]">{maintenance.id ?? "null"}</span>
                             <span className="flex-1 text-[calc(0.4vw+0.6rem)]">{maintenance.vehicle ?? "null"}</span>
                             <span className="flex-1 text-[calc(0.4vw+0.6rem)]">{maintenance.desrcription ?? "null"}</span>
