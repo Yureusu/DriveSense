@@ -55,10 +55,11 @@ function Dashboard({isDark, user} : changeTheme) {
       }, [fuelInfo, vehicleInfo, driverInfo, maintenanceInfo]);      
 
     return (
-        <section id="main" className={`${isMobile? "p-[calc(0.4vw+0.6rem)]" : "border-l px-[calc(0.4vw+0.6rem)]"}
-        flex flex-col items-center justify-start h-full w-full flex-5 border-[var(--border-color)]`}>
+        <div id="main" className={`${isMobile? "h-screen" : "border-l px-[calc(0.4vw+0.6rem)] h-full"}
+        flex flex-col items-start justify-start w-full flex-5 border-[var(--border-color)]`}>
 
-            <div className="h-full w-full flex flex-col items-start justify-start gap-[calc(0.4vw+0.6rem)]">
+            <div className={`${isMobile? "" : "pb-[calc(0.4vw+0.6rem)]"}
+                w-full h-auto flex flex-col items-start justify-start gap-[calc(0.4vw+0.6rem)]`}>
 
                 <span className="text-[calc(0.8vw+1.2rem)] font-semibold cursor-pointer hovered">Dashboard</span>
                 <span className="text-[calc(0.4vw+0.8rem)] cursor-pointer hovered">Welcome back, {user?.displayName?.split(" ")[0]}</span>
@@ -86,7 +87,7 @@ function Dashboard({isDark, user} : changeTheme) {
 
             </div> 
 
-            <div className={`${isMobile? "flex-col items-center mt-[calc(0.4vw+0.6rem)]" : "flex-row items-start"}
+            <div className={`${isMobile? "flex-col items-start mt-[calc(0.4vw+0.6rem)]" : "flex-row items-start"}
                 h-full w-full flex justify-start gap-[calc(0.4vw+0.6rem)]`}>
                 <div className={`${isMobile? "w-full" : "flex-1"}
                     h-full flex flex-row items-center justify-center p-[calc(0.4vw+0.6rem)] rounded-lg bordered`}>
@@ -109,7 +110,7 @@ function Dashboard({isDark, user} : changeTheme) {
 
             </div> 
 
-        </section>
+        </div>
     )
 }
 
