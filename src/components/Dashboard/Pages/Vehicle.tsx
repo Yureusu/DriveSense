@@ -32,13 +32,10 @@ function Vehicle({ isDark, user, driverInfo }: changeTheme) {
             <div className="flex-1 w-full flex flex-row items-center justify-between gap-[calc(0.4vw+0.6rem)]">
                 <span className={`${isMobile? "text-[calc(0.6vw+0.9rem)]" : "text-[calc(0.6vw+1rem)]"}
                     font-semibold cursor-pointer hovered`}>Vehicle Information</span>
-                <div className="flex-1 flex flex-row items-center justify-end text-[calc(0.4vw+0.6rem)]">
-                    <i
-                        title="Refresh"
-                        className="bx bx-refresh-cw bx-spin-hover text-[calc(0.6vw+1rem)] cursor-pointer hover:text-[var(--dark-color)] transition duration-300 ease-in-out"
-                        onClick={refetch}
-                    ></i>
-                </div>
+                {isMobile && <div className="flex-1 flex flex-row items-center justify-end text-[calc(0.4vw+0.6rem)]">
+                    <i title="Refresh" className="bx bx-refresh-cw bx-spin-hover hover:text-[var(--dark-color)] transition durtion-300 ease-in-out text-[calc(0.6vw+1rem)] cursor-pointer"
+                    onClick={() => refetch()} />
+                </div>}
                 <div className={`${isMobile? "text-[calc(0.4vw+0.6rem)]" : "text-[calc(0.4vw+0.5rem)]"}
                     flex flex-row items-center jsutify-center rounded-md cursor-pointer text-[var(--light-color)] 
                     bg-[var(--purple-color)] px-[calc(0.4vw+0.6rem)] py-[calc(0.3vw+0.4rem)] gap-[calc(0.2vw+0.3rem)]`}
@@ -60,20 +57,27 @@ function Vehicle({ isDark, user, driverInfo }: changeTheme) {
             )}
 
             <div className="h-full w-full flex flex-col items-start justify-start gap-[calc(0.4vw+0.6rem)]">
-                <div className="h-auto w-full flex flex-col items-start justify-start bg-[var(--purple-color)] text-[var(--light-color)] p-[calc(0.4vw+0.6rem)]">
-                    <div className="h-auto w-full flex flex-row items-start justify-start gap-[calc(0.4vw+0.6rem)]">
-                        <span className="text-[calc(0.4vw+0.6rem)]">Id</span>
+                <div className="h-auto w-full flex flex-col items-start justify-start bg-[var(--purple-color)] text-[var(--light-color)] 
+                p-[calc(0.4vw+0.6rem)]">
+                    <div className={`${isMobile? "gap-[calc(0.4vw+0.6rem)]" : ""}
+                        h-auto w-full flex flex-row items-start justify-start`}>
+                        <span className={`${isMobile? "" : "flex-1"}
+                            text-[calc(0.4vw+0.6rem)]`}>Id</span>
                         <span className="flex-1 text-[calc(0.4vw+0.6rem)]">Driver</span>
                         <span className="flex-1 text-[calc(0.4vw+0.6rem)]">Plate no.</span>
                         <span className="flex-1 text-[calc(0.4vw+0.6rem)]">Model</span>
                         <span className="flex-1 text-[calc(0.4vw+0.6rem)]">Created At</span>
+                        {!isMobile && <div className="flex-1 flex flex-row items-center justify-end text-[calc(0.4vw+0.6rem)]">
+                            <i title="Refresh" className="bx bx-refresh-cw bx-spin-hover hover:text-[var(--dark-color)] transition durtion-300 ease-in-out text-[calc(0.6vw+1rem)] cursor-pointer"
+                            onClick={() => refetch()} />
+                        </div>}
                     </div>
                 </div>
 
                 {!isMobile && vehicleInfo.map((vehicle) => (
                     <div key={vehicle.id} className="w-full border-b border-[var(--border-color)] p-[calc(0.4vw+0.6rem)]">
-                        <div className="flex flex-row items-start justify-start flex-wrap gap-[calc(0.4vw+0.6rem)]">
-                            <span className="text-[calc(0.4vw+0.6rem)]">{vehicle.id ?? "null"}</span>
+                        <div className="flex flex-row items-start justify-start flex-wrap">
+                            <span className="flex-1 text-[calc(0.4vw+0.6rem)]">{vehicle.id ?? "null"}</span>
                             <span className="flex-1 text-[calc(0.4vw+0.6rem)]">{vehicle.driver ?? "null"}</span>
                             <span className="flex-1 text-[calc(0.4vw+0.6rem)]">{vehicle.plateNumber ?? "null"}</span>
                             <span className="flex-1 text-[calc(0.4vw+0.6rem)] flex-wrap">{vehicle.model ?? "null"}</span>
