@@ -101,10 +101,10 @@ function Dashboard({isDark, user} : changeTheme) {
                 </div>
 
                 {/* recentActivity */}
-                <div className={`${isMobile? "w-full" : "flex-1"}
+                <div className={`${isMobile? "w-full max-h-[220px]" : "flex-1"}
                     h-full flex flex-col items-start justify-center p-[calc(0.4vw+0.6rem)] rounded-lg bordered`}>
                     <span className="text-[calc(0.6vw+0.8rem)] p-[calc(0.4vw+0.6rem)] pl-0 cursor-pointer">Recent Activity</span>
-                    <div className="h-full w-full flex flex-col items-start justify-start py-[calc(0.4vw+0.6rem)] gap-[calc(0.4vw+0.6rem)]">
+                    <div className="h-full w-full overflow-y-scroll  flex flex-col items-start justify-start py-[calc(0.4vw+0.6rem)] gap-[calc(0.4vw+0.6rem)]">
 
                         <div className="w-full flex flex-row items-center justify-start">
                             <span className="flex-1 text-[calc(0.4vw+0.6rem)] cursor-pointer hovered">Activity</span>

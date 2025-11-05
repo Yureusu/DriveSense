@@ -58,6 +58,7 @@ function App() {
   const [maintenanceInfo, setMaintenanceInfo] = useState<MaintenanceInfo[]>([]);
 
   const [recentActivity, setRecentActivity] = useState<RecentActivities[]>([]);
+  setRecentActivity
 
   useEffect(() => {
     const auth = getAuth();

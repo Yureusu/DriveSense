@@ -26,7 +26,7 @@ type contentProps = {
     recentActivity: RecentActivities[];
 }
 
-function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, vehicleInfo, recentActivity}: contentProps) {  
+function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, vehicleInfo}: contentProps) {  
     
     const navItems = [
         { icon: "bx bx-dashboard bx-tada-hover hovered", title: "Dashboard" },
