@@ -10,7 +10,7 @@ import Reports from "../../components/Dashboard/Pages/Reports";
 import Users from "../../components/Dashboard/Pages/Users";
 import Settings
  from "../../components/Dashboard/Pages/Settings";
-import type { UserInfo, DriverInfo, VehicleInfo, MaintenanceInfo, FuelInfo } from "../../App";
+import type { UserInfo, DriverInfo, VehicleInfo, MaintenanceInfo, FuelInfo, RecentActivities } from "../../App";
 
 type contentProps = {
     isDark: boolean;
@@ -23,9 +23,10 @@ type contentProps = {
     setVehicleInfo: React.Dispatch<SetStateAction<VehicleInfo[]>>;
     maintenanceInfo: MaintenanceInfo[];
     fuelInfo: FuelInfo[];
+    recentActivity: RecentActivities[];
 }
 
-function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, vehicleInfo}: contentProps) {  
+function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, vehicleInfo, recentActivity}: contentProps) {  
     
     const navItems = [
         { icon: "bx bx-dashboard bx-tada-hover hovered", title: "Dashboard" },
@@ -39,7 +40,7 @@ function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, vehicl
     ];
 
     const dashboardPages = [
-        <Dashboard isDark={isDark} user={user} />,
+        <Dashboard isDark={isDark} user={user}/>,
         <Driver isDark={isDark} user={user} />,
         <Vehicle isDark={isDark} user={user} driverInfo={driverInfo} />,
         <Fuel isDark={isDark} user={user} driverInfo={driverInfo} vehicleInfo={vehicleInfo} />,
@@ -71,7 +72,7 @@ function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, vehicl
                 ))}
             </section>}
             
-            {dashboardPages[activeIndex] ?? <Dashboard isDark={isDark} user={user} />}
+            {dashboardPages[activeIndex] ?? <Dashboard isDark={isDark} user={user}/>}
             
         </div>
     )

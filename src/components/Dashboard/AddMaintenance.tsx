@@ -1,7 +1,7 @@
 import { useState, useEffect, type SetStateAction } from "react";
 import type { UserInfo, MaintenanceInfo, VehicleInfo } from "../../App"
 import { db } from "../../server/Firebase/Firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, addDoc, collection } from "firebase/firestore";
 import { useFetchVehicle } from "../../hooks/Fetch/useFetchVehicle";
 
 type AddMaintenanceProps = {
@@ -50,6 +50,13 @@ function AddMaintenance({ isDark, user, maintenanceInfo, refetch, setIsAddMainte
                 description: maintenanceDescription,
                 cost: maintenanceCost,
                 createdAt: formatted
+            });
+
+            const activitiesRef = collection(db, "users", user.uid, "activities");
+            await addDoc(activitiesRef, {
+                activity: "Added new maintenance record",
+                date: new Date().toLocaleDateString(),
+                time: new Date().toLocaleTimeString(),
             });
 
             refetch();

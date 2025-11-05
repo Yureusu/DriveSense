@@ -1,7 +1,7 @@
 import { useEffect, useState, type SetStateAction } from "react";
 import type { UserInfo, FuelInfo } from "../../App"
 import { db } from "../../server/Firebase/Firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, addDoc, collection } from "firebase/firestore";
 import { useFetchVehicle } from "../../hooks/Fetch/useFetchVehicle";
 import { useFetchDriver } from "../../hooks/Fetch/useFetchDriver";
 
@@ -62,6 +62,13 @@ function AddFuel({ isDark, user, fuelInfo, refetch, setIsAddFuel }: AddFuelProps
                 cost: fuelCost,
                 addedBy: fuelAddedBy,
                 logDate: formatted
+            });
+
+            const activitiesRef = collection(db, "users", user.uid, "activities");
+                await addDoc(activitiesRef, {
+                    activity: "Added fuel log",
+                    date: new Date().toLocaleDateString(),
+                    time: new Date().toLocaleTimeString(),
             });
 
             setIsFormVisible((prev) => !prev);

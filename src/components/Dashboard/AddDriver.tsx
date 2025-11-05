@@ -1,7 +1,8 @@
 import { useState } from "react";
 import type { UserInfo, DriverInfo } from "../../App";
 import { db } from "../../server/Firebase/Firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, addDoc, collection } from "firebase/firestore";
+import type { RecentActivities } from "../../App";
 
 type AddDriverProps = {
     user: UserInfo | null;
@@ -18,6 +19,8 @@ function AddDriver({ user, refetch, driverInfo, setIsAddDriverVisible }: AddDriv
     const [driverContact, setDriverContact] = useState("");
     const [driverLicense, setDriverLicense] = useState("");
 
+    const [recentActivity, setRecentActivity] = useState<RecentActivities[]>([]);
+
     const handleSubmit = async () => {
         try {
 
@@ -33,7 +36,13 @@ function AddDriver({ user, refetch, driverInfo, setIsAddDriverVisible }: AddDriv
 
             console.log("Added the driver successfully");
 
-            // Refresh the driver list
+            const activitiesRef = collection(db, "users", user.uid, "activities");
+            await addDoc(activitiesRef, {
+                activity: "Added new driver",
+                date: new Date().toLocaleDateString(),
+                time: new Date().toLocaleTimeString(),
+            });
+
             refetch();
             setIsFormVisible((prev) => !prev);
             setIsAddDriverVisible(false);

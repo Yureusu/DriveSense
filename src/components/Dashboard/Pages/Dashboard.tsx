@@ -7,6 +7,7 @@ import { useFetchFuels } from "../../../hooks/Fetch/useFetchFuel";
 import { useFetchVehicle } from "../../../hooks/Fetch/useFetchVehicle";
 import { useFetchDriver } from "../../../hooks/Fetch/useFetchDriver";
 import { useFetchMaintenance } from "../../../hooks/Fetch/useFetchMaintenance";
+import { useFetchActivities } from "../../../hooks/Fetch/useFetchActivities";
 
 type changeTheme = {
     isDark: boolean;
@@ -21,6 +22,7 @@ function Dashboard({isDark, user} : changeTheme) {
     const { vehicleInfo } = useFetchVehicle(user);
     const { driverInfo } = useFetchDriver(user);
     const { maintenanceInfo } = useFetchMaintenance(user);
+    const { recentActivity } = useFetchActivities(user);
     
     console.log("vehicleInfo", vehicleInfo)
     console.log("fuelInfo", fuelInfo)
@@ -52,7 +54,11 @@ function Dashboard({isDark, user} : changeTheme) {
           maintenanceCount: maintenanceInfo.length,
         });
       
-      }, [fuelInfo, vehicleInfo, driverInfo, maintenanceInfo]);      
+    }, [fuelInfo, vehicleInfo, driverInfo, maintenanceInfo]); 
+    
+    useEffect(() => {
+        console.log("Recent activities: ", recentActivity);
+    }, [recentActivity]);
 
     return (
         <div id="main" className={`${isMobile? "h-screen" : "border-l px-[calc(0.4vw+0.6rem)] h-full"}
@@ -79,8 +85,8 @@ function Dashboard({isDark, user} : changeTheme) {
                         <DashboardCard title={"Monthly Fuel Cost"} descrip={(totalFuelCost)?.toString() ?? "0"} isDark={isDark}/>  
                     </div> 
                     <div className="h-auto w-full flex flex-row items-center jsutify-between gap-[calc(0.4vw+0.6rem)]">             
-                        <DashboardCard title={"Mileage Efficiency"} descrip={driverCount} isDark={isDark}/>  
-                        <DashboardCard title={"Total Trips"} descrip={maintenanceCount} isDark={isDark}/>  
+                        <DashboardCard title={"Total Drivers"} descrip={driverCount} isDark={isDark}/>  
+                        <DashboardCard title={"Maintenance Logs"} descrip={maintenanceCount} isDark={isDark}/>  
                     </div>
                     
                 </div>}
@@ -94,16 +100,26 @@ function Dashboard({isDark, user} : changeTheme) {
                     <BarChart isDark={isDark} user={user}/>
                 </div>
 
+                {/* recentActivity */}
                 <div className={`${isMobile? "w-full" : "flex-1"}
                     h-full flex flex-col items-start justify-center p-[calc(0.4vw+0.6rem)] rounded-lg bordered`}>
                     <span className="text-[calc(0.6vw+0.8rem)] p-[calc(0.4vw+0.6rem)] pl-0 cursor-pointer">Recent Activity</span>
-                    <div className="h-full w-full flex flex-row items-start justify-around py-[calc(0.4vw+0.6rem)]">
+                    <div className="h-full w-full flex flex-col items-start justify-start py-[calc(0.4vw+0.6rem)] gap-[calc(0.4vw+0.6rem)]">
 
                         <div className="w-full flex flex-row items-center justify-start">
                             <span className="flex-1 text-[calc(0.4vw+0.6rem)] cursor-pointer hovered">Activity</span>
                             <span className="flex-1 text-[calc(0.4vw+0.6rem)] cursor-pointer hovered">Date</span>
                             <span className="flex-1 text-[calc(0.4vw+0.6rem)] cursor-pointer hovered">Time</span>
                         </div>
+
+                        {recentActivity.sort((a, b) => new Date(`${b.date} ${b.time}`).getTime() - new Date(`${a.date} ${a.time}`).getTime())
+                            .map((act, index) => (
+                            <div key={act.activity ?? index} className="w-full flex flex-row items-center justify-start flex-wrap">
+                                <span className="flex-1 text-[calc(0.4vw+0.6rem)]">{act.activity}</span>
+                                <span className="flex-1 text-[calc(0.4vw+0.6rem)]">{act.date}</span>
+                                <span className="flex-1 text-[calc(0.4vw+0.6rem)]">{act.time}</span>
+                            </div>
+                        ))}
         
                     </div>
                 </div>

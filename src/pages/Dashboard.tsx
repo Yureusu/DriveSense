@@ -1,7 +1,7 @@
 import { useState, type SetStateAction } from "react";
 import Header from "../layouts/Dashboard/Header"
 import Content from "../layouts/Dashboard/Content";
-import type { UserInfo, DriverInfo, VehicleInfo, FuelInfo, MaintenanceInfo } from "../App";
+import type { UserInfo, DriverInfo, VehicleInfo, FuelInfo, MaintenanceInfo, RecentActivities } from "../App";
 
 type DashboardProps ={
     user: UserInfo | null;
@@ -15,10 +15,11 @@ type DashboardProps ={
     setIsLoggedIn: React.Dispatch<SetStateAction<boolean>>;
     maintenanceInfo: MaintenanceInfo[];
     setMaintenanceInfo: React.Dispatch<SetStateAction<MaintenanceInfo[]>>;
+    recentActivity: RecentActivities[];
 }
 
 function Dashboard({user, driverInfo, setDriverInfo, vehicleInfo, setVehicleInfo, 
-    maintenanceInfo, isLoggedIn, setIsLoggedIn, fuelInfo}: DashboardProps) {
+    maintenanceInfo, isLoggedIn, setIsLoggedIn, fuelInfo, recentActivity}: DashboardProps) {
 
     const [isDark, setIsDark] = useState(false);
     const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -29,7 +30,8 @@ function Dashboard({user, driverInfo, setDriverInfo, vehicleInfo, setVehicleInfo
             <Content isDark={isDark} activeIndex={activeIndex} setActiveIndex={setActiveIndex} user={user}
             driverInfo={driverInfo} setDriverInfo={setDriverInfo}
             vehicleInfo={vehicleInfo} setVehicleInfo={setVehicleInfo}
-            maintenanceInfo={maintenanceInfo} fuelInfo={fuelInfo}/>
+            maintenanceInfo={maintenanceInfo} fuelInfo={fuelInfo}
+            recentActivity={recentActivity}/>
         </div>
     )
 }

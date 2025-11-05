@@ -68,7 +68,8 @@ function Maintenance({ user, isDark, vehicleInfo }: MaintenanceProps) {
             <div className="h-full w-full flex flex-col items-start justify-start gap-[calc(0.4vw+0.6rem)]">
                 <div className="h-auto w-full flex flex-col items-start justify-start bg-[var(--purple-color)] text-[var(--light-color)] p-[calc(0.4vw+0.6rem)]">
                     <div className="h-auto w-full flex flex-row items-start justify-start gap-[calc(0.4vw+0.6rem)]">
-                        <span className="flex-1 text-[calc(0.4vw+0.6rem)]">Id</span>
+                        <span className={`${isMobile? "" : "flex-1"}
+                            text-[calc(0.4vw+0.6rem)]`}>Id</span>
                         <span className="flex-1 text-[calc(0.4vw+0.6rem)]">Vehicle</span>
                         <span className="flex-1 text-[calc(0.4vw+0.6rem)] flex-wrap">Description</span>
                         <span className="flex-1 text-[calc(0.4vw+0.6rem)]">Cost</span>
@@ -85,7 +86,7 @@ function Maintenance({ user, isDark, vehicleInfo }: MaintenanceProps) {
                         <div className="flex flex-row items-start justify-start">
                             <span className="flex-1 text-[calc(0.4vw+0.6rem)]">{maintenance.id ?? "null"}</span>
                             <span className="flex-1 text-[calc(0.4vw+0.6rem)]">{maintenance.vehicle ?? "null"}</span>
-                            <span className="flex-1 text-[calc(0.4vw+0.6rem)]">{maintenance.desrcription ?? "null"}</span>
+                            <span className="flex-1 text-[calc(0.4vw+0.6rem)]">{maintenance.description ?? "null"}</span>
                             <span className="flex-1 text-[calc(0.4vw+0.6rem)]">{maintenance.cost ?? "null"}</span>
                             <span className="flex-1 text-[calc(0.4vw+0.6rem)]">{maintenance.createdAt ?? "null"}</span>
                             <div className="flex-1 flex flex-row items-center justify-end gap-[calc(0.4vw+0.6rem)]">
@@ -102,7 +103,7 @@ function Maintenance({ user, isDark, vehicleInfo }: MaintenanceProps) {
                             <div className="w-full flex flex-row items-start justify-start gap-[calc(0.4vw+0.6rem)]">
                                 <span className="text-[calc(0.4vw+0.6rem)]">{maintenance.id ?? "null"}</span>
                                 <span className="flex-1 text-[calc(0.4vw+0.6rem)]">{maintenance.vehicle ?? "null"}</span>
-                                <span className="flex-1 text-[calc(0.4vw+0.6rem)]">{maintenance.desrcription ?? "null"}</span>
+                                <span className="flex-1 text-[calc(0.4vw+0.6rem)]">{maintenance.description ?? "null"}</span>
                                 <span className="flex-1 text-[calc(0.4vw+0.6rem)]">{maintenance.cost ?? "null"}</span>
                                 <span className="flex-1 text-[calc(0.4vw+0.6rem)]">{maintenance.createdAt ?? "null"}</span>
                             </div>

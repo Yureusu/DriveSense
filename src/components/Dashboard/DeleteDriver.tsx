@@ -3,7 +3,7 @@ import type { UserInfo, DriverInfo } from "../../App"
 import useIsMobile from "../../hooks/useIsMobile";
 import type { SetStateAction } from "react";
 import { db } from "../../server/Firebase/Firebase";
-import { doc, deleteDoc } from "firebase/firestore";
+import { doc, deleteDoc, addDoc, collection } from "firebase/firestore";
 
 type AddVehicleProps = {
     user: UserInfo | null;
@@ -30,7 +30,14 @@ function AddVehicle({user, driverId, driverIndex, driverInfo, setDriverInfo, ref
 
             setDriverInfo(prev => prev.filter((_, i) => i !== driverIndex));
 
-            refetch();
+            const activitiesRef = collection(db, "users", user.uid, "activities");
+                await addDoc(activitiesRef, {
+                    activity: "Deleted a driver",
+                    date: new Date().toLocaleDateString(),
+                    time: new Date().toLocaleTimeString(),
+            });
+
+            refetch();  
             setIsFormVisible((prev) => !prev);
             setIsDelete(false);
 

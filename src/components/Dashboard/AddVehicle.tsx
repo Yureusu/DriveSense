@@ -2,7 +2,7 @@ import { useEffect, useState, type SetStateAction } from "react";
 import type { UserInfo, DriverInfo, VehicleInfo } from "../../App"
 import useIsMobile from "../../hooks/useIsMobile";
 import { db } from "../../server/Firebase/Firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, addDoc, collection } from "firebase/firestore";
 import { useFetchDriver } from "../../hooks/Fetch/useFetchDriver";
 
 type AddVehicleProps = {
@@ -69,6 +69,13 @@ function AddVehicle({user, isDark, vehicleInfo, setVehicleInfo, setIsVisible}: A
         //inupdate ko ung driverInfo with the new addded vehicle
         setVehicleInfo(prev => [...prev, newVehicle]);
         console.log(vehicleInfo);
+
+        const activitiesRef = collection(db, "users", user.uid, "activities");
+            await addDoc(activitiesRef, {
+                activity: "Added new vehicle",
+                date: new Date().toLocaleDateString(),
+                time: new Date().toLocaleTimeString(),
+        });
 
         console.log("Added the vehicle successfully: ", vehicleSnap);
         setIsFormVisible((prev) => !prev);

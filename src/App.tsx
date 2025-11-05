@@ -37,10 +37,16 @@ export type FuelInfo = {
 export type MaintenanceInfo = {
   id: string | null;
   vehicle: string | null;
-  desrcription: string | null;
+  description: string | null;
   cost: number | null;
   createdAt: string | null;
 };
+
+export type RecentActivities = {
+  activity: string | null;
+  date: string | null;
+  time: string | null;
+}
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -50,6 +56,8 @@ function App() {
   const [vehicleInfo, setVehicleInfo] = useState<VehicleInfo[]>([]);
   const [fuelInfo, setFuelInfo] = useState<FuelInfo[]>([]);
   const [maintenanceInfo, setMaintenanceInfo] = useState<MaintenanceInfo[]>([]);
+
+  const [recentActivity, setRecentActivity] = useState<RecentActivities[]>([]);
 
   useEffect(() => {
     const auth = getAuth();
@@ -107,6 +115,7 @@ function App() {
       setFuelInfo={setFuelInfo}
       maintenanceInfo={maintenanceInfo}
       setMaintenanceInfo={setMaintenanceInfo}
+      recentActivity={recentActivity}
     />
   );
 }

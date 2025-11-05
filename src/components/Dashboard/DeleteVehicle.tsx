@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { UserInfo } from "../../App";
 import { db } from "../../server/Firebase/Firebase";
-import { doc, deleteDoc } from "firebase/firestore";
+import { doc, deleteDoc, addDoc, collection } from "firebase/firestore";
 
 type DeleteVehicleProps = {
     selectedDriverIndex: Number | null;
@@ -24,6 +24,13 @@ function DeleteVehicle({ selectedDriverIndex, user, refetch, setIsDelete }: Dele
 
             const deleteRef = doc(db, "users", user?.uid, "vehicles",selectedDriverIndex.toString());
             await deleteDoc(deleteRef);
+
+            const activitiesRef = collection(db, "users", user.uid, "activities");
+                await addDoc(activitiesRef, {
+                    activity: "Deleted a vehicle",
+                    date: new Date().toLocaleDateString(),
+                    time: new Date().toLocaleTimeString(),
+            });
 
             refetch();
 

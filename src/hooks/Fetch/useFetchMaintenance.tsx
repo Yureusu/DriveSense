@@ -24,7 +24,7 @@ export function useFetchMaintenance(user: UserInfo | null) {
                 fetchedMaintenanceInfos.push({
                     id: doc.id || null,
                     vehicle: data.vehicle ?? "null",
-                    desrcription: data.description ?? "null",
+                    description: data.description ?? "null",
                     cost: data.cost ?? "null",
                     createdAt: data.createdAt ?? "null"
                 });
