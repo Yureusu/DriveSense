@@ -33,7 +33,7 @@ function Dashboard({isDark, user} : changeTheme) {
 
     const [vehicleCount, setVehicleCount] = useState<number>(0);
     const [driverCount, setDriverCount] = useState<string>("0");
-    const [maintenanceCount, setMaintenanceCount] = useState<string>("0");
+    const [maintenanceCount, setMaintenanceCount] = useState<number>(0);
 
     const [totalFuelCost, setTotalFuelCost] = useState<number>(0);
 
@@ -41,10 +41,11 @@ function Dashboard({isDark, user} : changeTheme) {
         if (!fuelInfo || !vehicleInfo || !driverInfo || !maintenanceInfo) return;
       
         const totalFuel = fuelInfo.reduce((acc, fuel) => acc + Number(fuel.cost || 0), 0);
+        const totalMaintenance = maintenanceInfo.reduce((acc, maintenance) => acc + Number(maintenance.cost || 0), 0);
       
         setVehicleCount(vehicleInfo.length);
         setDriverCount(driverInfo.length.toString());
-        setMaintenanceCount(maintenanceInfo.length.toString());
+        setMaintenanceCount(totalMaintenance);
         setTotalFuelCost(totalFuel);
       
         console.log({
@@ -72,10 +73,10 @@ function Dashboard({isDark, user} : changeTheme) {
 
                 {!isMobile && <div className={`h-auto w-full flex flex-row items-center justify-center gap-[calc(0.4vw+0.6rem)]`}>
                     
-                    <DashboardCard title={"Total Vehicles"} descrip={(vehicleCount).toString() ?? "0"} isDark={isDark}/>
-                    <DashboardCard title={"Monthly Fuel Cost"} descrip={(totalFuelCost)?.toString() ?? "0"} isDark={isDark}/>                 
                     <DashboardCard title={"Total Drivers"} descrip={driverCount} isDark={isDark}/>  
-                    <DashboardCard title={"Maintenance Logs"} descrip={maintenanceCount} isDark={isDark}/>  
+                    <DashboardCard title={"Total Vehicles"} descrip={(vehicleCount).toString() ?? "0"} isDark={isDark}/>
+                    <DashboardCard title={"Total Fuel Cost"} descrip={(totalFuelCost)?.toString() ?? "0"} isDark={isDark}/>                 
+                    <DashboardCard title={"Total Maintenance Costs"} descrip={(maintenanceCount)?.toString() ?? "0"} isDark={isDark}/>  
                     
                 </div>}
                 {isMobile && <div className={`h-auto w-full flex flex-col items-center justify-center gap-[calc(0.4vw+0.6rem)]`}>
@@ -101,21 +102,21 @@ function Dashboard({isDark, user} : changeTheme) {
                 </div>
 
                 {/* recentActivity */}
-                <div className={`${isMobile? "w-full max-h-[220px]" : "flex-1"}
-                    h-full flex flex-col items-start justify-center p-[calc(0.4vw+0.6rem)] rounded-lg bordered`}>
+                <div className={`${isMobile? "w-full max-h-[220px]" : "flex-1 max-h-[382px]"}
+                    flex flex-col items-start justify-center p-[calc(0.4vw+0.6rem)] rounded-lg bordered`}>
                     <span className="text-[calc(0.6vw+0.8rem)] p-[calc(0.4vw+0.6rem)] pl-0 cursor-pointer">Recent Activity</span>
                     <div className="h-full w-full overflow-y-scroll  flex flex-col items-start justify-start py-[calc(0.4vw+0.6rem)] gap-[calc(0.4vw+0.6rem)]">
 
                         <div className="w-full flex flex-row items-center justify-start">
-                            <span className="flex-1 text-[calc(0.4vw+0.6rem)] cursor-pointer hovered">Activity</span>
+                            <span className="flex-2 text-[calc(0.4vw+0.6rem)] cursor-pointer hovered">Activity</span>
                             <span className="flex-1 text-[calc(0.4vw+0.6rem)] cursor-pointer hovered">Date</span>
                             <span className="flex-1 text-[calc(0.4vw+0.6rem)] cursor-pointer hovered">Time</span>
                         </div>
 
                         {recentActivity.sort((a, b) => new Date(`${b.date} ${b.time}`).getTime() - new Date(`${a.date} ${a.time}`).getTime())
                             .map((act, index) => (
-                            <div key={act.activity ?? index} className="w-full flex flex-row items-center justify-start flex-wrap">
-                                <span className="flex-1 text-[calc(0.4vw+0.6rem)]">{act.activity}</span>
+                            <div key={index} className="w-full flex flex-row items-center justify-start flex-wrap">
+                                <span className="flex-2 text-[calc(0.4vw+0.6rem)]">{act.activity}</span>
                                 <span className="flex-1 text-[calc(0.4vw+0.6rem)]">{act.date}</span>
                                 <span className="flex-1 text-[calc(0.4vw+0.6rem)]">{act.time}</span>
                             </div>

@@ -45,7 +45,7 @@ function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, vehicl
         <Vehicle isDark={isDark} user={user} driverInfo={driverInfo} />,
         <Fuel isDark={isDark} user={user} driverInfo={driverInfo} vehicleInfo={vehicleInfo} />,
         <Maintenance isDark={isDark} user={user} vehicleInfo={vehicleInfo}/>,
-        <Reports isDark={isDark} />,
+        <Reports isDark={isDark} user={user} />,
         <Users isDark={isDark} />,
         <Settings isDark={isDark} />
     ]

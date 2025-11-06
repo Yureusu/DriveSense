@@ -1,8 +1,9 @@
 import useIsMobile from "../../../hooks/useIsMobile";
 import { useEffect, useState } from "react";
-import type { UserInfo, DriverInfo, VehicleInfo } from "../../../App";
+import type { UserInfo,FuelInfo, DriverInfo, VehicleInfo } from "../../../App";
 import { useFetchFuels } from "../../../hooks/Fetch/useFetchFuel";
 import AddFuel from "../AddFuel";
+import DeleteFuel from "../DeleteFuel";
 
 type FuelProps = {
     isDark: boolean;
@@ -13,16 +14,23 @@ type FuelProps = {
 
 function Fuel({ isDark, user, driverInfo, vehicleInfo }: FuelProps) {
     const isMobile = useIsMobile();
+
     const { fuelInfo, loading, error, refetch } = useFetchFuels(user);
 
+    const [fuels, setFuels] = useState<FuelInfo[]>([]);
     const [passedDriverNames, setPassedDriverNames] = useState<string[] | null>(null);
     const [passedVehicleNames, setPassedVehicleNames] = useState<string[] | null>(null);
 
+    if(passedDriverNames && passedVehicleNames){}
+
     const [isAddFuel, setIsAddFuel] = useState(false);
 
-    if(passedDriverNames && passedVehicleNames){
+    // console.log(passedDriverNames);
+    // console.log(passedVehicleNames);
 
-    }
+    const [isDelete, setIsDelete] = useState(false);
+    const [selectedFuelId, setSelectedFuelId] = useState<string | null>(null);
+    const [selectedFuelIndex, setSelectedFuelIndex] = useState<number | null>(null);
 
     useEffect(() => {
         if (driverInfo) {
@@ -42,9 +50,6 @@ function Fuel({ isDark, user, driverInfo, vehicleInfo }: FuelProps) {
         text-center text-gray-500`}>Loading fuel logs...</p>;
     if (error) return <p className={`"text-[calc(0.4vw+0.8rem)] flex flex-col items-center justify-center h-screen w-screen 
         text-center text-red-500`}>Error: {error.message}</p>;
-
-    // console.log(passedDriverNames);
-    // console.log(passedVehicleNames);
 
     return (
         <section
@@ -116,7 +121,12 @@ function Fuel({ isDark, user, driverInfo, vehicleInfo }: FuelProps) {
                             <span className="flex-1 text-[calc(0.4vw+0.6rem)]">{fuel.logDate ?? "null"}</span>
                             <div className="flex-1 flex flex-row items-center justify-end gap-[calc(0.4vw+0.6rem)]">
                                 <i className="bx bx-edit bx-tada-hover text-[calc(0.8vw+1rem)] cursor-pointer"></i>
-                                <i className="bx bx-trash bx-tada-hover text-[calc(0.8vw+1rem)] hover:text-red-500 cursor-pointer"></i>
+                                <i className="bx bx-trash bx-tada-hover text-[calc(0.8vw+1rem)] hover:text-red-500 cursor-pointer"
+                                onClick={() => {
+                                    setIsDelete(true);
+                                    setSelectedFuelId(fuel.id ?? "null");
+                                    setSelectedFuelIndex(index);
+                                }}></i>
                             </div>
                         </div>}
 
@@ -132,13 +142,31 @@ function Fuel({ isDark, user, driverInfo, vehicleInfo }: FuelProps) {
                                 </div>
                                 <div className="w-full flex-1 flex flex-row items-center justify-end gap-[calc(0.4vw+0.6rem)]">
                                     <i className="bx bx-edit bx-tada-hover text-[calc(0.8vw+1rem)] cursor-pointer"></i>
-                                    <i className="bx bx-trash bx-tada-hover text-[calc(0.8vw+1rem)] hover:text-red-500 cursor-pointer"></i>
+                                    <i className="bx bx-trash bx-tada-hover text-[calc(0.8vw+1rem)] hover:text-red-500 cursor-pointer"
+                                    onClick={() => {
+                                        setIsDelete(true);
+                                        setSelectedFuelId(fuel.id ?? "null");
+                                        setSelectedFuelIndex(index);
+                                    }}></i>
                                 </div>
                             </div>
                         }
                     </div>
                 ))}
             </div>
+
+            {isDelete && selectedFuelId && (
+                <DeleteFuel
+                    user={user}
+                    fuelId={selectedFuelId}
+                    fuelIndex={selectedFuelIndex} 
+                    fuelInfo={fuels}
+                    setFuelInfo={setFuels}
+                    refetch={refetch}
+                    setIsDelete={setIsDelete}
+                /> 
+            )}
+
         </section>
     );
 }

@@ -1,8 +1,9 @@
 import useIsMobile from "../../../hooks/useIsMobile"
-import type { UserInfo, VehicleInfo } from "../../../App";
+import type { MaintenanceInfo, UserInfo, VehicleInfo } from "../../../App";
 import { useFetchMaintenance } from "../../../hooks/Fetch/useFetchMaintenance";
 import { useEffect, useState } from "react";
 import AddMaintenance from "../AddMaintenance";
+import DeleteMaintenance from "../DeleteMaintenance";
 
 type MaintenanceProps = {
     user: UserInfo | null;
@@ -16,13 +17,15 @@ function Maintenance({ user, isDark, vehicleInfo }: MaintenanceProps) {
 
     const isMobile = useIsMobile();
 
+    const [maintenance, setMaintenance] = useState<MaintenanceInfo[]>([]);
     const [isAddMaintenance, setIsAddMaintenance] = useState(false);
-
     const [passedVehicleNames, setPassedVehicleNames] = useState<string[] | null>(null);
 
-    if(passedVehicleNames){
+    if(passedVehicleNames){}
 
-    }
+    const [isDelete, setIsDelete] = useState(false);
+    const [selectMaintenanceId, setSelectedMaintenanceId] = useState<string | null>(null);
+    const [selectedMaintenanceIndex, setSelectedMaintenanceIndex] = useState<number | null>(null);
 
     useEffect(() => {
         if (vehicleInfo) {
@@ -91,7 +94,12 @@ function Maintenance({ user, isDark, vehicleInfo }: MaintenanceProps) {
                             <span className="flex-1 text-[calc(0.4vw+0.6rem)]">{maintenance.createdAt ?? "null"}</span>
                             <div className="flex-1 flex flex-row items-center justify-end gap-[calc(0.4vw+0.6rem)]">
                                 <i className="bx bx-edit bx-tada-hover text-[calc(0.8vw+1rem)] cursor-pointer"></i>
-                                <i className="bx bx-trash bx-tada-hover text-[calc(0.8vw+1rem)] hover:text-red-500 cursor-pointer"></i>
+                                <i className="bx bx-trash bx-tada-hover text-[calc(0.8vw+1rem)] hover:text-red-500 cursor-pointer"
+                                onClick={() => {
+                                    setIsDelete(true);
+                                    setSelectedMaintenanceId(maintenance.id ?? "null");
+                                    setSelectedMaintenanceIndex(index);
+                                }}></i>
                             </div>
                         </div>
                     </div>
@@ -109,13 +117,31 @@ function Maintenance({ user, isDark, vehicleInfo }: MaintenanceProps) {
                             </div>
                             <div className="w-full flex-1 flex flex-row items-center justify-end gap-[calc(0.4vw+0.6rem)]">
                                 <i className="bx bx-edit bx-tada-hover text-[calc(0.8vw+1rem)] cursor-pointer"></i>
-                                <i className="bx bx-trash bx-tada-hover text-[calc(0.8vw+1rem)] hover:text-red-500 cursor-pointer"></i>
+                                <i className="bx bx-trash bx-tada-hover text-[calc(0.8vw+1rem)] hover:text-red-500 cursor-pointer"
+                                onClick={() => {
+                                    setIsDelete(true);
+                                    setSelectedMaintenanceId(maintenance.id ?? "null");
+                                    setSelectedMaintenanceIndex(index);
+                                }}></i>
                             </div>
                         </div>
                     </div>
                 ))}
 
             </div>
+
+            {isDelete && selectMaintenanceId && (
+                <DeleteMaintenance
+                    user={user}
+                    maintenanceId={selectMaintenanceId}
+                    maintenanceIndex={selectedMaintenanceIndex} 
+                    maintenanceInfo={maintenance}
+                    setMaintenanceInfo={setMaintenance}
+                    refetch={refetch}
+                    setIsDelete={setIsDelete}
+                /> 
+            )}
+            
         </section>
     )
 }

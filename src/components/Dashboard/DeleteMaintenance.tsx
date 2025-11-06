@@ -1,21 +1,21 @@
 import { useState } from "react";
-import type { UserInfo, DriverInfo } from "../../App"
+import type { UserInfo, MaintenanceInfo } from "../../App"
 import useIsMobile from "../../hooks/useIsMobile";
 import type { SetStateAction } from "react";
 import { db } from "../../server/Firebase/Firebase";
 import { doc, deleteDoc, addDoc, collection } from "firebase/firestore";
 
-type AddVehicleProps = {
+type DeleteFuelProps = {
     user: UserInfo | null;
-    driverInfo:  DriverInfo[];
-    setDriverInfo: React.Dispatch<SetStateAction<DriverInfo[]>>;
-    driverId: string;
+    maintenanceInfo:  MaintenanceInfo[];
+    setMaintenanceInfo: React.Dispatch<SetStateAction<MaintenanceInfo[]>>;
+    maintenanceId: string;
     refetch: () => void;
-    driverIndex: number | null;
+    maintenanceIndex: number | null;
     setIsDelete: (value: boolean) => void
 }
 
-function DeleteDriver({user, driverId, driverIndex, driverInfo, setDriverInfo, refetch, setIsDelete}: AddVehicleProps) {
+function DeleteMaintenance({user, maintenanceId, maintenanceIndex, maintenanceInfo, setMaintenanceInfo, refetch, setIsDelete}: DeleteFuelProps) {
 
     const [isFormVisible, setIsFormVisible] = useState(true);
 
@@ -24,15 +24,15 @@ function DeleteDriver({user, driverId, driverIndex, driverInfo, setDriverInfo, r
     const handleYes = async () => {
         try{
 
-            if(!user?.uid || !driverId) return;
-            const deleteRef = doc(db, "users", user?.uid, "drivers", driverId);
+            if(!user?.uid || !maintenanceId) return;
+            const deleteRef = doc(db, "users", user?.uid, "maintenance", maintenanceId);
             await deleteDoc(deleteRef);
 
-            setDriverInfo(prev => prev.filter((_, i) => i !== driverIndex));
+            setMaintenanceInfo(prev => prev.filter((_, i) => i !== maintenanceIndex));
 
             const activitiesRef = collection(db, "users", user.uid, "activities");
                 await addDoc(activitiesRef, {
-                    activity: "Deleted a driver",
+                    activity: "Deleted a maintenance record",
                     date: new Date().toLocaleDateString(),
                     time: new Date().toLocaleTimeString(),
             });
@@ -42,11 +42,11 @@ function DeleteDriver({user, driverId, driverIndex, driverInfo, setDriverInfo, r
             setIsDelete(false);
 
         } catch(err){
-            console.error("Cant delete the driver.", err)
+            console.error("Cant delete the maintenance record.", err)
         }
     }
 
-    console.log("Updated driver info: ", driverInfo);
+    console.log("Updated maintenance info: ", maintenanceInfo);
 
     return (
         <>
@@ -60,7 +60,7 @@ function DeleteDriver({user, driverId, driverIndex, driverInfo, setDriverInfo, r
                     <div className="h-full w-full flex flex-col items-center justify-start py-[calc(0.4vw+0.6rem)] px-[calc(1.4vw+1.6rem)] gap-[calc(0.4vw+0.6rem)] text-[var(--dark-color)]">
                         
                         <div className={`${user? "" : ""} flex-2 w-full flex flex-col items-center justify-end`}>
-                            <span className="text-[calc(0.4vw+0.6rem)] font-semibold text-center">Are you sure you want to delete this driver?</span>
+                            <span className="text-[calc(0.4vw+0.6rem)] font-semibold text-center">Are you sure you want to delete this maintenance record?</span>
                         </div>
 
                         <div className={`${isMobile? "" : ""}
@@ -81,4 +81,4 @@ function DeleteDriver({user, driverId, driverIndex, driverInfo, setDriverInfo, r
     )
 }
 
-export default DeleteDriver
+export default DeleteMaintenance
