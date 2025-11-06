@@ -87,7 +87,7 @@ function Dashboard({isDark, user} : changeTheme) {
                     </div> 
                     <div className="h-auto w-full flex flex-row items-center jsutify-between gap-[calc(0.4vw+0.6rem)]">             
                         <DashboardCard title={"Total Drivers"} descrip={driverCount} isDark={isDark}/>  
-                        <DashboardCard title={"Maintenance Logs"} descrip={maintenanceCount} isDark={isDark}/>  
+                        <DashboardCard title={"Maintenance Logs"} descrip={(maintenanceCount)?.toString() ?? "0"} isDark={isDark}/>  
                     </div>
                     
                 </div>}
