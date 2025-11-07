@@ -96,7 +96,7 @@ function Dashboard({isDark, user} : changeTheme) {
 
             <div className={`${isMobile? "flex-col items-start mt-[calc(0.4vw+0.6rem)]" : "flex-row items-start"}
                 h-full w-full flex justify-start gap-[calc(0.4vw+0.6rem)]`}>
-                <div className={`${isMobile? "w-full max-h-[240px]" : "flex-1 h-full"}
+                <div className={`${isMobile? "w-full max-h-[280px]" : "flex-1 h-full"}
                     flex flex-row items-center justify-center p-[calc(0.4vw+0.6rem)] rounded-lg bordered`}>
                     <BarChart isDark={isDark} user={user}/>
                 </div>
