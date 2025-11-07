@@ -96,13 +96,13 @@ function Dashboard({isDark, user} : changeTheme) {
 
             <div className={`${isMobile? "flex-col items-start mt-[calc(0.4vw+0.6rem)]" : "flex-row items-start"}
                 h-full w-full flex justify-start gap-[calc(0.4vw+0.6rem)]`}>
-                <div className={`${isMobile? "w-full max-h-[220px]" : "flex-1 h-full"}
+                <div className={`${isMobile? "w-full flex-1" : "flex-1 h-full"}
                     flex flex-row items-center justify-center p-[calc(0.4vw+0.6rem)] rounded-lg bordered`}>
                     <BarChart isDark={isDark} user={user}/>
                 </div>
 
                 {/* recentActivity */}
-                <div className={`${isMobile? "w-full max-h-[220px]" : "flex-1 max-h-[382px]"}
+                <div className={`${isMobile? "w-full max-h-[240px]" : "flex-1 max-h-[382px]"}
                     flex flex-col items-start justify-center p-[calc(0.4vw+0.6rem)] rounded-lg bordered`}>
                     <span className="text-[calc(0.6vw+0.8rem)] p-[calc(0.4vw+0.6rem)] pl-0 cursor-pointer">Recent Activity</span>
                     <div className="h-full w-full overflow-y-scroll  flex flex-col items-start justify-start py-[calc(0.4vw+0.6rem)] gap-[calc(0.4vw+0.6rem)]">
