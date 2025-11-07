@@ -47,20 +47,24 @@ function PdfExporter({ isDark, user }: PdfExporterProps) {
             </span>
         </div>
 
-        <div ref={contentRef} className="flex-1 h-auto w-full flex flex-row items-start justify-start 
-            p-[calc(0.4vw+0.6rem)] gap-[calc(0.4vw+0.6rem)]">
+        <div ref={contentRef} className={`${isMobile? "flex-col" : "flex-row"}
+            flex-1 h-auto w-full flex items-start justify-start 
+            p-[calc(0.4vw+0.6rem)] gap-[calc(0.4vw+0.6rem)]`}>
 
             <div className="h-full w-full flex flex-col items-start justify-between gap-[calc(0.4vw+0.6rem)]">
-                <div className="flex-1 w-full flex flex-col items-center justify-center">
+                <div className={`${isMobile? "h-[260px]" : "flex-1"}
+                    w-full flex flex-col items-center justify-center`}>
                     <FuelReport isDark={isDark} user={user} />
                 </div>
-                <div className="flex-1 w-full flex flex-col items-center justify-center">
+                <div className={`${isMobile? "h-[260px]" : "flex-1"}
+                    w-full flex flex-col items-center justify-center`}>
                     <MaintenanceReport isDark={isDark} user={user} />
                 </div>
             </div>
 
             <div className="h-full w-full flex flex-col items-center justify-center gap-[calc(0.4vw+0.6rem)]">
-                <div className="h-[360px] w-full flex flex-col items-center justify-center">
+                <div className={`${isMobile? "h-[300px]" : "h-[360px]"}
+                    w-full flex flex-col items-center justify-center`}>
                     <ExpenseBreakdown isDark={isDark} user={user} />
                 </div>
             </div>
