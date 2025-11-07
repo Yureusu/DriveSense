@@ -47,7 +47,7 @@ function Driver({ isDark, user}: DriverProps) {
                 </div>
             </div>
 
-            {isAddDriverVisible && <AddDriver user={user} refetch={refetch} driverInfo={driverInfo} setIsAddDriverVisible={setIsAddDriverVisible}/>}
+            {isAddDriverVisible && <AddDriver isDark={isDark} user={user} refetch={refetch} driverInfo={driverInfo} setIsAddDriverVisible={setIsAddDriverVisible}/>}
 
             <div className="h-full w-full flex flex-col items-start justify-start gap-[calc(0.4vw+0.6rem)]">
                 <div className="h-auto w-full flex flex-col items-start justify-start bg-[var(--purple-color)] text-[var(--light-color)] p-[calc(0.4vw+0.6rem)]">
