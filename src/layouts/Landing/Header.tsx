@@ -120,7 +120,10 @@ function Header({isDark, setIsDark, isLoggedIn, setIsLoggedIn, setUser}: headerP
                             location.reload();
                         }}>Home</span>
                     <span className="text-[calc(0.4vw+0.8rem)] w-full cursor-pointer hovered font-semibold">Features</span>
-                    <span className="text-[calc(0.4vw+0.8rem)] w-full cursor-pointer hovered font-semibold">Github</span>
+                    <span className="text-[calc(0.4vw+0.8rem)] w-full cursor-pointer hovered font-semibold"
+                        onClick={() => {
+                            window.open("https://github.com/Yureusu/DriveSense/actions");
+                        }}>Github</span>
                 </div>
             </div>}
 
