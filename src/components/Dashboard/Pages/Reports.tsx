@@ -14,7 +14,7 @@ function Reports({isDark, user}: ReportsProps) {
 
     return (
         <div className={`${isDark? "" : ""}
-            ${isMobile? "h-auto" : "border-l px-[calc(0.4vw+0.6rem)] h-full"}
+            ${isMobile? "h-screen" : "border-l px-[calc(0.4vw+0.6rem)] h-full"}
             flex flex-col items-start justify-start w-full flex-5 border-[var(--border-color)]`}>
             <PdfExporter isDark={isDark} user={user}/>
         </div>

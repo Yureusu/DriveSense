@@ -13,26 +13,52 @@ type PdfExporterProps = {
 }
 
 function PdfExporter({ isDark, user }: PdfExporterProps) {
-  const contentRef = useRef<HTMLDivElement>(null);
+    const contentRef = useRef<HTMLDivElement>(null);
 
-  const isMobile = useIsMobile();
+    const isMobile = useIsMobile();
 
-  const handleExportPdf = async () => {
-    const input = contentRef.current;
-    if (!input) return;
+    const handleExportPdf = async () => {
+        const input = contentRef.current;
+        if (!input) return;
+      
+        window.scrollTo(0, 0);
 
-    // capture screenshot of the component
-    const canvas = await html2canvas(input, { scale: 2 });
-    const imgData = canvas.toDataURL("image/png");
+        const canvas = await html2canvas(input, {
+          scale: 2,
+          useCORS: true,
+          windowWidth: input.scrollWidth,
+          windowHeight: input.scrollHeight,
+        });
+      
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("p", "mm", "a4");
+      
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = pdf.internal.pageSize.getHeight();
+      
+        const imgWidthPx = canvas.width;
+        const imgHeightPx = canvas.height;
+      
+        const pageWidthPx = pdfWidth * (canvas.width / imgWidthPx);
+        const pageHeightPx = (canvas.height * pdfWidth) / canvas.width;
 
-    // create PDF
-    const pdf = new jsPDF("p", "mm", "a4");
-    const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
-
-    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-    pdf.save("Report&Analytics.pdf");
-  };
+        if(imgHeightPx && pageWidthPx && pageHeightPx){}
+      
+        let renderWidth = pdfWidth;
+        let renderHeight = (canvas.height * pdfWidth) / canvas.width;
+      
+        if (renderHeight > pdfHeight) {
+          const scaleFactor = pdfHeight / renderHeight;
+          renderWidth *= scaleFactor;
+          renderHeight = pdfHeight;
+        }
+      
+        const x = (pdfWidth - renderWidth) / 2;
+        const y = (pdfHeight - renderHeight) / 2;
+      
+        pdf.addImage(imgData, "PNG", x, y, renderWidth, renderHeight);
+        pdf.save("Report&Analytics.pdf");
+};               
 
   return (
     <div className="h-full w-full flex flex-col items-start justify-start">
