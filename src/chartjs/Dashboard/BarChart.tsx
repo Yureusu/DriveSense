@@ -75,6 +75,7 @@ const BarChart: React.FC<BarChartProps> = ({ isDark, user }) => {
 
   const options: ChartOptions<'bar'> = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         labels: {
@@ -112,7 +113,11 @@ const BarChart: React.FC<BarChartProps> = ({ isDark, user }) => {
     },
   };
 
-  return <Bar data={data} options={options} />;
+  return (
+    <div style={{ width: '100%', height: '100%' }}>
+      <Bar data={data} options={options} />
+    </div>
+  );
 };
 
 export default BarChart;

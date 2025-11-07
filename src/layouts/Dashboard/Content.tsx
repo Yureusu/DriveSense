@@ -7,16 +7,18 @@ import Driver from "../../components/Dashboard/Pages/Driver";
 import Fuel from "../../components/Dashboard/Pages/Fuel";
 import Maintenance from "../../components/Dashboard/Pages/Maintenance";
 import Reports from "../../components/Dashboard/Pages/Reports";
-import Users from "../../components/Dashboard/Pages/Users";
+// import Users from "../../components/Dashboard/Pages/Users";
 import Settings
  from "../../components/Dashboard/Pages/Settings";
 import type { UserInfo, DriverInfo, VehicleInfo, MaintenanceInfo, FuelInfo, RecentActivities } from "../../App";
 
 type contentProps = {
     isDark: boolean;
+    setIsDark: React.Dispatch<SetStateAction<boolean>>;
     activeIndex: number;
     setActiveIndex: React.Dispatch<SetStateAction<number>>
     user: UserInfo | null;
+    setUser: React.Dispatch<SetStateAction<UserInfo | null>>;
     driverInfo:  DriverInfo[];
     setDriverInfo: React.Dispatch<SetStateAction<DriverInfo[]>>;
     vehicleInfo: VehicleInfo[];
@@ -24,9 +26,10 @@ type contentProps = {
     maintenanceInfo: MaintenanceInfo[];
     fuelInfo: FuelInfo[];
     recentActivity: RecentActivities[];
+    setIsLoggedIn: React.Dispatch<SetStateAction<boolean>>;
 }
 
-function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, vehicleInfo}: contentProps) {  
+function Content({isDark, setIsDark, setIsLoggedIn, activeIndex, setActiveIndex, user, setUser, driverInfo, vehicleInfo}: contentProps) {  
     
     const navItems = [
         { icon: "bx bx-dashboard bx-tada-hover hovered", title: "Dashboard" },
@@ -35,7 +38,7 @@ function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, vehicl
         { icon: "bx bx-petrol-pump bx-tada-hover hovered", title: "Fuel" },
         { icon: "bx bx-spanner bx-tada-hover hovered", title: "Maintenance" },
         { icon: "bx bx-report bx-tada-hover hovered", title: "Reports" },
-        { icon: "bx bx-user bx-tada-hover hovered", title: "Users" },
+        // { icon: "bx bx-user bx-tada-hover hovered", title: "Users" },
         { icon: "bx bx-cog bx-tada-hover hovered", title: "Settings" }
     ];
 
@@ -46,8 +49,8 @@ function Content({isDark , activeIndex, setActiveIndex, user, driverInfo, vehicl
         <Fuel isDark={isDark} user={user} driverInfo={driverInfo} vehicleInfo={vehicleInfo} />,
         <Maintenance isDark={isDark} user={user} vehicleInfo={vehicleInfo}/>,
         <Reports isDark={isDark} user={user} />,
-        <Users isDark={isDark} />,
-        <Settings isDark={isDark} />
+        // <Users isDark={isDark} />,
+        <Settings isDark={isDark} setIsDark={setIsDark} user={user} setUser={setUser} setIsLoggedIn={setIsLoggedIn}/>
     ]
 
     const isMobile = useIsMobile();

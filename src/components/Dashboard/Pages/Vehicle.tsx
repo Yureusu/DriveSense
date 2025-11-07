@@ -83,7 +83,6 @@ function Vehicle({ isDark, user, driverInfo }: changeTheme) {
                             <span className="flex-1 text-[calc(0.4vw+0.6rem)] flex-wrap">{vehicle.model ?? "null"}</span>
                             <span className="flex-1 text-[calc(0.4vw+0.6rem)]">{vehicle.createdAt ?? "null"}</span>
                             <div className="flex-1 flex flex-row items-center justify-end gap-[calc(0.4vw+0.6rem)]">
-                                <i className='bx bx-edit bx-tada-hover text-[calc(0.8vw+1rem)] cursor-pointer'></i>
                                 <i className='bx bx-trash bx-tada-hover text-[calc(0.8vw+1rem)] hover:text-red-500 cursor-pointer'
                                 onClick={() => {
                                     setIsDelete((prev) => !prev)
@@ -106,7 +105,6 @@ function Vehicle({ isDark, user, driverInfo }: changeTheme) {
                             </div>
                             
                             <div className="w-full flex-1 flex flex-row items-center justify-end gap-[calc(0.4vw+0.6rem)]">
-                                <i className='bx bx-edit bx-tada-hover text-[calc(0.8vw+1rem)] cursor-pointer'></i>
                                 <i className='bx bx-trash bx-tada-hover text-[calc(0.8vw+1rem)] hover:text-red-500 cursor-pointer'
                                 onClick={() => {
                                     setIsDelete((prev) => !prev)

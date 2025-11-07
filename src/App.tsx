@@ -106,6 +106,7 @@ function App() {
   return (
     <Dashboard
       user={user}
+      setUser={setUser}
       isLoggedIn={isLoggedIn}
       setIsLoggedIn={setIsLoggedIn}
       driverInfo={driverInfo}

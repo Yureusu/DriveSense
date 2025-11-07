@@ -3,6 +3,7 @@ import type { UserInfo, MaintenanceInfo, VehicleInfo } from "../../App"
 import { db } from "../../server/Firebase/Firebase";
 import { doc, setDoc, addDoc, collection } from "firebase/firestore";
 import { useFetchVehicle } from "../../hooks/Fetch/useFetchVehicle";
+import useIsMobile from "../../hooks/useIsMobile";
 
 type AddMaintenanceProps = {
     isDark: boolean;
@@ -16,7 +17,7 @@ type AddMaintenanceProps = {
 function AddMaintenance({ isDark, user, maintenanceInfo, refetch, setIsAddMaintenance }: AddMaintenanceProps) {
 
     const { vehicleInfo } = useFetchVehicle(user);
-    
+    const isMobile = useIsMobile();
     const [isFormVisible, setIsFormVisible] = useState(true);
 
     const [vehcileModel, setVehicleModel] = useState<string[]>([]);
@@ -71,11 +72,12 @@ function AddMaintenance({ isDark, user, maintenanceInfo, refetch, setIsAddMainte
     return (
         <>
             {isFormVisible && <div className={`fade-in absolute top-0 left-0 z-2 h-screen w-full flex flex-col items-center justify-center bg-[rgba(0,0,0,0.80)]`}>
-                <div className={`${isDark? "text-[var(--light-color)] bg-[var(--dark-color)] border border-[var(--light-color)]" : "text-[var(--dark-color)] bg-[var(--light-color)]"}
-                    h-auto w-[420px] flex flex-col items-center justify-center relative rounded-lg rounded-tr-none`}>
-                    <i className='fa-solid fa-circle-xmark text-[calc(1vw+1.2rem)] text-[var(--blue-color)] hovered
-                        flex flex-row items-center justify-center absolute top-[-10px] right-[-14px] cursor-pointer'
-                        onClick={() => setIsFormVisible((prev) => !prev)}></i> 
+                <div className={`${isMobile? "w-[320px]" : "w-[420px]"} ${isDark? "text-[var(--dark-color)]" : ""}
+                    h-auto bg-[var(--light-color)] flex flex-col items-center justify-center relative rounded-xl rounded-tr-none`}>
+                    <i className={`${isMobile? "top-[-8px] right-[-12px] text-[calc(1vw+1.5rem)]" : "top-[-10px] right-[-14px] text-[calc(1vw+1.2rem)]"}
+                        fa-solid fa-circle-xmark text-[var(--blue-color)] hovered
+                        absolute cursor-pointer`}
+                        onClick={() => setIsFormVisible((prev) => !prev)}></i>
 
                     {/*Form*/}
                     <div className={`

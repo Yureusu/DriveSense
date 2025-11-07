@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import type { UserInfo } from "../../App";
 import { db } from "../../server/Firebase/Firebase";
 import { doc, deleteDoc, addDoc, collection } from "firebase/firestore";
+import useIsMobile from "../../hooks/useIsMobile";
 
 type DeleteVehicleProps = {
     selectedDriverIndex: Number | null;
@@ -11,6 +12,8 @@ type DeleteVehicleProps = {
 }
 
 function DeleteVehicle({ selectedDriverIndex, user, refetch, setIsDelete }: DeleteVehicleProps) {
+
+    const isMobile = useIsMobile();
 
     useEffect(() => {
         console.log("SelectedDriverIndex: ", selectedDriverIndex);
@@ -45,10 +48,12 @@ function DeleteVehicle({ selectedDriverIndex, user, refetch, setIsDelete }: Dele
     return (
         <>
             {isFormVisible && <div className="fade-in absolute top-0 left-0 z-2 h-screen w-full flex flex-col items-center justify-center bg-[rgba(0,0,0,0.50)]">
-                <div className="h-auto w-[420px] bg-[var(--light-color)] flex flex-col items-center justify-center relative rounded-xl rounded-tr-none">
-                    <i className='fa-solid fa-circle-xmark text-[calc(1vw+1.2rem)] text-[var(--blue-color)] hovered
-                        flex flex-row items-center justify-center absolute top-[-10px] right-[-14px] cursor-pointer'
-                        onClick={() => setIsFormVisible(false)}></i> 
+                <div className={`${isMobile? "w-[320px] " : "w-[420px]"}
+                    h-auto bg-[var(--light-color)] flex flex-col items-center justify-center relative rounded-xl rounded-tr-none`}>
+                    <i className={`${isMobile? "top-[-8px] right-[-12px] text-[calc(1vw+1.5rem)]" : "top-[-10px] right-[-14px] text-[calc(1vw+1.2rem)]"}
+                        fa-solid fa-circle-xmark text-[var(--blue-color)] hovered
+                        flex flex-row items-center justify-center absolute cursor-pointer`}
+                        onClick={() => setIsFormVisible((prev) => !prev)}></i>
 
                     {/*Form*/}
                     <div className="h-full w-full flex flex-col items-center justify-start py-[calc(0.4vw+0.6rem)] px-[calc(1.4vw+1.6rem)] gap-[calc(0.4vw+0.6rem)] text-[var(--dark-color)]">
